@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvPostClassName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/tvTagYear"
+        app:layout_constraintEnd_toStartOf="@id/tvPostProfessorName"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="tvPostClassName" />
+
+    <TextView
+        android:id="@+id/tvPostProfessorName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="tvPostProfessorName"
+        android:textSize="30sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/tvPostClassName"
+        app:layout_constraintBottom_toTopOf="@+id/tvTagYear"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/tvPostClassName"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvTagYear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/tag2"
+        android:text="tvTagYear"
+        app:layout_constraintEnd_toStartOf="@id/tvTagSemester"
+
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvPostClassName"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/tvTagSemester"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/tag2"
+        android:text="tvTagSemester"
+        app:layout_constraintEnd_toStartOf="@id/tvTagTest"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@+id/tvTagYear"
+        app:layout_constraintTop_toBottomOf="@id/tvPostClassName" />
+
+    <TextView
+        android:id="@+id/tvTagTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/tag2"
+        android:text="tvTagTest"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@+id/tvTagSemester"
+        app:layout_constraintTop_toBottomOf="@id/tvPostClassName" />
+
+    <TextView
+        android:id="@+id/tvDollar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="tvDollar"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/tvVote"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTagYear" />
+
+    <TextView
+        android:id="@+id/tvVote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="tvVote"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/tvComment"
+        app:layout_constraintStart_toEndOf="@+id/tvDollar"
+        app:layout_constraintTop_toBottomOf="@+id/tvTagYear" />
+
+    <TextView
+        android:id="@+id/tvComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="tvComment"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/tvScrap"
+        app:layout_constraintStart_toEndOf="@+id/tvVote"
+        app:layout_constraintTop_toBottomOf="@+id/tvTagYear" />
+
+    <TextView
+        android:id="@+id/tvScrap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="tvScrap"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvComment"
+        app:layout_constraintTop_toBottomOf="@+id/tvTagYear" />
+
+    <TextView
+        android:id="@+id/tvPostedBy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="15dp"
+        android:text="Posted By.."
+        app:layout_constraintEnd_toStartOf="@+id/tvAuthor"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintTop_toBottomOf="@+id/tvScrap" />
+
+    <TextView
+        android:id="@+id/tvAuthor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="tvAuthor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintTop_toBottomOf="@+id/tvScrap" />
+
+
+
+</android.support.constraint.ConstraintLayout>
