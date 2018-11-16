@@ -1,0 +1,63 @@
+1. 가입할때 일정coin 지급
+2. 게시물 올릴때(일주일 뒤) 기본 coin+ voteCoin
+3. vote할때 일정coin 지급
+4. 게시물 볼때 코인 소모
+
+1.
+
+	val wallet1 = Wallet.create(blockChain) //지갑 생성
+	val tx1 = Transaction.create(sender = wallet1.publicKey, recipient = wallet1.publicKey, amount = 100) //블록을 만들 데이터, SuperUser
+
+        tx1.outputs.add(TransactionOutput(recipient = wallet1.publicKey, amount = 100, transactionHash = tx1.hash)) // 보낸 데이터 저장
+
+        tx1.sign(wallet1.privateKey)
+
+
+2. 게시물을 올리면 firbase에
+	firbase{
+
+			게시물 라인(val walletId: Wallet){
+				.....
+				.....
+				val reward =12
+				val vote_reward=5
+				if(upLodeDay+week==this.Day){
+					
+
+					val balance= if(voit>15) reward+vote_reward else reward				
+					val tx2 = wallet1.sendFundsTo(recipient = walletId.publicKey, amountToSend = balance) //wallet1==superUser(개발자 지갑)
+
+					genesisBlock.addTransaction(tx2)
+        			val secondBlock = blockChain.add(Block(genesisBlock.hash).addTransaction(tx2))// 이전 블록을 현재(second)에 추가
+        			genesisBlock = blockChain.add(secondBlock)//블록체인(첫, 두번째 블럭)
+
+	        		
+				}
+
+			}
+3.vote할때 일정coin 지급
+	UI(var walletId: Wallet){
+
+			votebuttonClickListener{
+				val tx2 = wallet1.sendFundsTo(recipient = walletId.publicKey, amountToSend = balance) //wallet1==superUser(개발자지갑)
+				genesisBlock.addTransaction(tx2)
+        		val secondBlock = blockChain.add(Block(genesisBlock.hash).addTransaction(tx2))// 이전 블록을 현재(second)에 추가
+        		genesisBlock = blockChain.add(secondBlock)//블록체인(첫, 두번째 블럭)
+
+			}
+	}
+
+
+4.게시물 볼때 코인 소모
+	UI(var walletId: Wallet){
+
+			showPostbuttonClickListener{
+				val tx2 = walletId.sendFundsTo(recipient = wallet1.publicKey, amountToSend = balance) //wallet1==superUser(개발자지갑)
+				genesisBlock.addTransaction(tx2)
+        		val secondBlock = blockChain.add(Block(genesisBlock.hash).addTransaction(tx2))// 이전 블록을 현재(second)에 추가
+        		genesisBlock = blockChain.add(secondBlock)//블록체인(첫, 두번째 블럭)
+
+			}
+	}
+
+	
