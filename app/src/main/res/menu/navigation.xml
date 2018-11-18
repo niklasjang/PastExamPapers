@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+            android:id="@+id/navigation_news"
+            android:icon="@drawable/icon_main"
+            android:title="@string/news_fragment"/>
+
+    <item
+            android:id="@+id/navigation_timeline"
+            android:icon="@drawable/icon_timeline"
+            android:title="@string/timeline_fragment"/>
+
+    <item
+            android:id="@+id/navigation_my_account"
+            android:icon="@drawable/icon_my_account"
+            android:title="@string/my_account_fragment"/>
+    <item
+            android:id="@+id/navigation_settings"
+            android:icon="@drawable/icon_settings"
+            android:title="@string/settings_fragment"/>
+
+</menu>

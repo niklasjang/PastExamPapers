@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="colorIcon">#99dae9f6</color>
+    <color name="colorIconSelected">#D81B60</color>
+    <color name="colorText">#000000</color>
+    <color name="colorMainFragmentBackground">#66FF0000</color>
+    <color name="colorTimelineFragmentBackground">#6600FF00</color>
+    <color name="colorMyAccountFragmentBackground">#66000000</color>
+    <color name="colorSettingsFragmentBackground">#00000000</color>
+</resources>
