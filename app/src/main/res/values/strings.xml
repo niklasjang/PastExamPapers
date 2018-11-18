@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">QuestionCoin_Structure</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="MainFragment"> Main fragment</string>
+    <string name="TimelineFragment"> Timeline fragment</string>
+    <string name="MyAccountFragment"> MyAccount fragment</string>
+    <string name="SettingsFragment"> Settings fragment</string>
+
+
+</resources>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+    <!-- Appbar -->
+    <android.support.design.widget.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+    >
+
+        <!-- Toolbar -->
+        <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorPrimary" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <!-- Fragments Container -->
+    <!--include tag를 fragment tag로 변경함. 문제가 생기면 되돌리기.-->
+    <!--android:name: <fragment> 안의 android:name 특성은 레이아웃 안에서 인스턴스화할 Fragment 클래스를 지정합니다.
+        시스템은 이 액티비티 레이아웃을 생성할 때 레이아웃에서 지정된 각 프래그먼트를 인스턴스화하며 각각에 대해 onCreateView()
+        메서드를 호출하여 각 프래그먼트의 레이아웃을 검색합니다. 시스템은 프래그먼트가 반환한 View를 <fragment>
+        요소 자리에 곧바로 삽입합니다.
+        android:name을 사용하면 layout="@layout/fragment_main"을 사용하지 않아도 될 것같다. 지워보자.
+        -->
+    <include
+            android:name="com.example.niklasjang.questioncoin_structure.MainFragment"
+            android:id="@+id/fragmentMain"
+            layout="@layout/fragment_main"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/navigation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+    <include
+            android:name="com.example.niklasjang.questioncoin_structure.TimelineFragment"
+
+            android:id="@+id/fragmentTimeline"
+            layout="@layout/fragment_timeline"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/navigation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+    <include
+            android:name="com.example.niklasjang.questioncoin_structure.MyAccountFragment"
+            android:id="@+id/fragmentMyAccount"
+            layout="@layout/fragment_my_account"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/navigation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+    <include
+            android:name="com.example.niklasjang.questioncoin_structure.SettingsFragment"
+            android:id="@+id/fragmentSettings"
+            layout="@layout/fragment_settings"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/navigation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+
+    <!-- Bottom Navigation View -->
+
+    <android.support.design.widget.BottomNavigationView
+            android:id="@+id/navigation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="0dp"
+            android:layout_marginStart="0dp"
+            android:background="?android:attr/windowBackground"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:menu="@menu/navigation" />
+
+</android.support.constraint.ConstraintLayout>
