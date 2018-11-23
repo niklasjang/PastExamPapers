@@ -9,46 +9,50 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import java.util.ArrayList
 
 class ImageFragment() : Fragment() {
     private var imageModelArrayList = ArrayList<ImageModel>()
     private val myImageList = intArrayOf(R.drawable.harley2, R.drawable.benz2, R.drawable.vecto, R.drawable.webshots, R.drawable.bikess)
-
+    private var mIndex :Int = 0
     fun newInstance(position: Int): ImageFragment {
-        val f = ImageFragment()
-        // Supply index input as an argument.
+        val imageFragment = ImageFragment()
+        mIndex = position
+        //Supply index input as an argument.
         val args = Bundle()
         args.putInt("index", position)
-        f.arguments = args
-
-        var ivPhoto = view?.findViewById<ImageView>(R.id.ivPhoto)
-        ivPhoto?.setImageResource(imageModelArrayList[position].getImage_drawables())
-        return f
+        imageFragment.arguments = args
+//        Log.d("ImageFragment", "newInstance ${imageFragment.arguments}")
+        return imageFragment
     }
 
-    //will be changed?
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+//        Log.d("ImageFragment", "onCreateView ${this.arguments}")
+
         // Inflate the layout for this fragment
-        Log.d("123","123")
         return inflater.inflate(R.layout.fragment_image, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//        Log.d("ImageFragment", "onViewCreated, ${this.arguments}")
+
         imageModelArrayList = populateList()
-        //var ivPhoto = view.findViewById<ImageView>(R.id.ivPhoto)
+        val ivPhoto = view.findViewById<ImageView>(R.id.ivPhoto)
+        ivPhoto?.setImageResource(imageModelArrayList[arguments!!.getInt("index")].getImage_drawables())
+
     }
 
 
 
     private fun populateList(): ArrayList<ImageModel> {
         val list = ArrayList<ImageModel>()
-        for (i in 0..3) {
+        for (i in myImageList.indices) {
             val imageModel = ImageModel()
             imageModel.setImage_drawables(myImageList[i])
             list.add(imageModel)
