@@ -12,11 +12,17 @@
         <activity
                 android:name=".MainActivity"
                 android:label="@string/app_name">
+        </activity>
+        <activity android:name=".RegisterActivity">
             <intent-filter>
+                <!--Specify the ACTION_VIEW intent action so that the intent filter can be reached from Google Search. -->
+                <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity android:name=".LoginActivity">
         </activity>
     </application>
 
