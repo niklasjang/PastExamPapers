@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "333367015097",
+    "firebase_url": "https://questioncoin-kau.firebaseio.com",
+    "project_id": "questioncoin-kau",
+    "storage_bucket": "questioncoin-kau.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:333367015097:android:29366bdf5630949d",
+        "android_client_info": {
+          "package_name": "com.example.niklasjang.bottomnavigationbar_with_fragment_example"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "333367015097-8j8efp9gutf3eq28v1ol4elje1ipj6hf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.niklasjang.bottomnavigationbar_with_fragment_example",
+            "certificate_hash": "d5125c7d6159f825d591398e319ab8426f80f4ca"
+          }
+        },
+        {
+          "client_id": "333367015097-hc0sbqfleppt5qq5nthvt4aa54umk6c0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnAT8gdDdxB-dFwJ0UDUzmDRQjHELTZJU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "333367015097-hc0sbqfleppt5qq5nthvt4aa54umk6c0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
