@@ -27,7 +27,7 @@ class LoginActivity : AppCompatActivity() {
             var password = etPassword_login.text.toString()
 
             if( email.isEmpty() || password.isEmpty()) return@setOnClickListener
-            
+
             FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener{
                     if( !it.isSuccessful) return@addOnCompleteListener
