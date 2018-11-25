@@ -43,7 +43,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:16.0.5' // firebase storage sdk
     implementation 'com.google.firebase:firebase-database:16.0.5'// firebase database sdk
     implementation 'de.hdodenhof:circleimageview:2.2.0' //android circle ImageView
-    implementation 'com.google.android.gms:play-services-auth:16.0.1'
+    implementation 'com.google.android.gms:play-services-auth:16.0.1' //google login
+    implementation 'com.xwray:groupie:2.1.0' //make post의 groupie. 2.2.0.버전과 2.3.0.버전은 호환문제 있음 2.1.0.사용하기
+    implementation 'com.squareup.picasso:picasso:2.71828' //picasso : A powerful image downloading and caching library for Android
 }
 apply plugin: 'com.google.gms.google-services' //firebase dependency
 

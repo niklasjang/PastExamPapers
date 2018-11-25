@@ -121,8 +121,8 @@ class RegisterActivity : AppCompatActivity() {
                     if(task.isSuccessful){
                         Toast.makeText(this,"구글 계정 연동에 성공하였습니다.",Toast.LENGTH_LONG).show()
 
-                        // 사용자의 계정 정보는 아래의 코드로 가져온다.
-                        // FirebaseAuth.getInstance().currentUser
+                        // TODO 사용자의 계정 정보는 아래의 코드로 가져온다. 구글 로그인 했을 때 구글 아이디 가져오는지 확인해야함.
+                        // TODO FirebaseAuth.getInstance().currentUser
 
                         var intent = Intent(this, MainActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -158,7 +158,7 @@ class RegisterActivity : AppCompatActivity() {
         //every time this method is executed, correct uid is assigned to here.
         val uid = FirebaseAuth.getInstance().uid ?: ""
         val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
-        ref.setValue(User(uid, etUsername_register.text.toString(), profileImageUrl, etPassword_register.text.toString()))
+        ref.setValue(User(uid, etUsername_register.text.toString(), profileImageUrl))
             .addOnSuccessListener {
                 Log.d("Register Activity", "Finally we saved the User to Firebase Database ")
             }
@@ -169,4 +169,6 @@ class RegisterActivity : AppCompatActivity() {
     }
 }
 
-class User(val uid : String, val username : String, val profileImageUrl : String, val password : String)
+class User(val uid : String, val username : String, val profileImageUrl : String){
+    constructor() : this("","","")
+}

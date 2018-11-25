@@ -17,7 +17,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
-            tools:text="tvPostClassName" />
+            tools:text="tvPostClassName"/>
 
     <TextView
             android:id="@+id/tvPostProfessorName"
@@ -30,7 +30,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@id/tvPostClassName"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
             android:id="@+id/tvTagYear"
@@ -43,7 +43,7 @@
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvPostClassName"
-            app:layout_constraintVertical_chainStyle="packed" />
+            app:layout_constraintVertical_chainStyle="packed"/>
 
     <TextView
             android:id="@+id/tvTagSemester"
@@ -54,7 +54,7 @@
             app:layout_constraintEnd_toStartOf="@id/tvTagTest"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@+id/tvTagYear"
-            app:layout_constraintTop_toBottomOf="@id/tvPostClassName" />
+            app:layout_constraintTop_toBottomOf="@id/tvPostClassName"/>
 
     <TextView
             android:id="@+id/tvTagTest"
@@ -65,7 +65,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@+id/tvTagSemester"
-            app:layout_constraintTop_toBottomOf="@id/tvPostClassName" />
+            app:layout_constraintTop_toBottomOf="@id/tvPostClassName"/>
 
     <TextView
             android:id="@+id/tvDollar"
@@ -75,7 +75,7 @@
             android:textSize="18sp"
             app:layout_constraintEnd_toStartOf="@+id/tvVote"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTagYear" />
+            app:layout_constraintTop_toBottomOf="@+id/tvTagYear"/>
 
     <TextView
             android:id="@+id/tvVote"
@@ -85,7 +85,7 @@
             android:textSize="18sp"
             app:layout_constraintEnd_toStartOf="@+id/tvComment"
             app:layout_constraintStart_toEndOf="@+id/tvDollar"
-            app:layout_constraintTop_toBottomOf="@+id/tvTagYear" />
+            app:layout_constraintTop_toBottomOf="@+id/tvTagYear"/>
 
     <TextView
             android:id="@+id/tvComment"
@@ -95,7 +95,7 @@
             android:textSize="18sp"
             app:layout_constraintEnd_toStartOf="@+id/tvScrap"
             app:layout_constraintStart_toEndOf="@+id/tvVote"
-            app:layout_constraintTop_toBottomOf="@+id/tvTagYear" />
+            app:layout_constraintTop_toBottomOf="@+id/tvTagYear"/>
 
     <TextView
             android:id="@+id/tvScrap"
@@ -105,7 +105,7 @@
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tvComment"
-            app:layout_constraintTop_toBottomOf="@+id/tvTagYear" />
+            app:layout_constraintTop_toBottomOf="@+id/tvTagYear"/>
 
     <TextView
             android:id="@+id/tvPostedBy"
@@ -115,7 +115,7 @@
             android:text="Posted By.."
             app:layout_constraintEnd_toStartOf="@+id/tvAuthor"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintTop_toBottomOf="@+id/tvScrap" />
+            app:layout_constraintTop_toBottomOf="@+id/tvScrap"/>
 
     <TextView
             android:id="@+id/tvAuthor"
@@ -124,8 +124,13 @@
             android:text="tvAuthor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintTop_toBottomOf="@+id/tvScrap" />
-
+            app:layout_constraintTop_toBottomOf="@+id/tvScrap"/>
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:srcCompat="@drawable/common_google_signin_btn_icon_dark"
+            tools:layout_editor_absoluteX="165dp"
+            app:layout_constraintBottom_toBottomOf="parent" android:id="@+id/ivPostImage"
+            android:layout_marginBottom="8dp"/>
 
 
 </android.support.constraint.ConstraintLayout>

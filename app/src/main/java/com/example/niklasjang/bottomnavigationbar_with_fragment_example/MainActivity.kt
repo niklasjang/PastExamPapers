@@ -77,6 +77,9 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when( item?.itemId ){
             R.id.menu_new_post-> {
+                /*TODO 어떤 fragment에서 넘어온 건지 기억해서 돌아가기. 지금은 manifests에 parent actiyivty만 설정했음.
+                  TODO 그래서 Main Activit가 처음 시작될 때 News Fragment가 시작되게 설정한 것이 자동으로 시작됨.
+                */
                 val intent = Intent(this, MakePostActivity::class.java)
                 startActivity(intent)
             }
