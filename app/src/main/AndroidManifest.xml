@@ -12,8 +12,6 @@
         <activity
                 android:name=".MainActivity"
                 android:label="@string/app_name">
-        </activity>
-        <activity android:name=".RegisterActivity">
             <intent-filter>
 
                 <!-- Specify the ACTION_VIEW intent action so that the intent filter can be reached from Google Search. -->
@@ -23,9 +21,16 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".RegisterActivity">
+        </activity>
         <activity android:name=".LoginActivity">
         </activity>
         <activity android:name=".FilterActivity">
+        </activity>
+        <activity android:name=".MakePostActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                       android:value=".MainActivity"
+            />
         </activity>
     </application>
 

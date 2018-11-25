@@ -67,6 +67,7 @@ class RegisterActivity : AppCompatActivity() {
 
                     upLoadImageToFirebaseStorage()
                     var intent = Intent(this, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
                 }
                 .addOnFailureListener { exception ->
@@ -124,13 +125,13 @@ class RegisterActivity : AppCompatActivity() {
                         // FirebaseAuth.getInstance().currentUser
 
                         var intent = Intent(this, MainActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)
                     }else {
                         Toast.makeText(this,"구글 계정 연동에 실패하였습니다.",Toast.LENGTH_LONG).show()
                     }
                 }
         }
-        //구글 로그인 로그아웃하려면 FirebaseAuth.getInstance().signOut(); 실행하면 된다.
     }
 
     private fun upLoadImageToFirebaseStorage() {
