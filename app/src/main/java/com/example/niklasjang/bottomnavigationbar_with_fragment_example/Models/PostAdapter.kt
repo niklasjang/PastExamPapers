@@ -1,6 +1,5 @@
-package com.example.niklasjang.bottomnavigationbar_with_fragment_example
+package com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models
 
-import android.app.Activity
 import android.content.Context
 import android.support.v4.app.FragmentActivity
 import android.view.LayoutInflater
@@ -8,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
 
 class PostAdapter(private var activity : FragmentActivity, private var posts :ArrayList<Post> ) : BaseAdapter(){
 
@@ -45,7 +45,8 @@ class PostAdapter(private var activity : FragmentActivity, private var posts :Ar
         if (convertView == null) {
             val inflater = activity?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             view = inflater.inflate(R.layout.post_list_row, parent, false)
-            viewHolder = ViewHolder(view)
+            viewHolder =
+                    ViewHolder(view)
             view?.tag = viewHolder
         } else {
             view = convertView

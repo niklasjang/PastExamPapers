@@ -1,4 +1,4 @@
-package com.example.niklasjang.bottomnavigationbar_with_fragment_example
+package com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models
 
 import android.os.Parcel
 import android.os.Parcelable
@@ -41,7 +41,8 @@ class Filter(var fltClassName: String? = null, var fltProfessorName: String? = n
     companion object {
         @JvmField
         val CREATOR: Parcelable.Creator<Filter> = object : Parcelable.Creator<Filter> {
-            override fun createFromParcel(source: Parcel): Filter = Filter(source)
+            override fun createFromParcel(source: Parcel): Filter =
+                Filter(source)
             override fun newArray(size: Int): Array<Filter?> = arrayOfNulls(size)
         }
     }

@@ -1,4 +1,4 @@
-package com.example.niklasjang.bottomnavigationbar_with_fragment_example
+package com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models
 
 class ImageModel {
 

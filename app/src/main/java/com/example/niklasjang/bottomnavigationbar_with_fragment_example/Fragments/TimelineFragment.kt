@@ -1,4 +1,4 @@
-package com.example.niklasjang.bottomnavigationbar_with_fragment_example
+package com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments
 
 
 import android.app.Activity
@@ -10,14 +10,33 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ListView
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.FilterActivity
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.Post
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.PostAdapter
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
 
 
 class TimelineFragment : Fragment() {
     var lvPostlist : ListView? = null
     var btnFilter : Button? = null
     val posts = arrayListOf(
-        Post("항공제어sw", "최영식", 2, 1, 1, author = "장환석" ),
-        Post("알고리즘", "이인복",2,2,1, author ="이인복",scrap = true),
+        Post(
+            "항공제어sw",
+            "최영식",
+            2,
+            1,
+            1,
+            author = "장환석"
+        ),
+        Post(
+            "알고리즘",
+            "이인복",
+            2,
+            2,
+            1,
+            author = "이인복",
+            scrap = true
+        ),
         Post(),
         Post(),
         Post(),
@@ -44,7 +63,8 @@ class TimelineFragment : Fragment() {
         }
 
         lvPostlist = view.findViewById(R.id.lvPostList)
-        val postAdapter = PostAdapter(activity!!,posts)
+        val postAdapter =
+            PostAdapter(activity!!, posts)
         lvPostlist?.adapter = postAdapter
     }
 

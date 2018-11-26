@@ -1,8 +1,12 @@
-package com.example.niklasjang.bottomnavigationbar_with_fragment_example
+package com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 class Post(var className :String? = "className", var professorName : String? = "항공대",
            var year : Int? = null, var semester : Int? = null, var test : Int? = null,
-           var reward : Double = 0.0, var vote : Int = 0, var scrap : Boolean = false, var author :String? = null){
+           var reward : Double = 0.0, var vote : Int = 0, var scrap : Boolean = false, var author :String? = null): Parcelable{
     /*
     Parameter 설명
     var className :String?

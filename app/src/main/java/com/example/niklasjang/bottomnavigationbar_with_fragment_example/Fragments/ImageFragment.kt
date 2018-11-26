@@ -1,20 +1,25 @@
-package com.example.niklasjang.bottomnavigationbar_with_fragment_example
+package com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments
 
 
-import android.media.Image
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.ImageModel
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
 import java.util.ArrayList
 
 class ImageFragment() : Fragment() {
     private var imageModelArrayList = ArrayList<ImageModel>()
-    private val myImageList = intArrayOf(R.drawable.harley2, R.drawable.benz2, R.drawable.vecto, R.drawable.webshots, R.drawable.bikess)
+    private val myImageList = intArrayOf(
+        R.drawable.harley2,
+        R.drawable.benz2,
+        R.drawable.vecto,
+        R.drawable.webshots,
+        R.drawable.bikess
+    )
     private var mIndex :Int = 0
     fun newInstance(position: Int): ImageFragment {
         val imageFragment = ImageFragment()

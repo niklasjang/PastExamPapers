@@ -1,4 +1,4 @@
-package com.example.niklasjang.bottomnavigationbar_with_fragment_example
+package com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,11 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.MyAccuontFragment
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.NewsFragment
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.SettingsFragment
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.TimelineFragment
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -20,17 +25,17 @@ class MainActivity : AppCompatActivity() {
                 loadFragment(fragment)
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_timeline-> {
+            R.id.navigation_timeline -> {
                 fragment = TimelineFragment()
                 loadFragment(fragment)
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_my_account-> {
+            R.id.navigation_my_account -> {
                 fragment = MyAccuontFragment()
                 loadFragment(fragment)
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_settings-> {
+            R.id.navigation_settings -> {
                 fragment = SettingsFragment()
                 loadFragment(fragment)
                 return@OnNavigationItemSelectedListener true
@@ -76,7 +81,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when( item?.itemId ){
-            R.id.menu_new_post-> {
+            R.id.menu_new_post -> {
                 /*TODO 어떤 fragment에서 넘어온 건지 기억해서 돌아가기. 지금은 manifests에 parent actiyivty만 설정했음.
                   TODO 그래서 Main Activit가 처음 시작될 때 News Fragment가 시작되게 설정한 것이 자동으로 시작됨.
                 */

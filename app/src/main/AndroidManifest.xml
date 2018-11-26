@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="com.example.niklasjang.bottomnavigationbar_with_fragment_example"
->
+          package="com.example.niklasjang.bottomnavigationbar_with_fragment_example">
 
     <application
             android:allowBackup="true"
@@ -12,7 +11,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
-                android:name=".MainActivity"
+                android:name=".Activitys.MainActivity"
                 android:label="@string/app_name">
             <intent-filter>
 
@@ -23,16 +22,21 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterActivity">
+        <activity android:name=".Activitys.RegisterActivity">
         </activity>
-        <activity android:name=".LoginActivity">
+        <activity android:name=".Activitys.LoginActivity">
         </activity>
-        <activity android:name=".FilterActivity">
+        <activity android:name=".Activitys.FilterActivity">
         </activity>
-        <activity android:name=".MakePostActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
-                       android:value=".MainActivity"
-            />
+        <activity android:name=".Activitys.MakePostActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".Activitys.MainActivity"/>
+        </activity>
+        <activity android:name=".Activitys.PostLogActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".Activitys.MainActivity"/>
         </activity>
     </application>
 

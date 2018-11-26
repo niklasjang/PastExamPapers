@@ -1,28 +1,28 @@
-package com.example.niklasjang.bottomnavigationbar_with_fragment_example
+package com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcelable
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import java.util.*
 //import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_register.*
-import java.util.*
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.GoogleAuthProvider
+import kotlinx.android.parcel.Parcelize
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -158,7 +158,13 @@ class RegisterActivity : AppCompatActivity() {
         //every time this method is executed, correct uid is assigned to here.
         val uid = FirebaseAuth.getInstance().uid ?: ""
         val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
-        ref.setValue(User(uid, etUsername_register.text.toString(), profileImageUrl))
+        ref.setValue(
+            User(
+                uid,
+                etUsername_register.text.toString(),
+                profileImageUrl
+            )
+        )
             .addOnSuccessListener {
                 Log.d("Register Activity", "Finally we saved the User to Firebase Database ")
             }
@@ -168,7 +174,7 @@ class RegisterActivity : AppCompatActivity() {
             }
     }
 }
-
-class User(val uid : String, val username : String, val profileImageUrl : String){
+@Parcelize
+class User(val uid : String, val username : String, val profileImageUrl : String) : Parcelable{
     constructor() : this("","","")
 }
