@@ -9,7 +9,6 @@ import android.view.Menu
 import android.view.MenuItem
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.MyAccuontFragment
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.NewsFragment
-import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.SettingsFragment
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.TimelineFragment
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
 import com.google.firebase.auth.FirebaseAuth
@@ -32,11 +31,6 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.navigation_my_account -> {
                 fragment = MyAccuontFragment()
-                loadFragment(fragment)
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_settings -> {
-                fragment = SettingsFragment()
                 loadFragment(fragment)
                 return@OnNavigationItemSelectedListener true
             }

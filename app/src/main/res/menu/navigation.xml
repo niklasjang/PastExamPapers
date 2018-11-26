@@ -15,9 +15,7 @@
             android:id="@+id/navigation_my_account"
             android:icon="@drawable/icon_my_account"
             android:title="@string/my_account_fragment"/>
-    <item
-            android:id="@+id/navigation_settings"
-            android:icon="@drawable/icon_settings"
-            android:title="@string/settings_fragment"/>
+
+
 
 </menu>

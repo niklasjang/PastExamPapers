@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+            android:enabled="true"
+            android:title="사용설명서">
+        <Preference
+                android:summary="사용설명서"
+                android:title="앱 사용이 궁금하시다면 클릭하세요." />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            android:title="블루투스 및 로그인">
+        <CheckBoxPreference
+                android:key="bluetooth"
+                android:title="Bluetooth"
+                android:summary="Bluetooth 켜기"/>
+        <EditTextPreference
+                android:dialogTitle="ID/PW를 입력하세요"
+                android:key="device"
+                android:title="로그인"
+                android:summary="로그인"/>
+    </PreferenceCategory>
+
+
+    <PreferenceCategory
+            android:title="어플 정보">
+        <Preference
+                android:title="개발자정보"
+                android:summary="KAU pastExam team (KHS, PGY, OSH, JHS)"/>
+        <Preference
+                android:title="버전정보"
+                android:summary="version 1.0.0"/>
+        <Preference
+                android:title="문의사항"
+                android:summary="PH:010-1234-5678 email: abcd1234@gmail.com"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            android:enabled="true"
+            android:title="권한설정">
+        <ListPreference
+                android:layout_height="wrap_content"
+                android:dialogTitle="권한체킹"
+                android:entries="@array/engine_entries"
+                android:entryValues="@array/engine_values"
+                android:key="network"
+                android:summary="카메라, 연락처 등 권한 permission 을 설정합니다."
+                android:title="안드로이드 권한(Android Permission)" />
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

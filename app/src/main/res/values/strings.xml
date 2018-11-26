@@ -3,10 +3,9 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="news_fragment">news</string>
-    <string name="timeline_fragment">timeline</string>
-    <string name="my_account_fragment">my account</string>
-    <string name="settings_fragment">setting</string>
+    <string name="news_fragment">News</string>
+    <string name="timeline_fragment">Timeline</string>
+    <string name="my_account_fragment">My</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
