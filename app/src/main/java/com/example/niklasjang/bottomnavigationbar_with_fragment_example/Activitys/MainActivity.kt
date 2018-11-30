@@ -16,8 +16,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+
+    //Navigation bar 이동 listener
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        var fragment :Fragment? = null
+        val fragment: Fragment?
         when (item.itemId) {
             R.id.navigation_news -> {
                 fragment = NewsFragment()
@@ -42,27 +44,26 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         verifyUserIsLoggedIn() //로그인 했는지 확인
-        loadFragment(NewsFragment()) //어플 실행하자마자 보이는 화면 설정
+        loadFragment(TimelineFragment()) //어플 실행하자마자 보이는 화면 설정
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 
-    private fun verifyUserIsLoggedIn(){
-        var uid = FirebaseAuth.getInstance().uid
-        if ( uid == null){
-            var intent = Intent(this, RegisterActivity::class.java)
+    //로그인 했는지 확인
+    private fun verifyUserIsLoggedIn() {
+        val uid = FirebaseAuth.getInstance().uid
+        if (uid == null) {
+            val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
         }
     }
 
-    private fun loadFragment(fragment : Fragment) : Boolean{
-        if(fragment != null){
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .commit()
-            return true
-        }
-        return false
+    //Navigation bar 전환
+    private fun loadFragment(fragment: Fragment): Boolean {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .commit()
+        return true
     }
 
 
@@ -70,22 +71,20 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.top_menu, menu)
         return super.onCreateOptionsMenu(menu)
-
     }
 
+    //상단 menu bar select listener.
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when( item?.itemId ){
+        when (item?.itemId) {
             R.id.menu_new_post -> {
-                /*TODO 어떤 fragment에서 넘어온 건지 기억해서 돌아가기. 지금은 manifests에 parent actiyivty만 설정했음.
-                  TODO 그래서 Main Activit가 처음 시작될 때 News Fragment가 시작되게 설정한 것이 자동으로 시작됨.
-                */
+                //TODO 어떤 fragment에서 넘어온 건지 기억해서 돌아가기. 지금은 manifests에 parent actiyivty만 설정했음.
+                // TODO 그래서 Main Activit가 처음 시작될 때 News Fragment가 시작되게 설정한 것이 자동으로 시작됨.
                 val intent = Intent(this, MakePostActivity::class.java)
                 startActivity(intent)
             }
-            R.id.menu_sign_out ->{
-                //TODO 새로운 구글 아이디로 로그인하게 만들어야 함
+            R.id.menu_sign_out -> {
                 FirebaseAuth.getInstance().signOut()
-                val intent = Intent(this, RegisterActivity::class.java)
+                val intent = Intent(this, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
             }

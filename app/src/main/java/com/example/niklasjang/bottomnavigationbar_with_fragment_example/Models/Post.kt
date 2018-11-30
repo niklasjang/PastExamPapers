@@ -4,21 +4,30 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-class Post(var className :String? = "className", var professorName : String? = "항공대",
-           var year : Int? = null, var semester : Int? = null, var test : Int? = null,
-           var reward : Double = 0.0, var vote : Int = 0, var scrap : Boolean = false, var author :String? = null): Parcelable{
-    /*
-    Parameter 설명
-    var className :String?
-    var professorName : String? = null
-    var year : Int? = null     //1 : 1학년, 2: 2학년, 3: 3학년, 4:4학년
-    var semester : Int? = null //1 : 1학기, 2: 2학기, 3: 1/2학기
-    var test : Int? = null     //1 : 중간, 2: 기말, 3: 중간/기말
-    var author : String? = null //Post 게시자 이름
-    var reward :Double =0.0
-    var vote : Int = 0
-    var scrap : Boolean = false //reHang은 본인 게시판에 퍼가기. 퍼갔으면 True otherwise False.
-    */
-
-
+class Post(
+    var lectureName: String,
+    var professorName: String,
+    var year: Int,
+    var test: Int,
+    var service: Int,
+    var reward: Double,
+    var vote: Int,
+    var uid: String,
+    var contents : String
+) : Parcelable {
+    constructor() : this("", "",-1,-1,-1,-1.0,0,"","")
 }
+
+/*
+    Parameter 설명
+    uid : 현재 로그인한 사용자의 UID
+    lectureName
+    professorName
+    year :  //1 : 1학년, 2: 2학년, 3: 3학년, 4:4학년, 0 : 전체
+    test : //1 : 중간, 2: 기말, 0: 중간/기말
+    service // 1: 질문답변 2.지식공유
+    contents //입력한 내용
+    reward
+    vote
+
+    */

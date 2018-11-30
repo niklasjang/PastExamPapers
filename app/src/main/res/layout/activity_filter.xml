@@ -11,7 +11,7 @@
             android:layout_height="wrap_content"
             android:text="강의명"
             android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/tvProfessorName"
+            app:layout_constraintBottom_toTopOf="@+id/tvProfessorName_make_post"
             app:layout_constraintEnd_toStartOf="@+id/etClassName"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -20,7 +20,7 @@
     />
 
     <TextView
-            android:id="@+id/tvProfessorName"
+            android:id="@+id/tvProfessorName_make_post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="교수명"
@@ -55,12 +55,12 @@
             android:ems="10"
             android:hint="교수님 성함을 입력하세요."
             android:inputType="textPersonName"
-            app:layout_constraintBaseline_toBaselineOf="@id/tvProfessorName"
+            app:layout_constraintBaseline_toBaselineOf="@id/tvProfessorName_make_post"
             app:layout_constraintBottom_toTopOf="@id/tvYear"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tvProfessorName"
+            app:layout_constraintStart_toEndOf="@id/tvProfessorName_make_post"
             app:layout_constraintTop_toBottomOf="@id/etClassName" />
 
     <TextView
@@ -74,7 +74,7 @@
             app:layout_constraintBottom_toTopOf="@+id/tvSemester"
             app:layout_constraintEnd_toStartOf="@+id/btnFirstYear"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvProfessorName"
+            app:layout_constraintTop_toBottomOf="@id/tvProfessorName_make_post"
             app:layout_constraintVertical_chainStyle="packed"
             tools:layout_editor_absoluteY="69dp" />
 
@@ -87,7 +87,7 @@
             app:layout_constraintEnd_toStartOf="@+id/btnSecondYear"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@+id/tvYear"
-            app:layout_constraintTop_toBottomOf="@+id/tvProfessorName" />
+            app:layout_constraintTop_toBottomOf="@+id/tvProfessorName_make_post" />
 
     <Button
             android:id="@+id/btnSecondYear"
@@ -98,7 +98,7 @@
             app:layout_constraintEnd_toStartOf="@+id/btnThirdYear"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@+id/btnFirstYear"
-            app:layout_constraintTop_toBottomOf="@+id/tvProfessorName" />
+            app:layout_constraintTop_toBottomOf="@+id/tvProfessorName_make_post" />
 
     <Button
             android:id="@+id/btnThirdYear"
@@ -109,7 +109,7 @@
             app:layout_constraintEnd_toStartOf="@+id/btnFourthYear"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@+id/btnSecondYear"
-            app:layout_constraintTop_toBottomOf="@+id/tvProfessorName" />
+            app:layout_constraintTop_toBottomOf="@+id/tvProfessorName_make_post" />
 
     <Button
             android:id="@+id/btnFourthYear"
@@ -119,7 +119,7 @@
             app:layout_constraintBottom_toTopOf="@+id/tvSemester"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@+id/btnThirdYear"
-            app:layout_constraintTop_toBottomOf="@+id/tvProfessorName" />
+            app:layout_constraintTop_toBottomOf="@+id/tvProfessorName_make_post" />
 
     <TextView
             android:id="@+id/tvSemester"

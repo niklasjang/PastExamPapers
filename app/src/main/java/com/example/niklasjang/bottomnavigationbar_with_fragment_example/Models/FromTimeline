@@ -1,0 +1,33 @@
+var lvPostlist : ListView? = null
+
+lvPostlist = view.findViewById(R.id.lvPostList)
+        val postAdapter =
+            PostAdapter(activity!!, posts)
+        lvPostlist?.adapter = postAdapter
+
+val posts = arrayListOf(
+        Post(
+            "항공제어sw",
+            "최영식",
+            2,
+            1,
+            1,
+            author = "장환석"
+        ),
+        Post(
+            "알고리즘",
+            "이인복",
+            2,
+            2,
+            1,
+            author = "이인복",
+            scrap = true
+        ),
+        Post(),
+        Post(),
+        Post(),
+        Post(),
+        Post(),
+        Post(),
+        Post()
+    )

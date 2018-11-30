@@ -9,13 +9,14 @@ import android.os.Parcelable
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.User
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import java.util.*
-//import com.google.firebase.database.*
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_register.*
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
@@ -23,34 +24,37 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.parcel.Parcelize
+import kotlinx.android.synthetic.main.activity_login.*
 
 
 class RegisterActivity : AppCompatActivity() {
-    var selectedPhotoUri: Uri? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
         performRegister()
         tvAlreadyHaveAccount_register.setOnClickListener {
-            var intent = Intent(this, LoginActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
 
 
         btnSelectImage.setOnClickListener {
             Log.d("RegisterActivity", "Select Image clicked")
-            var intent = Intent(Intent.ACTION_PICK)
+            val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             startActivityForResult(intent, 0)
 
         }
     }
 
+    //Register버튼과 Google 로그인 버튼 clickListener 정의하기.
     private fun performRegister() {
         //firebase login
         btnRegister.setOnClickListener {
             val email = etEmail_register.text.toString()
             val password = etPassword_register.text.toString()
+
             //아래 부분이 없으면 입력없이 btnRegister 클릭했을 때 어플이 깨진다.
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Please enter text in email/password.", Toast.LENGTH_SHORT).show()
@@ -58,85 +62,36 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             //Firebase Atuthentication to create a user with email and password
+            //계정을 create 하면 uid가 할당이 되고 이 uid는 앞으로  FirebaseAuth.getInstance().uid ?: ""로 얻을 수 있다.
             FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener {
-                    if (!it.isSuccessful) return@addOnCompleteListener
                     //addOnCompleteLister is performed when the task is done regardless of success or not.
+                    if (!it.isSuccessful) return@addOnCompleteListener
                     Toast.makeText(this, "createUserWithEmail Successful", Toast.LENGTH_SHORT).show()
                     Log.d("RegisterActivity", "Successfully created user with uid : ${it.result?.user?.uid}")
 
-                    upLoadImageToFirebaseStorage()
-                    var intent = Intent(this, MainActivity::class.java)
+                    //main activity로 이동
+                    val intent = Intent(this, MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
+
+                    //아이디 만들기 성공 후 선택한 이미지 파베에 올리기. + 유저정보를 DB에 저장하기
+                    upLoadImageToFirebaseStorage()
                 }
                 .addOnFailureListener { exception ->
                     Toast.makeText(this, "createUserWithEmail Failed ${exception.message}", Toast.LENGTH_LONG).show()
                     Log.d("RegisterActivity", "Failed to create user because of ${exception.message}")
                     return@addOnFailureListener // return@methodName : explicitly specify whew you return.
                 }
-
         }
 
-        //Google Login
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
 
-        val googleSignInClient = GoogleSignIn.getClient(this,gso)
-
-        btGoogle.setOnClickListener {
-            val signIntent = googleSignInClient.signInIntent
-            startActivityForResult(signIntent,1)
-        }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        //Firebase 로그인
-        if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
-            //proceed and check what the image selected was
-
-            //uri represent the location data(image selected) is stored in device.
-            selectedPhotoUri = data.data
-            val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedPhotoUri)
-            btnSelectImage.alpha = 0f // 0 is transparent, 225 is fully opaque. f means float. It taks float value.
-            ivSelectedPhoto_register.setImageBitmap(bitmap)
-//            val bitmapDrawable = BitmapDrawable(bitmap)
-//            btnSelectImage.setBackgroundDrawable(bitmapDrawable)
-        }
-
-        //구글 로그인
-        if(requestCode == 1 && resultCode == Activity.RESULT_OK){
-            //구글 로그인에 성공했을 때 넘어오는 토큰 값을 가지는 task
-            var task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            //ApiException 캐스팅
-            var account = task.getResult(ApiException::class.java)
-            //credential -> 구글 로그인에 성공했다는 인증서
-            var credential = GoogleAuthProvider.getCredential(account?.idToken,null)
-            //firebase에 계정 등록
-            FirebaseAuth.getInstance().signInWithCredential(credential)
-                .addOnCompleteListener { task: Task<AuthResult> ->
-                    if(task.isSuccessful){
-                        Toast.makeText(this,"구글 계정 연동에 성공하였습니다.",Toast.LENGTH_LONG).show()
-
-                        // TODO 사용자의 계정 정보는 아래의 코드로 가져온다. 구글 로그인 했을 때 구글 아이디 가져오는지 확인해야함.
-                        // TODO FirebaseAuth.getInstance().currentUser
-
-                        var intent = Intent(this, MainActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        startActivity(intent)
-                    }else {
-                        Toast.makeText(this,"구글 계정 연동에 실패하였습니다.",Toast.LENGTH_LONG).show()
-                    }
-                }
-        }
-    }
 
     private fun upLoadImageToFirebaseStorage() {
         if (selectedPhotoUri == null) return
-        var filename = UUID.randomUUID().toString()
+        val filename = UUID.randomUUID().toString() //랜덤값 정의하기
         //"/images/ specify where image will be stored
         val ref = FirebaseStorage.getInstance().getReference("/images/$filename")
         ref.putFile(selectedPhotoUri!!)
@@ -154,7 +109,7 @@ class RegisterActivity : AppCompatActivity() {
             }
     }
 
-    private fun saveUserToFirebaseDatabase(profileImageUrl : String) {
+    private fun saveUserToFirebaseDatabase(profileImageUrl: String) {
         //every time this method is executed, correct uid is assigned to here.
         val uid = FirebaseAuth.getInstance().uid ?: ""
         val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
@@ -173,8 +128,23 @@ class RegisterActivity : AppCompatActivity() {
 
             }
     }
+
+    var selectedPhotoUri: Uri? = null
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        //사진 선택 intent 결과
+        if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
+            //proceed and check what the image selected was
+            //uri represent the location data(image selected) is stored in device.
+            selectedPhotoUri = data.data
+            val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedPhotoUri)
+            btnSelectImage.alpha = 0f // 0 is transparent, 225 is fully opaque. f means float. It taks float value.
+            ivSelectedPhoto_register.setImageBitmap(bitmap)
+//            val bitmapDrawable = BitmapDrawable(bitmap)
+//            btnSelectImage.setBackgroundDrawable(bitmapDrawable)
+        }
+    }
+
 }
-@Parcelize
-class User(val uid : String, val username : String, val profileImageUrl : String) : Parcelable{
-    constructor() : this("","","")
-}
+

@@ -5,7 +5,13 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
+import android.widget.*
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.TimelineFragment.Companion.USER_KEY
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.Post
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.User
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R.id.*
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -15,68 +21,129 @@ import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_make_post.*
+import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.post_list_row.view.*
 
 class MakePostActivity : AppCompatActivity() {
-    companion object {
-        val USER_KEY = "USER_KEY"
-    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //Make Post Activity에 reycler view 연습코드 적어둠.
         setContentView(R.layout.activity_make_post)
         supportActionBar?.title = "Make Post"
-        fetchPost()
+        inflateAccordingToService()
+
     }
 
-    private fun fetchPost(){
-        val ref = FirebaseDatabase.getInstance().getReference("/users")
-        ref.addListenerForSingleValueEvent(object : ValueEventListener{
-            override fun onDataChange(p0: DataSnapshot) {
-                val adapter = GroupAdapter<ViewHolder>()
-                p0.children.forEach{
-                    //print All data at /users in firebase
-                    Log.d("MakePost", it.toString())
+    private fun inflateAccordingToService(){
+        val rgService = findViewById<RadioGroup>(R.id.rgService)
+        val framelayout = findViewById<FrameLayout>(R.id.frameLayout_make_post)
+        rgService.setOnCheckedChangeListener { group, checkedId -> }
+        rbtn_QnA.setOnClickListener {
 
-                    //saveUserToFirebaseDatabase에서 setValue한 형식대로 get을 한다.
-                    val user = it.getValue(User::class.java)
-                    if(user != null){
-                        adapter.add(UserItem(user))
-                    }
-                }
-                adapter.setOnItemClickListener { item, view ->
-                    val userItem = item as UserItem
-
-                    val intent = Intent(view.context, PostLogActivity::class.java)
-                    intent.putExtra(USER_KEY,userItem.user)
-                    startActivity(intent)
-
-
-                    //when click back btn, finish this activity.클릭해서 PorstLog 들어갔어도 back btn 누르면 MakePost까지 다 나와버림.
-                    finish()
-                }
-                recyclerview_makePost.adapter = adapter
+            if (framelayout.childCount > 0) {
+                framelayout.removeViewAt(0)
             }
-            override fun onCancelled(p0: DatabaseError) {
-                //Toast.make ~~
+            layoutInflater.inflate(R.layout.question_and_answer, frameLayout_make_post, true)
+        }
+
+        rbtn_Share.setOnClickListener {
+            if (framelayout.childCount > 0) {
+                framelayout.removeViewAt(0)
             }
-        })
+            layoutInflater.inflate(R.layout.knowledge_share, frameLayout_make_post, true)
+
+        }
+        //TODO file upload
+
+        //TODO btnDone 버튼 통합?
+        val btnDone = findViewById<Button>(R.id.btnDone_make_post)
+        btnDone.setOnClickListener {
+            savePostToFirebaseDatabase()
+        }
     }
+    private fun savePostToFirebaseDatabase() {
+        val lectureName = etLectureName_make_post.text.toString()
+        val professorName = etProfessorName_make_post.text.toString()
+        val year: Int?
+        when (rgYear_make_post.checkedRadioButtonId) {
+            R.id.rbtn_1year -> {
+                year = 1
+            }
+            R.id.rbtn_2year -> {
+                year = 2
+            }
+            R.id.rbtn_3year -> {
+                year = 3
+            }
+            R.id.rbtn_4year -> {
+                year = 4
+            }
+            R.id.rbtn_year_all -> {
+                year = 0
+            }
+            else -> {
+                year = null
+            }
+        }
+        val test: Int?
+        when (rgTest.checkedRadioButtonId) {
+            R.id.rbtn_midterm -> {
+                test = 1
+            }
+            R.id.rbtn_final -> {
+                test = 2
+            }
+            R.id.rbtn_test_all -> {
+                test = 0
+            }
+            else -> {
+                test = null
+            }
+        }
+        val service: Int?
+        var contents :String=""
+        when (rgService.checkedRadioButtonId) {
+            R.id.rbtn_QnA -> {
+                service = 1
+                contents = findViewById<EditText>(R.id.etQnA_qna).text.toString()
+            }
+            R.id.rbtn_Share -> {
+                service = 2
+                contents = findViewById<EditText>(R.id.etShare_share).text.toString()
+            }
+            else -> {
+                service = null
+            }
+        }
+        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+        val ref = FirebaseDatabase.getInstance().getReference("/posts/")
+        ref.setValue(
+            Post(
+                lectureName,
+                professorName,
+                year!!,
+                test!!,
+                service!!,
+                0.0,
+                0,
+                uid,
+                contents
+                )
+        )
+            .addOnSuccessListener {
+                Log.d("Register Activity", "Finally we saved the User to Firebase Database ")
+                Toast.makeText(this,"Post upload success",Toast.LENGTH_SHORT).show()
+                finish()
+            }
+            .addOnFailureListener {
+                Log.d("Register Activity", "Badly we can't saved the User to Firebase Database : $it ")
+                Toast.makeText(this,"Post upload Fail",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,"$it",Toast.LENGTH_LONG).show()
+            }
+    }
+
+
 }
 
-//Item은  com.xwray.groupie에 정의된 타입으로  그냥 받아들이면 됨
-class UserItem(val user : User) : Item<ViewHolder>(){
-    //여기서 return한 layout 파일의 형식대로 recycler view에 추가됨.
-    override fun getLayout(): Int {
-        return R.layout.post_list_row
-    }
-
-    override fun bind(viewHolder: ViewHolder, position: Int) {
-        //viewHolder.itemView까지 하면 view를 얻는다고 보면 됨.
-        viewHolder.itemView.tvPostClassName.text = user.username
-        //TODO 사진 업로드. 프로필 이미지 업로드 이렇게 하면 됨.
-        //Picasso.get().load(user.profileImageUrl).into(viewHolder.itemView.ivPostImage)
-    }
-
-}
 

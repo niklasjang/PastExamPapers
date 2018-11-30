@@ -6,13 +6,13 @@
                                              android:layout_height="wrap_content">
 
     <TextView
-            android:id="@+id/tvPostClassName"
+            android:id="@+id/tvLectureName_post_list_row"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="left"
             android:textSize="30dp"
             app:layout_constraintBottom_toTopOf="@+id/tvTagYear"
-            app:layout_constraintEnd_toStartOf="@id/tvPostProfessorName"
+            app:layout_constraintEnd_toStartOf="@id/tvProfessorName_post_list_low"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -20,16 +20,16 @@
             tools:text="tvPostClassName"/>
 
     <TextView
-            android:id="@+id/tvPostProfessorName"
+            android:id="@+id/tvProfessorName_post_list_low"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="tvPostProfessorName"
             android:textSize="30sp"
-            app:layout_constraintBaseline_toBaselineOf="@id/tvPostClassName"
+            app:layout_constraintBaseline_toBaselineOf="@id/tvLectureName_post_list_row"
             app:layout_constraintBottom_toTopOf="@+id/tvTagYear"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toEndOf="@id/tvPostClassName"
+            app:layout_constraintStart_toEndOf="@id/tvLectureName_post_list_row"
             app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
@@ -42,7 +42,7 @@
 
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvPostClassName"
+            app:layout_constraintTop_toBottomOf="@id/tvLectureName_post_list_row"
             app:layout_constraintVertical_chainStyle="packed"/>
 
     <TextView
@@ -54,7 +54,7 @@
             app:layout_constraintEnd_toStartOf="@id/tvTagTest"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@+id/tvTagYear"
-            app:layout_constraintTop_toBottomOf="@id/tvPostClassName"/>
+            app:layout_constraintTop_toBottomOf="@id/tvLectureName_post_list_row"/>
 
     <TextView
             android:id="@+id/tvTagTest"
@@ -65,7 +65,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@+id/tvTagSemester"
-            app:layout_constraintTop_toBottomOf="@id/tvPostClassName"/>
+            app:layout_constraintTop_toBottomOf="@id/tvLectureName_post_list_row"/>
 
     <TextView
             android:id="@+id/tvDollar"

@@ -3,8 +3,10 @@ package com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models
 import android.os.Parcel
 import android.os.Parcelable
 
-class Filter(var fltClassName: String? = null, var fltProfessorName: String? = null, var fltYear: Int? = null,
-             var fltSemester: Int? = null, var fltTest: Int? = null) : Parcelable {
+class Filter(
+    var fltClassName: String? = null, var fltProfessorName: String? = null, var fltYear: Int? = null,
+    var fltSemester: Int? = null, var fltTest: Int? = null
+) : Parcelable {
     /*
         var fltClassName: String? = null
 
@@ -43,6 +45,7 @@ class Filter(var fltClassName: String? = null, var fltProfessorName: String? = n
         val CREATOR: Parcelable.Creator<Filter> = object : Parcelable.Creator<Filter> {
             override fun createFromParcel(source: Parcel): Filter =
                 Filter(source)
+
             override fun newArray(size: Int): Array<Filter?> = arrayOfNulls(size)
         }
     }

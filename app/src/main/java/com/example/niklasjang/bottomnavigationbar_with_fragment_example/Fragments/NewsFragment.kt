@@ -13,13 +13,13 @@ import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
 // 참고문서
 // 1. https://stackoverflow.com/questions/13379194/how-to-add-a-fragment-inside-a-viewpager-using-nested-fragment-android-4-2
 
-class NewsFragment : Fragment(){
+class NewsFragment : Fragment() {
 
-    private var imageFragment : ImageFragment? = null
+    private var imageFragment: ImageFragment? = null
     private var NUM_PAGE = 5 //프로젝트에 추가한 사진의 갯수만큼만
 
     //뷰를 만들어서 return하고
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         var view = inflater.inflate(R.layout.fragment_news, container, false)
         return view
@@ -37,8 +37,8 @@ class NewsFragment : Fragment(){
     }
 
     //Inner class
-    class MyAdapter(fm: FragmentManager, _pageCount : Int) : FragmentPagerAdapter(fm) {
-        var pageCount :Int = _pageCount
+    class MyAdapter(fm: FragmentManager, _pageCount: Int) : FragmentPagerAdapter(fm) {
+        var pageCount: Int = _pageCount
         override fun getItem(p0: Int): Fragment {
 
             val args = Bundle()
@@ -47,6 +47,7 @@ class NewsFragment : Fragment(){
                 .newInstance(p0)
             return imageFragment
         }
+
         override fun getCount(): Int {
             return pageCount
         }

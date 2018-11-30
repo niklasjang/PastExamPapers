@@ -2,6 +2,9 @@ package com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activit
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.TimelineFragment
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.Post
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.User
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
 
 class PostLogActivity : AppCompatActivity() {
@@ -12,7 +15,7 @@ class PostLogActivity : AppCompatActivity() {
         //TODO SET MAX WIDth in xml
 //        android:MaxWidth
 
-        val user =  intent.getParcelableExtra<User>(MakePostActivity.USER_KEY)
-        supportActionBar?.title=user.username
+        val post = intent.getParcelableExtra<Post>(TimelineFragment.POST_KEY)
+        supportActionBar?.title = post.uid
     }
 }

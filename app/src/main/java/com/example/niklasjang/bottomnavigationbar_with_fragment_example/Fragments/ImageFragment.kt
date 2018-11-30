@@ -20,7 +20,7 @@ class ImageFragment() : Fragment() {
         R.drawable.webshots,
         R.drawable.bikess
     )
-    private var mIndex :Int = 0
+    private var mIndex: Int = 0
     fun newInstance(position: Int): ImageFragment {
         val imageFragment = ImageFragment()
         mIndex = position
@@ -52,7 +52,6 @@ class ImageFragment() : Fragment() {
         ivPhoto?.setImageResource(imageModelArrayList[arguments!!.getInt("index")].getImage_drawables())
 
     }
-
 
 
     private fun populateList(): ArrayList<ImageModel> {

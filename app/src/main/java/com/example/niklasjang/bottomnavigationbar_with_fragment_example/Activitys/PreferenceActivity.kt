@@ -9,7 +9,7 @@ import android.preference.Preference.OnPreferenceClickListener
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
 
 
-class PrefEdit : Activity() {
+class PreferenceActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         fragmentManager.beginTransaction().replace(android.R.id.content, SettingsFragment()).commit()

@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.PrefEdit
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.PreferenceActivity
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
 
 
@@ -23,7 +23,7 @@ class MyAccuontFragment : Fragment() {
         val btnSettings = view.findViewById<Button>(R.id.btnSettings_my_account)
 
         btnSettings.setOnClickListener {
-            val intent = Intent (view.context, PrefEdit::class.java)
+            val intent = Intent(view.context, PreferenceActivity::class.java)
             startActivity(intent)
         }
         return view

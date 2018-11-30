@@ -27,6 +27,9 @@
         <activity android:name=".Activitys.LoginActivity">
         </activity>
         <activity android:name=".Activitys.FilterActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".Activitys.MainActivity"/>
         </activity>
         <activity android:name=".Activitys.MakePostActivity">
             <meta-data
@@ -39,7 +42,7 @@
                     android:value=".Activitys.MainActivity"/>
         </activity>
 
-        <activity android:name=".Activitys.PrefEdit">
+        <activity android:name=".Activitys.PreferenceActivity">
 
 
         </activity>
