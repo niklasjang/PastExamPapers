@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
 import android.widget.*
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.Post
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.TimelineFragment.Companion.USER_KEY
-import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.Post
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.User
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R.id.*

@@ -2,8 +2,8 @@ package com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activit
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.Post
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.TimelineFragment
-import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.Post
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.User
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
 

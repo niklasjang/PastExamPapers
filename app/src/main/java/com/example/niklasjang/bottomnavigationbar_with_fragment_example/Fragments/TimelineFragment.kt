@@ -4,6 +4,7 @@ package com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragmen
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.support.v4.app.Fragment
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -14,7 +15,6 @@ import android.widget.Button
 import android.widget.ListView
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.FilterActivity
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.PostLogActivity
-import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.Post
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.User
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
 import com.google.firebase.database.DataSnapshot
@@ -24,6 +24,7 @@ import com.google.firebase.database.ValueEventListener
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
+import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_timeline.*
 import kotlinx.android.synthetic.main.post_list_row.view.*
 
@@ -68,10 +69,10 @@ class TimelineFragment : Fragment() {
                     Log.d("MakePost", it.toString())
 
                     //savePostToFirebaseDatabase에서 setValue한 형식대로 get을 한다.
-                    val post = it.getValue(Post::class.java)
-                    if (post != null) {
-                        adapter.add(UserItem(post))
-                    }
+//                    val post = it.getValue(Post::class.java)
+//                    if (post != null) {
+//                        adapter.add(UserItem(post))
+//                    }
                 }
                 //각 post들을 클릭했을 때 나오는 화면
                 adapter.setOnItemClickListener { item, view ->
@@ -109,3 +110,18 @@ class UserItem(val post: Post) : Item<ViewHolder>() {
 
 }
 
+
+@Parcelize
+class Post(
+    var lectureName: String,
+    var professorName: String,
+    var year: Int,
+    var test: Int,
+    var service: Int,
+    var reward: Double,
+    var vote: Int,
+    var uid: String,
+    var contents : String
+) : Parcelable {
+    constructor() : this("", "",-1,-1,-1,-1.0,0,"","")
+}
