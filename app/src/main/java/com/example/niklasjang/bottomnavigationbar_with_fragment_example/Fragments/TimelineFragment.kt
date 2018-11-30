@@ -27,6 +27,7 @@ import com.xwray.groupie.ViewHolder
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_timeline.*
 import kotlinx.android.synthetic.main.post_list_row.view.*
+import java.util.*
 
 
 class TimelineFragment : Fragment() {
@@ -60,19 +61,22 @@ class TimelineFragment : Fragment() {
     }
 
     private fun fetchPost() {
-        val ref = FirebaseDatabase.getInstance().getReference("/posts")
+        val ref = FirebaseDatabase.getInstance().getReference("/posts/")
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 val adapter = GroupAdapter<ViewHolder>()
+                val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerview_timeline)
+                recyclerView?.adapter = adapter
                 p0.children.forEach {
                     //print All data at /posts in firebase
-                    Log.d("MakePost", it.toString())
+                    Log.d("MakePost", "here!@#${it}")
 
                     //savePostToFirebaseDatabase에서 setValue한 형식대로 get을 한다.
-//                    val post = it.getValue(Post::class.java)
-//                    if (post != null) {
-//                        adapter.add(UserItem(post))
-//                    }
+                    val post = it.getValue(Post::class.java)
+                    if (post != null) {
+                        adapter.add(UserItem(post))
+                        
+                    }
                 }
                 //각 post들을 클릭했을 때 나오는 화면
                 adapter.setOnItemClickListener { item, view ->
@@ -81,9 +85,7 @@ class TimelineFragment : Fragment() {
                     intent.putExtra(POST_KEY, userItem.post)
                     startActivity(intent)
                 }
-                //TODO 이거 필요한가?
-                val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerview_timeline)
-                recyclerView?.adapter = adapter
+
             }
 
             override fun onCancelled(p0: DatabaseError) {
@@ -103,7 +105,7 @@ class UserItem(val post: Post) : Item<ViewHolder>() {
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         //viewHolder.itemView까지 하면 view를 얻는다고 보면 됨.
-        viewHolder.itemView.tvLectureName_post_list_row.text = post.lectureName
+        viewHolder.itemView.tvLectureName_post_list_row.text = post.lecturename
         //TODO 사진 업로드. 프로필 이미지 업로드 이렇게 하면 됨.
         //Picasso.get().load(user.profileImageUrl).into(viewHolder.itemView.ivPostImage)
     }
@@ -113,7 +115,8 @@ class UserItem(val post: Post) : Item<ViewHolder>() {
 
 @Parcelize
 class Post(
-    var lectureName: String,
+    var postname: String,
+    var lecturename: String,
     var professorName: String,
     var year: Int,
     var test: Int,
@@ -121,7 +124,7 @@ class Post(
     var reward: Double,
     var vote: Int,
     var uid: String,
-    var contents : String
+    var contents: String
 ) : Parcelable {
-    constructor() : this("", "",-1,-1,-1,-1.0,0,"","")
+    constructor() : this("","", "", -1, -1, -1, -1.0, 0, "", "")
 }

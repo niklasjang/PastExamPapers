@@ -23,6 +23,7 @@ import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_make_post.*
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.post_list_row.view.*
+import java.util.*
 
 class MakePostActivity : AppCompatActivity() {
 
@@ -117,9 +118,11 @@ class MakePostActivity : AppCompatActivity() {
             }
         }
         val uid = FirebaseAuth.getInstance().currentUser?.uid ?: ""
-        val ref = FirebaseDatabase.getInstance().getReference("/posts/")
+        val postname= UUID.randomUUID().toString()
+        val ref = FirebaseDatabase.getInstance().getReference("/posts/$postname")
         ref.setValue(
             Post(
+                postname,
                 lectureName,
                 professorName,
                 year!!,
