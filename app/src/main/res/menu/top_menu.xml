@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/menu_new_post"
           android:title="new post"
-          android:icon="@drawable/icon_timeline"
+          android:icon="@drawable/icon_timeline_plus"
           app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/menu_sign_out"
           android:title="sign out"
-          android:icon="@drawable/icon_q_resized"
+          android:icon="@drawable/icon_sign_out_resized"
           app:showAsAction="ifRoom"/>
 
 
