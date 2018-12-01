@@ -22,7 +22,7 @@ import com.xwray.groupie.ViewHolder
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_make_post.*
 import kotlinx.android.synthetic.main.activity_register.*
-import kotlinx.android.synthetic.main.post_list_row.view.*
+import kotlinx.android.synthetic.main.post_row.view.*
 import java.util.*
 
 class MakePostActivity : AppCompatActivity() {

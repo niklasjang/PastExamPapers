@@ -3,8 +3,8 @@
 
     <item
             android:id="@+id/navigation_news"
-            android:icon="@drawable/icon_main"
-            android:title="@string/news_fragment"/>
+            android:icon="@drawable/icon_home_resized"
+             android:title="@string/news_fragment"/>
 
     <item
             android:id="@+id/navigation_timeline"

@@ -10,4 +10,5 @@
     <color name="colorTimelineFragmentBackground">#6600FF00</color>
     <color name="colorMyAccountFragmentBackground">#66000000</color>
     <color name="colorSettingsFragmentBackground">#00000000</color>
+    <color name="white">#FFFFFF</color>
 </resources>

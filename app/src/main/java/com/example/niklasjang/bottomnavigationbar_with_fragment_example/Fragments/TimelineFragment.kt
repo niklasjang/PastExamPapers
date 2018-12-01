@@ -6,16 +6,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import android.support.v4.app.Fragment
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ListView
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.FilterActivity
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.PostLogActivity
-import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.User
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -25,9 +24,7 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.parcel.Parcelize
-import kotlinx.android.synthetic.main.fragment_timeline.*
-import kotlinx.android.synthetic.main.post_list_row.view.*
-import java.util.*
+import kotlinx.android.synthetic.main.post_row.view.*
 
 
 class TimelineFragment : Fragment() {
@@ -67,6 +64,8 @@ class TimelineFragment : Fragment() {
                 val adapter = GroupAdapter<ViewHolder>()
                 val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerview_timeline)
                 recyclerView?.adapter = adapter
+                //TODO UI : divider 추가
+                recyclerView?.addItemDecoration(DividerItemDecoration(view?.context, DividerItemDecoration.VERTICAL))
                 p0.children.forEach {
                     //print All data at /posts in firebase
                     Log.d("MakePost", "here!@#${it}")
@@ -100,12 +99,14 @@ class TimelineFragment : Fragment() {
 class UserItem(val post: Post) : Item<ViewHolder>() {
     //여기서 return한 layout 파일의 형식대로 recycler view에 추가됨.
     override fun getLayout(): Int {
-        return R.layout.post_list_row
+        return R.layout.post_row
     }
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         //viewHolder.itemView까지 하면 view를 얻는다고 보면 됨.
-        viewHolder.itemView.tvLectureName_post_list_row.text = post.lecturename
+        viewHolder.itemView.tvLectureName_post_row.text = "[${post.lecturename}]"
+        viewHolder.itemView.tvProfessorName_post_row.text = "[${post.professorName}]"
+
         //TODO 사진 업로드. 프로필 이미지 업로드 이렇게 하면 됨.
         //Picasso.get().load(user.profileImageUrl).into(viewHolder.itemView.ivPostImage)
     }
@@ -126,5 +127,6 @@ class Post(
     var uid: String,
     var contents: String
 ) : Parcelable {
-    constructor() : this("","", "", -1, -1, -1, -1.0, 0, "", "")
+    constructor() : this("postName","과목명",
+        "교수님", -1, -1, -1, -1.0, 0, "", "")
 }

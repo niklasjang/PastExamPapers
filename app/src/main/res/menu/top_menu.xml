@@ -3,10 +3,12 @@
 
     <item android:id="@+id/menu_new_post"
           android:title="new post"
+          android:icon="@drawable/icon_timeline"
           app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/menu_sign_out"
           android:title="sign out"
+          android:icon="@drawable/icon_q_resized"
           app:showAsAction="ifRoom"/>
 
 
