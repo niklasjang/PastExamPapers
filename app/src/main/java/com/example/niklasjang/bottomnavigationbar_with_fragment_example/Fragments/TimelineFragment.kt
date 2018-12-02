@@ -25,6 +25,11 @@ import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.post_row.view.*
+import android.view.animation.LinearInterpolator
+import android.view.animation.Animation
+import android.view.animation.RotateAnimation
+
+
 
 
 class TimelineFragment : Fragment() {
@@ -42,12 +47,16 @@ class TimelineFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        fetchPost()
         btnFilter = view.findViewById<Button>(R.id.btnFilter)
         btnFilter?.setOnClickListener {
             val intent = Intent(activity, FilterActivity::class.java)
             startActivityForResult(intent, 100)
         }
-        fetchPost()
+
+
+
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -57,15 +66,19 @@ class TimelineFragment : Fragment() {
         }
     }
 
-    private fun fetchPost() {
+    fun fetchPost() {
+
         val ref = FirebaseDatabase.getInstance().getReference("/posts/")
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 val adapter = GroupAdapter<ViewHolder>()
                 val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerview_timeline)
                 recyclerView?.adapter = adapter
-                //TODO UI : divider 추가
-                recyclerView?.addItemDecoration(DividerItemDecoration(view?.context, DividerItemDecoration.VERTICAL))
+
+                //UI : divider는 post_backgroudn에서 지정했음
+//                recyclerView?.invalidateItemDecorations()
+//                recyclerView?.addItemDecoration(DividerItemDecoration(view?.context, DividerItemDecoration.VERTICAL))
+
                 p0.children.forEach {
                     //print All data at /posts in firebase
                     Log.d("MakePost", "here!@#${it}")
@@ -74,9 +87,11 @@ class TimelineFragment : Fragment() {
                     val post = it.getValue(Post::class.java)
                     if (post != null) {
                         adapter.add(UserItem(post))
-                        
                     }
                 }
+//                adapter.notifyDataSetChanged()
+                Log.d("FetchPost","${adapter.itemCount}")
+
                 //각 post들을 클릭했을 때 나오는 화면
                 adapter.setOnItemClickListener { item, view ->
                     val userItem = item as UserItem

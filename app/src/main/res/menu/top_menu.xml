@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item android:id="@+id/menu_refresh"
+          android:title="refresh"
+          android:icon="@drawable/icon_refresh_resized"
+          app:showAsAction="ifRoom"/>
+
     <item android:id="@+id/menu_new_post"
           android:title="new post"
           android:icon="@drawable/icon_timeline_plus"
@@ -11,6 +16,7 @@
           android:title="sign out"
           android:icon="@drawable/icon_sign_out_resized"
           app:showAsAction="ifRoom"/>
+
 
 
 

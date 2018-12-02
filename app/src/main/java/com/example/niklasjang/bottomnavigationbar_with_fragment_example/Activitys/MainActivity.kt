@@ -5,8 +5,13 @@ import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.view.menu.ActionMenuItemView
 import android.view.Menu
 import android.view.MenuItem
+import android.view.animation.Animation
+import android.view.animation.LinearInterpolator
+import android.view.animation.RotateAnimation
+import android.widget.Button
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.MyAccuontFragment
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.NewsFragment
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.TimelineFragment
@@ -28,7 +33,7 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.navigation_timeline -> {
                 fragment = TimelineFragment()
-                loadFragment(fragment)
+                loadTimelineFragment(fragment)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_my_account -> {
@@ -44,8 +49,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         verifyUserIsLoggedIn() //로그인 했는지 확인
-        loadFragment(TimelineFragment()) //어플 실행하자마자 보이는 화면 설정
+        loadFragment(NewsFragment()) //어플 실행하자마자 보이는 화면 설정
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+
+
     }
 
     //로그인 했는지 확인
@@ -62,6 +69,15 @@ class MainActivity : AppCompatActivity() {
     private fun loadFragment(fragment: Fragment): Boolean {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
+//            .addToBackStack(null) //Remember past fragment when press back button
+            .commit()
+        return true
+    }
+    //Navigation bar 전환, TimelineFragment는 animatino을 구성하기위해 따로 뗌
+    private fun loadTimelineFragment(fragment: Fragment): Boolean {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment,"CurrentTimelineFragment")
+//            .addToBackStack(null) //Remember past fragment when press back button
             .commit()
         return true
     }
@@ -87,6 +103,23 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
+            }
+            R.id.menu_refresh ->{
+                val currentTimelineFragment  = supportFragmentManager.findFragmentByTag("CurrentTimelineFragment")
+                if(currentTimelineFragment ==null) return false
+                (currentTimelineFragment as TimelineFragment).fetchPost()
+
+//                val rotate = RotateAnimation(
+//                    0f, 360f,
+//                    Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f
+//                )
+//                rotate.duration = 1000
+//                rotate.repeatCount = Animation.INFINITE
+//                rotate.repeatMode = Animation.INFINITE
+//                rotate.interpolator = LinearInterpolator()
+//                val btnRefresh = findViewById<ActionMenuItemView>(R.id.menu_refresh)
+//                btnRefresh.startAnimation(rotate)
+//                btnRefresh.clearAnimation()
             }
         }
         return super.onOptionsItemSelected(item)

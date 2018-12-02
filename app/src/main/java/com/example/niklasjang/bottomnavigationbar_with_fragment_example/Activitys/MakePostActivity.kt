@@ -7,6 +7,7 @@ import android.os.Parcelable
 import android.util.Log
 import android.widget.*
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.Post
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.TimelineFragment
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.TimelineFragment.Companion.USER_KEY
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.User
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
@@ -66,6 +67,9 @@ class MakePostActivity : AppCompatActivity() {
     private fun savePostToFirebaseDatabase() {
         val lectureName = etLectureName_make_post.text.toString()
         val professorName = etProfessorName_make_post.text.toString()
+
+        if(lectureName.isEmpty() || professorName.isEmpty()) return
+
         val year: Int?
         when (rgYear_make_post.checkedRadioButtonId) {
             R.id.rbtn_1year -> {
