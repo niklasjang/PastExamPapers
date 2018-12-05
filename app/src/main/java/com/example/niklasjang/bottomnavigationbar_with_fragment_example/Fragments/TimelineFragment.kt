@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.support.design.widget.ShadowDrawableWrapper
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.RecyclerView
@@ -13,13 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.FilterActivity
-import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.PostLogActivity
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
@@ -28,8 +23,11 @@ import kotlinx.android.synthetic.main.post_row.view.*
 import android.view.animation.LinearInterpolator
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
-
-
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.*
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.Key
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.ShowInfor
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.ShowInfor2
+import com.google.firebase.database.*
 
 
 class TimelineFragment : Fragment() {
@@ -47,7 +45,10 @@ class TimelineFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        println("TEST 123 $Coin")
         fetchPost()
+        Process_Show()
+
         btnFilter = view.findViewById<Button>(R.id.btnFilter)
         btnFilter?.setOnClickListener {
             val intent = Intent(activity, FilterActivity::class.java)
@@ -55,30 +56,39 @@ class TimelineFragment : Fragment() {
         }
 
 
-
-
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 100 && resultCode == Activity.RESULT_OK && data != null) {
-            //TODO 필터 구현
+    /*
+        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+            super.onActivityResult(requestCode, resultCode, data)
+            if (requestCode == 100 && resultCode == Activity.RESULT_OK && data != null) {
+                //TODO 필터 구현
+            }
         }
-    }
-
+    */
     fun fetchPost() {
 
-        val ref = FirebaseDatabase.getInstance().getReference("/posts/")
+        val ref = FirebaseDatabase.getInstance().getReference("posts")
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 val adapter = GroupAdapter<ViewHolder>()
                 val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerview_timeline)
                 recyclerView?.adapter = adapter
+                List.clear()
+
+                for (h in p0.children) {
+                    val hero = h.getValue(Post::class.java)
+                    List.add(hero!!)
+                }
+                List.reverse()
+                for (h in List) {
+                    adapter.add(UserItem(h))
+                }
 
                 //UI : divider는 post_backgroudn에서 지정했음
 //                recyclerView?.invalidateItemDecorations()
 //                recyclerView?.addItemDecoration(DividerItemDecoration(view?.context, DividerItemDecoration.VERTICAL))
-
+                /*
                 p0.children.forEach {
                     //print All data at /posts in firebase
                     Log.d("MakePost", "here!@#${it}")
@@ -89,12 +99,30 @@ class TimelineFragment : Fragment() {
                         adapter.add(UserItem(post))
                     }
                 }
+                */
 //                adapter.notifyDataSetChanged()
-                Log.d("FetchPost","${adapter.itemCount}")
+                Log.d("FetchPost", "${adapter.itemCount}")
 
                 //각 post들을 클릭했을 때 나오는 화면
                 adapter.setOnItemClickListener { item, view ->
                     val userItem = item as UserItem
+                    val pass = 0
+
+                    if (pass == 0) {
+
+                    } else if (Coin >= 10) {
+                        Third_Check = 1
+                        Coin -= 5
+                        val Hash = Show_ref.push().key
+                        val Info = ShowInfor(id = Id.toString(), check = 0, hashID = Hash!!)
+                        Show_ref.child(Hash!!).setValue(Info)
+
+                        Show_User_ref.child("${userItem.post.postname}")
+                            .child("Show_User_id")
+                            .child("${Show_User_ref.push().key}")
+                            .setValue("$Id")
+
+                    }
                     val intent = Intent(view.context, PostLogActivity::class.java)
                     intent.putExtra(POST_KEY, userItem.post)
                     startActivity(intent)
@@ -108,6 +136,63 @@ class TimelineFragment : Fragment() {
         })
     }
 
+}
+
+private fun Process_Show() { //개발자에게 만 주어지는 소스, 즉시 처리(게시물 볼 때)
+    Show_ref.addValueEventListener(object : ValueEventListener {
+        override fun onCancelled(p0: DatabaseError) {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
+        override fun onDataChange(p0: DataSnapshot) {
+            for (h in p0.children) {
+                val hero = h.getValue(ShowInfor::class.java)
+                Sub_List.clear()
+                if (hero!!.check == 0) {
+
+                    Sub_List.add(hero!!)
+                }
+
+            }
+            Key_Save_ref.addValueEventListener(object : ValueEventListener {
+
+                override fun onCancelled(p0: DatabaseError) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    println("TEST 2 $Third_Check")
+
+
+                    Key_List.clear()
+                    for (h in p0.children) {
+                        val hero = h.getValue(Key::class.java)
+                        Key_List.add(hero!!)
+
+                    }
+                }
+            })
+
+            for (h in Sub_List) {
+                for (h2 in Key_List) {
+                    if (h.id == h2.id) {
+
+                        if (Third_Check == 0) {
+                            return
+                        }
+
+                        val hero1 = Key(id = h2.id, uid = h2.uid, coin = h2.coin - 5, hashID = h2.hashID)
+                        Key_List.set(h2.id.toInt() - 1, hero1)
+                        Key_Save_ref.child(h2.hashID).setValue(hero1)
+                        val hero2 = ShowInfor(h.id, 1, h.hashID)
+                        Show_ref.child(h.hashID).setValue(hero2)
+
+                    }
+                }
+            }
+            Third_Check = 0
+        }
+    })
 }
 
 //Item은  com.xwray.groupie에 정의된 타입으로  그냥 받아들이면 됨
@@ -142,6 +227,8 @@ class Post(
     var uid: String,
     var contents: String
 ) : Parcelable {
-    constructor() : this("postName","과목명",
-        "교수님", -1, -1, -1, -1.0, 0, "", "")
+    constructor() : this(
+        "postName", "과목명",
+        "교수님", -1, -1, -1, -1.0, 0, "", ""
+    )
 }

@@ -122,9 +122,10 @@ class MakePostActivity : AppCompatActivity() {
             }
         }
         val uid = FirebaseAuth.getInstance().currentUser?.uid ?: ""
-        val postname= UUID.randomUUID().toString()
-        val ref = FirebaseDatabase.getInstance().getReference("/posts/$postname")
-        ref.setValue(
+
+        val ref = FirebaseDatabase.getInstance().getReference("posts")
+        val postname=ref.push().key
+        ref.child(postname!!).setValue(
             Post(
                 postname,
                 lectureName,
