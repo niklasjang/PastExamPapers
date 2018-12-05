@@ -6,6 +6,7 @@ import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.view.menu.ActionMenuItemView
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.animation.Animation
@@ -105,10 +106,11 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             R.id.menu_refresh ->{
-                val currentTimelineFragment  = supportFragmentManager.findFragmentByTag("CurrentTimelineFragment")
-                if(currentTimelineFragment ==null) return false
-                (currentTimelineFragment as TimelineFragment).fetchPost()
-
+                //TODO 버튼 누르면 다시 업로드? 그냥 이 버튼을 지울까
+                Log.d("MainActivity", "menu_refresh clicked")
+//                val currentTimelineFragment  = supportFragmentManager.findFragmentByTag("CurrentTimelineFragment")
+//                if(currentTimelineFragment ==null) return false
+//                (currentTimelineFragment as TimelineFragment).asdasd
 //                val rotate = RotateAnimation(
 //                    0f, 360f,
 //                    Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f

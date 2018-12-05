@@ -25,7 +25,8 @@ import kotlinx.android.synthetic.main.activity_make_post.*
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.post_row.view.*
 import java.util.*
-
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 class MakePostActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +38,7 @@ class MakePostActivity : AppCompatActivity() {
 
     }
 
-    private fun inflateAccordingToService(){
+    private fun inflateAccordingToService() {
         val rgService = findViewById<RadioGroup>(R.id.rgService)
         val framelayout = findViewById<FrameLayout>(R.id.frameLayout_make_post)
         rgService.setOnCheckedChangeListener { group, checkedId -> }
@@ -64,11 +65,12 @@ class MakePostActivity : AppCompatActivity() {
             savePostToFirebaseDatabase()
         }
     }
+
     private fun savePostToFirebaseDatabase() {
         val lectureName = etLectureName_make_post.text.toString()
         val professorName = etProfessorName_make_post.text.toString()
-
-        if(lectureName.isEmpty() || professorName.isEmpty()) return
+        val title : String = ""
+        if (lectureName.isEmpty() || professorName.isEmpty()) return
 
         val year: Int?
         when (rgYear_make_post.checkedRadioButtonId) {
@@ -107,7 +109,7 @@ class MakePostActivity : AppCompatActivity() {
             }
         }
         val service: Int?
-        var contents :String=""
+        var contents: String = ""
         when (rgService.checkedRadioButtonId) {
             R.id.rbtn_QnA -> {
                 service = 1
@@ -122,31 +124,38 @@ class MakePostActivity : AppCompatActivity() {
             }
         }
         val uid = FirebaseAuth.getInstance().currentUser?.uid ?: ""
-        val postname= UUID.randomUUID().toString()
+        val author = FirebaseDatabase.getInstance().getReference("/users/$uid").child("username").key ?: ""
+        val postname = FirebaseDatabase.getInstance().reference.push().key ?: ""
         val ref = FirebaseDatabase.getInstance().getReference("/posts/$postname")
+        Log.d("MakePost Activity", "author is $author")
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
+        val time = current.format(formatter)
         ref.setValue(
             Post(
                 postname,
                 lectureName,
                 professorName,
+                title,
                 year!!,
                 test!!,
                 service!!,
                 0.0,
                 0,
-                uid,
-                contents
-                )
+                author,
+                contents,
+                time
+            )
         )
             .addOnSuccessListener {
                 Log.d("Register Activity", "Finally we saved the User to Firebase Database ")
-                Toast.makeText(this,"Post upload success",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Post upload success", Toast.LENGTH_SHORT).show()
                 finish()
             }
             .addOnFailureListener {
                 Log.d("Register Activity", "Badly we can't saved the User to Firebase Database : $it ")
-                Toast.makeText(this,"Post upload Fail",Toast.LENGTH_SHORT).show()
-                Toast.makeText(this,"$it",Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Post upload Fail", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "$it", Toast.LENGTH_LONG).show()
             }
     }
 
