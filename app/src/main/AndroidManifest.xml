@@ -41,12 +41,10 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".Activitys.MainActivity"/>
         </activity>
-
         <activity android:name=".Activitys.PreferenceActivity">
-
-
         </activity>
-
+        <activity android:name=".Activitys.MakeCommentActivity">
+        </activity>
     </application>
 
 </manifest>

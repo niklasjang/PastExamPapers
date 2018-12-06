@@ -94,7 +94,7 @@ class TimelineFragment : Fragment() {
                     startActivity(intent)
                 }
             }
-
+            //TODO post 클릭했을 때 post 의 view += 1
             override fun onChildChanged(p0: DataSnapshot, p1: String?) {
             }
 
@@ -122,7 +122,7 @@ class UserItem(val post: Post) : Item<ViewHolder>() {
 
         //TODO 사진 업로드. 프로필 이미지 업로드 이렇게 하면 됨.
         //Picasso.get().load(user.profileImageUrl).into(viewHolder.itemView.ivPostImage)
-    }
+}
 
 }
 
@@ -139,11 +139,12 @@ class Post(
     var reward: Double,
     var vote: Int,
     var author: String,
+    val uid: String,
     var contents: String,
-    var data : String
+    val views : Int
 ) : Parcelable {
     constructor() : this(
-        "postName", "과목명", "교수명",
-        "title", -1, -1, -1, -1.0, 0, "", "contents",""
+        "postName", "과목명", "Title",
+        "교수님", -1, -1, -1, -1.0, 0, "123", "", "",0
     )
 }

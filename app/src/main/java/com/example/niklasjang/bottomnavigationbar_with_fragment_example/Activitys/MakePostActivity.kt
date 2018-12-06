@@ -4,6 +4,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcelable
+import android.support.v4.app.FragmentActivity
 import android.util.Log
 import android.widget.*
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.Post
@@ -13,10 +14,7 @@ import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.U
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R.id.*
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
@@ -27,6 +25,8 @@ import kotlinx.android.synthetic.main.post_row.view.*
 import java.util.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import com.google.firebase.database.DataSnapshot
+
 class MakePostActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,11 +62,23 @@ class MakePostActivity : AppCompatActivity() {
         //TODO btnDone 버튼 통합?
         val btnDone = findViewById<Button>(R.id.btnDone_make_post)
         btnDone.setOnClickListener {
-            savePostToFirebaseDatabase()
+            val uid = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+            val usersRef = FirebaseDatabase.getInstance().getReference("/users/$uid/username")
+            usersRef.addValueEventListener(object: ValueEventListener{
+                override fun onDataChange(p0: DataSnapshot) {
+                    Log.d("onDataChanged2", "${p0.value}")
+                    val author =p0.value.toString()
+                    savePostToFirebaseDatabase(uid, author)
+                }
+
+                override fun onCancelled(p0: DatabaseError) {
+
+                }
+            })
         }
     }
 
-    private fun savePostToFirebaseDatabase() {
+    private fun savePostToFirebaseDatabase(_uid :String, _author : String) {
         val lectureName = etLectureName_make_post.text.toString()
         val professorName = etProfessorName_make_post.text.toString()
         val title : String = ""
@@ -123,14 +135,14 @@ class MakePostActivity : AppCompatActivity() {
                 service = null
             }
         }
-        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: ""
-        val author = FirebaseDatabase.getInstance().getReference("/users/$uid").child("username").key ?: ""
+        val author : String =""
+        val userUID = _uid
         val postname = FirebaseDatabase.getInstance().reference.push().key ?: ""
         val ref = FirebaseDatabase.getInstance().getReference("/posts/$postname")
-        Log.d("MakePost Activity", "author is $author")
-        val current = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
-        val time = current.format(formatter)
+        Log.d("onDataChanged3", "author is $author")
+//        val current = LocalDateTime.now()
+//        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
+//        val time = current.format(formatter)
         ref.setValue(
             Post(
                 postname,
@@ -143,8 +155,9 @@ class MakePostActivity : AppCompatActivity() {
                 0.0,
                 0,
                 author,
+                userUID,
                 contents,
-                time
+                0
             )
         )
             .addOnSuccessListener {

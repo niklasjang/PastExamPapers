@@ -5,14 +5,9 @@ import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.view.menu.ActionMenuItemView
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.animation.Animation
-import android.view.animation.LinearInterpolator
-import android.view.animation.RotateAnimation
-import android.widget.Button
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.MyAccuontFragment
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.NewsFragment
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.TimelineFragment
@@ -86,7 +81,7 @@ class MainActivity : AppCompatActivity() {
 
     //상단 menu bar 생성하기
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.top_menu, menu)
+        menuInflater.inflate(R.menu.main_top_menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
