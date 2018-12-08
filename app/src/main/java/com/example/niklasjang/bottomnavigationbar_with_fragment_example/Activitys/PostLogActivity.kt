@@ -5,10 +5,13 @@ import android.graphics.PostProcessor
 import android.opengl.GLES20
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
+import android.support.constraint.solver.widgets.ConstraintTableLayout
 import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.Post
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.TimelineFragment
@@ -24,9 +27,10 @@ import com.google.firebase.database.ValueEventListener
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
-import kotlinx.android.synthetic.main.post_entry.*
-import kotlinx.android.synthetic.main.post_entry.view.*
+import kotlinx.android.synthetic.main.activity_post_log.view.*
+
 import okhttp3.internal.http2.Http2
+import java.lang.invoke.ConstantCallSite
 
 class PostLogActivity : AppCompatActivity() {
 
@@ -40,19 +44,23 @@ class PostLogActivity : AppCompatActivity() {
 
         val adapter = GroupAdapter<ViewHolder>()
         val recyclerView : RecyclerView? = findViewById(R.id.recyclerview_post_log)
+
         recyclerView?.adapter = adapter
-        adapter.add(0,PostEntryItem(post))
+
+       // adapter.add(0,PostEntryItem(post))
         adapter.notifyDataSetChanged()
 
-        val postEntry = recyclerView?.layoutManager?.findViewByPosition(0)
-        val btnVote = postEntry?.findViewById<Button>(R.id.tvVote_post_entry)
-        btnVote?.isEnabled = true
+
+        val btnVote = findViewById<Button>(R.id.tvVote_post_entry)
+
+
 
         val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Vote_User_id")
         ref.addValueEventListener(object :ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {
             }
             override fun onDataChange(p0: DataSnapshot) {
+
                 if(p0.exists()){
                     for(h in p0.children){
                         val value = h.value.toString()
@@ -226,33 +234,33 @@ private  fun Voteting(post :Post){ //vote 할 때 트랜젝션을 만들어 서�
 
 
 //Item은  com.xwray.groupie에 정의된 타입으로  그냥 받아들이면 됨
-class PostEntryItem(val post: Post) : Item<ViewHolder>() {
-    //여기서 return한 layout 파일의 형식대로 recycler view에 추가됨.
-    override fun getLayout(): Int {
-        return R.layout.post_entry
-    }
-
-    override fun bind(viewHolder: ViewHolder, position: Int) {
-        //viewHolder.itemView까지 하면 view를 얻는다고 보면 됨.
-        viewHolder.itemView.tvLecturename_post_entry.text = "[${post.lecturename}]"
-        viewHolder.itemView.tvProfessorname_post_entry.text = "${post.professorName}교수님"
-        viewHolder.itemView.tvService_post_entry.text = "${post.service}"
-        viewHolder.itemView.tvYear_post_entry.text = "${post.year}학년"
-        viewHolder.itemView.tvTest_post_entry.text = "[${post.test}시험"
-        viewHolder.itemView.tvTitle_post_entry.text = "[${post.title}]"
-        viewHolder.itemView.tvComment_post_entry.text = "[${post.contents}]"
-        viewHolder.itemView.tvUsername_post_entry.text = "[${post.author}]"
-        viewHolder.itemView.tvReward_post_entry.text = "[${post.reward}]"
-        viewHolder.itemView.tvVote_post_entry.text = "[${post.vote}]"
-//        viewHolder.itemView.tvDate_post_entry.text = "[${post.data}]"
-        //get CommentItemCount
-//        viewHolder.itemView.tvComment_post_entry.text = "[${post.c}]"
-
-
-        //TODO 사진 업로드. 프로필 이미지 업로드 이렇게 하면 됨.
-
-//        post.uid
-        //Picasso.get().load(user.profileImageUrl).into(viewHolder.itemView.ivPostImage)
-    }
-
-}
+//class PostEntryItem(val post: Post) : Item<ViewHolder>() {
+//    //여기서 return한 layout 파일의 형식대로 recycler view에 추가됨.
+//    override fun getLayout(): Int {
+//        return R.layout.post_entry
+//    }
+//
+//    override fun bind(viewHolder: ViewHolder, position: Int) {
+//        //viewHolder.itemView까지 하면 view를 얻는다고 보면 됨.
+//        viewHolder.itemView.tvLecturename_post_entry.text = "[${post.lecturename}]"
+//        viewHolder.itemView.tvProfessorname_post_entry.text = "${post.professorName}교수님"
+//        viewHolder.itemView.tvService_post_entry.text = "${post.service}"
+//        viewHolder.itemView.tvYear_post_entry.text = "${post.year}학년"
+//        viewHolder.itemView.tvTest_post_entry.text = "[${post.test}시험"
+//        viewHolder.itemView.tvTitle_post_entry.text = "[${post.title}]"
+//        viewHolder.itemView.tvComment_post_entry.text = "[${post.contents}]"
+//        viewHolder.itemView.tvUsername_post_entry.text = "[${post.author}]"
+//        viewHolder.itemView.tvReward_post_entry.text = "[${post.reward}]"
+//        viewHolder.itemView.tvVote_post_entry.text = "[${post.vote}]"
+////        viewHolder.itemView.tvDate_post_entry.text = "[${post.data}]"
+//        //get CommentItemCount
+////        viewHolder.itemView.tvComment_post_entry.text = "[${post.c}]"
+//
+//
+//        //TODO 사진 업로드. 프로필 이미지 업로드 이렇게 하면 됨.
+//
+////        post.uid
+//        //Picasso.get().load(user.profileImageUrl).into(viewHolder.itemView.ivPostImage)
+//    }
+//
+//}

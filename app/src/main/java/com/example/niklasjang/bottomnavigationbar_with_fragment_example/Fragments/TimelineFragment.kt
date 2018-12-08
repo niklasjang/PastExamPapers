@@ -85,6 +85,72 @@ class TimelineFragment : Fragment() {
                     intent.putExtra(POST_KEY, userItem.post)
                     startActivity(intent)
                 }
+
+                ref.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError) {
+                        //Toast.make ~~
+                    }
+
+                    override fun onDataChange(p0: DataSnapshot) {
+                        val adapter = GroupAdapter<ViewHolder>()
+                        recyclerView?.adapter = adapter
+                        List.clear()
+
+                        for (h in p0.children) {
+                            val hero = h.getValue(Post::class.java)
+                            List.add(hero!!)
+                        }
+                        List.reverse()
+                        for (h in List) {
+                            adapter.add(UserItem(h))
+                        }
+                        Log.d("FetchPost", "${adapter.itemCount}")
+                        //각 post들을 클릭했을 때 나오는 화면
+                        adapter.setOnItemClickListener { item, view ->
+                            val userItem = item as UserItem
+                            var pass = 1
+                            val List: MutableList<Post>
+                            List = mutableListOf()
+                            val ref = FirebaseDatabase.getInstance().getReference("posts/${item.post.postname}/Show_User_id")
+                            ref.addValueEventListener(object : ValueEventListener {
+                                override fun onDataChange(p0: DataSnapshot) {
+                                    List.clear()
+                                    for (h in p0.children) {
+                                        val value = h.value.toString()
+                                        println("TEST POST $value $Id")
+                                        if (value.equals(Id.toString())) {
+                                            pass = 0
+                                        }
+                                    }
+                                    if (pass == 0) {
+                                        val intent = Intent(view.context, PostLogActivity::class.java)
+                                        intent.putExtra(POST_KEY, userItem.post)
+                                        startActivity(intent)
+                                    } else if (Coin >= 10) {
+                                        Third_Check = 1
+                                        Coin -= 5
+                                        val Hash = Show_ref.push().key
+                                        val Info = ShowInfor(id = Id.toString(), check = 0, hashID = Hash!!)
+                                        Show_ref.child(Hash!!).setValue(Info)
+
+                                        Show_User_ref.child("${userItem.post.postname}")
+                                            .child("Show_User_id")
+                                            .child("${UserId}")
+                                            .setValue("$Id")
+
+                                        val intent = Intent(view.context, PostLogActivity::class.java)
+                                        intent.putExtra(POST_KEY, userItem.post)
+                                        startActivity(intent)
+                                    }
+                                }
+
+                                override fun onCancelled(p0: DatabaseError) {
+                                }
+                            })
+                        }
+                    }
+
+                })
             }
 
             override fun onChildChanged(p0: DataSnapshot, p1: String?) {
@@ -96,71 +162,7 @@ class TimelineFragment : Fragment() {
             override fun onChildRemoved(p0: DataSnapshot) {
             }
         })
-        ref.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-                //Toast.make ~~
-            }
 
-            override fun onDataChange(p0: DataSnapshot) {
-                val adapter = GroupAdapter<ViewHolder>()
-                recyclerView?.adapter = adapter
-                List.clear()
-
-                for (h in p0.children) {
-                    val hero = h.getValue(Post::class.java)
-                    List.add(hero!!)
-                }
-                List.reverse()
-                for (h in List) {
-                    adapter.add(UserItem(h))
-                }
-                Log.d("FetchPost", "${adapter.itemCount}")
-                //각 post들을 클릭했을 때 나오는 화면
-                adapter.setOnItemClickListener { item, view ->
-                    val userItem = item as UserItem
-                    var pass = 1
-                    val List: MutableList<Post>
-                    List = mutableListOf()
-                    val ref = FirebaseDatabase.getInstance().getReference("posts/${item.post.postname}/Show_User_id")
-                    ref.addValueEventListener(object : ValueEventListener {
-                        override fun onDataChange(p0: DataSnapshot) {
-                            List.clear()
-                            for (h in p0.children) {
-                                val value = h.value.toString()
-                                println("TEST POST $value $Id")
-                                if (value.equals(Id.toString())) {
-                                    pass = 0
-                                }
-                            }
-                            if (pass == 0) {
-                                val intent = Intent(view.context, PostLogActivity::class.java)
-                                intent.putExtra(POST_KEY, userItem.post)
-                                startActivity(intent)
-                            } else if (Coin >= 10) {
-                                Third_Check = 1
-                                Coin -= 5
-                                val Hash = Show_ref.push().key
-                                val Info = ShowInfor(id = Id.toString(), check = 0, hashID = Hash!!)
-                                Show_ref.child(Hash!!).setValue(Info)
-
-                                Show_User_ref.child("${userItem.post.postname}")
-                                    .child("Show_User_id")
-                                    .child("${UserId}")
-                                    .setValue("$Id")
-
-                                val intent = Intent(view.context, PostLogActivity::class.java)
-                                intent.putExtra(POST_KEY, userItem.post)
-                                startActivity(intent)
-                            }
-                        }
-
-                        override fun onCancelled(p0: DatabaseError) {
-                        }
-                    })
-                }
-            }
-
-        })
     }
 }
 

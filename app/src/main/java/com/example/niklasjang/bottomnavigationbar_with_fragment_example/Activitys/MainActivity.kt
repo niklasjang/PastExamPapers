@@ -50,6 +50,7 @@ var Second_Check : Int=0
 var Third_Check : Int=0
 var Fore_Check: Int=0
 var Five_Check: Int=0
+var Six_Check : Int=0
 
 
 class MainActivity : AppCompatActivity() {
@@ -57,7 +58,8 @@ class MainActivity : AppCompatActivity() {
     //Navigation bar 이동 listener
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         val fragment: Fragment?
-        println("TEST 1234 $Coin")
+
+        println("TEST 444")
         when (item.itemId) {
             R.id.navigation_news -> {
 
@@ -66,6 +68,9 @@ class MainActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_timeline -> {
+
+
+                println("TEST 1234 $Coin")
                 fragment = TimelineFragment()
                 loadTimelineFragment(fragment)
                 return@OnNavigationItemSelectedListener true
@@ -106,7 +111,7 @@ class MainActivity : AppCompatActivity() {
         Fore_Check=0
         Five_Check=0
 
-        getKey()
+
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
@@ -115,8 +120,7 @@ class MainActivity : AppCompatActivity() {
     //로그인 했는지 확인
     private fun verifyUserIsLoggedIn() {
         val uid = FirebaseAuth.getInstance().uid
-        UserId = FirebaseAuth.getInstance().uid!!
-        plainID = UserId.substring(0, 16)         //private_key는 16의 크기로 제한되어 있다 , 암호화 할때 private_key로 쓰임
+
         if (uid == null) {
             val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -144,60 +148,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun getKey() { //key 생성, 처음 login 했을 때
-        var name: String
 
-
-        Key_Save_ref.addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-
-            }
-            override fun onDataChange(p0: DataSnapshot) {
-
-                if (p0.exists()) {
-                    if(First_Login==1){
-                        return
-                    }
-
-                    Key_List.clear()
-
-                    for (h in p0.children) {
-                        val hero = h.getValue(Key::class.java)
-                        Key_List.add(hero!!)
-                    }
-
-                    for (h in Key_List) {
-                        if (h.uid.equals(UserId)) {
-
-                            Id = h.id.toInt()
-                            Coin=h.coin
-                            HashID=h.hashID
-                            First_Login = 1
-
-                        }
-                    }
-
-                    if (First_Login != 1) {
-
-                        val heroId = Key_Save_ref.push().key
-                        val num = Key_List[Key_List.lastIndex].id.toInt()
-                        val hero = Key((num + 1).toString(), UserId, 30,heroId!!)
-
-                        Key_Save_ref.child(heroId!!).setValue(hero).addOnCompleteListener() {
-                            Toast.makeText(applicationContext, "Hero saved sucessfully", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                } else {
-                    val heroId = Key_Save_ref.push().key
-                    val hero = Key("1", UserId, 30,heroId!!)
-                    Key_Save_ref.child(heroId!!).setValue(hero).addOnCompleteListener() {
-                        Toast.makeText(applicationContext, "Hero saved sucessfully", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        })
-
-    }
 
 
     //상단 menu bar 생성하기
@@ -241,4 +192,5 @@ class MainActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
 }
