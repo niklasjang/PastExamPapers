@@ -56,10 +56,14 @@ class PostLogActivity : AppCompatActivity() {
 //        val urlRef = FirebaseDatabase.getInstance().getReference("users")
 
 
-        val uid = FirebaseAuth.getInstance().currentUser?.uid
+        val uid = post.uid
         val urlRef = FirebaseDatabase.getInstance().getReference("users")
         val List : MutableList<User>
         List= mutableListOf()
+
+
+
+
 
         urlRef.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
@@ -73,14 +77,14 @@ class PostLogActivity : AppCompatActivity() {
                         tvuri.text = post.pdfFileUrl
                         Picasso.get().load(a).into(userProfileImage)
                         tvUsername_post_entry.text = h.username
-                        Thread.sleep((3*1000).toLong()) // 이거 오류고치자
+//                        Thread.sleep((3*1000).toLong()) // 이거 오류고치자
 
 
                     }
 
-                    plog_progress.visibility = View.INVISIBLE // 이거 오류고치자
 
                 }
+
 
             }
 
@@ -175,7 +179,19 @@ class PostLogActivity : AppCompatActivity() {
             Five_Check=1
             Post_Vote(post)
         }
+        Thread.sleep((3*1000).toLong()) // 이거 오류고치자
+        plog_progress.visibility = View.INVISIBLE // 이거 오류고치자
+
     }
+
+
+
+//    override fun onPause() {
+////        plog_progress.visibility = View.INVISIBLE // 이거 오류고치자
+////        Thread.sleep((3*1000).toLong()) // 이거 오류고치자
+//
+//        super.onPause()
+//    }
 
     //상단 menu bar 생성하기
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

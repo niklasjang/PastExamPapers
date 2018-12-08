@@ -25,6 +25,8 @@ import android.util.Log
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.*
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R.id.tvMyPost
+
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.xwray.groupie.GroupAdapter
@@ -51,12 +53,6 @@ class MyAccuontFragment : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-
-
-
-
-        Log.d("profileImageUrl", " SSl BBAl  : ${RegisterActivity().profileImage_uri}")
-
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_my_accuont, container, false)
         val btnSettings = view.findViewById<Button>(R.id.btnSettings_my_account)
@@ -133,6 +129,7 @@ class MyAccuontFragment : Fragment() {
 //        myacc_progress.visibility = View.INVISIBLE
 
 
+//        Picasso.get().load(url).into(profileImage)
 
 
 
@@ -142,14 +139,12 @@ class MyAccuontFragment : Fragment() {
         }
         return view
     }
-
     //프레그먼트는 여기서 받아온다. 여기 아래까지는 추가한 것이다.
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.rv_myAccount)
         recyclerView?.adapter = adapter
         fetchPost()
-
     }
 
     fun adapterNotifyDataSetChanged(){
@@ -193,6 +188,7 @@ class MyAccuontFragment : Fragment() {
             }
         })
     }
+
 
 
 

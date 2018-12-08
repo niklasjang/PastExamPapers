@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import kotlinx.android.synthetic.main.fragment_news.*
 
 // 참고문서
 // 1. https://stackoverflow.com/questions/13379194/how-to-add-a-fragment-inside-a-viewpager-using-nested-fragment-android-4-2
@@ -24,7 +25,7 @@ import com.google.firebase.database.ValueEventListener
 class NewsFragment : Fragment() {
 
     private var imageFragment: ImageFragment? = null
-    private var NUM_PAGE = 5 //프로젝트에 추가한 사진의 갯수만큼만
+    private var NUM_PAGE = 3 //프로젝트에 추가한 사진의 갯수만큼만
 
     //뷰를 만들어서 return하고
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -43,7 +44,41 @@ class NewsFragment : Fragment() {
                 NUM_PAGE
             )
         viewPager.adapter = vpAdapter
+        iv_newsFragmentSoft.setOnClickListener {
+            var intent = Intent(activity,MajorTimeLineActivity::class.java)
+            intent.putExtra("major","소프트")
+            startActivity(intent)
+        }
+        iv_newsFragmentAero.setOnClickListener {
+            var intent = Intent(activity,MajorTimeLineActivity::class.java)
+            intent.putExtra("major","운항")
+            startActivity(intent)
 
+        }
+        iv_newsFragmentManage.setOnClickListener {
+            var intent = Intent(activity,MajorTimeLineActivity::class.java)
+            intent.putExtra("major","경영")
+            startActivity(intent)
+
+        }
+        iv_newsFragmentElec.setOnClickListener {
+            var intent = Intent(activity,MajorTimeLineActivity::class.java)
+            intent.putExtra("major","항전정")
+            startActivity(intent)
+
+        }
+        iv_newsFragmentMaterial.setOnClickListener {
+            var intent = Intent(activity,MajorTimeLineActivity::class.java)
+            intent.putExtra("major","재료")
+            startActivity(intent)
+
+        }
+        iv_newsFragmentMechanic.setOnClickListener {
+            var intent = Intent(activity,MajorTimeLineActivity::class.java)
+            intent.putExtra("major","항우기")
+            startActivity(intent)
+
+        }
 
     }
 

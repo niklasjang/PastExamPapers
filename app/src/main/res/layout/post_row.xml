@@ -78,15 +78,6 @@ android:background="@drawable/post_background">
             android:drawableLeft="@drawable/icon_comment_resized" android:drawablePadding="5dp"
             app:layout_constraintBottom_toBottomOf="@+id/tvVote_post_row"/>
     <!--android:drawableLeft="@drawable/icon_comment_resized" android:drawablePadding="5dp"/>-->
-    <TextView
-            android:text="uploadedFiles"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tvUploadedFiles_post_row" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/tvVote_post_row"
-            android:drawableLeft="@drawable/icon_files_resized" android:drawablePadding="5dp"
-
-            app:layout_constraintStart_toStartOf="@+id/tvTitle_post_row"/>
     <!--android:drawableLeft="@drawable/icon_files_resized" android:layout_marginStart="8dp"-->
     android:layout_marginLeft="8dp"/>
 
