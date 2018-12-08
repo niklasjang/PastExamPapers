@@ -43,34 +43,54 @@ import com.google.firebase.database.DataSnapshot
 
 class MakePostActivity : AppCompatActivity() {
 
-    var Uri_file : String = ""
-    val PDF :Int = 0
-    lateinit var uri : Uri
-    lateinit var mStorage : StorageReference
+    var Uri_file: String = ""
+    val PDF: Int = 0
+    lateinit var uri: Uri
+    lateinit var mStorage: StorageReference
 
+    //학과 spinner변수
+    var major: String = ""
+    var grade: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //Make Post Activity에 reycler view 연습코드 적어둠.
         setContentView(R.layout.activity_make_post)
         supportActionBar?.title = "Make Post"
-        var pdfBtn = findViewById<View>(R.id.pdfBtn) as Button
+        var pdfBtn = findViewById<View>(R.id.btnPDF_make_post) as Button
         mStorage = FirebaseStorage.getInstance().getReference("Uploads")
         inflateAccordingToService()
 
         pdfBtn.setOnClickListener(View.OnClickListener {
-            view: View? -> val intent = Intent()
+                view: View? -> val intent = Intent()
             intent.setType("*/*")
             intent.setAction(Intent.ACTION_GET_CONTENT)
             startActivityForResult(intent, PDF)
         })
+        spinner_grade.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
 
+            //데이터가 변화하면 여기에 저장
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                grade = p0!!.getItemAtPosition(p2) as String
+            }
+        }
+        spinner_major.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+
+            //데이터가 변화하면 여기에 저장
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                major = p0!!.getItemAtPosition(p2) as String
+            }
+        }
 
 
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(resultCode == Activity.RESULT_OK){
-            if(requestCode == PDF){
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == PDF) {
                 uri = data!!.data
                 Log.d("small uri_file", "Finally we saved the fileUri to Firebase Database : $uri ")
 
@@ -82,9 +102,9 @@ class MakePostActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    private fun upload(){
+    private fun upload() {
         val mReference = mStorage.child(uri.lastPathSegment)
-        try{
+        try {
 
             val filename = UUID.randomUUID().toString() //랜덤값 정의하기
             //"/images/ specify where image will be stored
@@ -94,7 +114,8 @@ class MakePostActivity : AppCompatActivity() {
 
             mReference.putFile(uri).addOnSuccessListener {
                 //여기  taskSnapshot!!. function --> 고쳐야 제대로된 다운로드 URL이 저장이 됨.
-                taskSnapshot: UploadTask.TaskSnapshot -> var url = taskSnapshot!!.uploadSessionUri
+                    taskSnapshot: UploadTask.TaskSnapshot ->
+                var url = taskSnapshot!!.uploadSessionUri
 //                val dwnTxt = findViewById<View>(R.id.dwnTxt) as TextView
 //                dwnTxt.text = url.toString()
                 mReference.downloadUrl.addOnSuccessListener {
@@ -105,11 +126,10 @@ class MakePostActivity : AppCompatActivity() {
 
                 Toast.makeText(this, "업로드가 완료 되었습니다.", Toast.LENGTH_LONG).show()
             }
-        }catch (e :Exception) {
+        } catch (e: Exception) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
         }
     }
-
 
 
     private fun inflateAccordingToService() {
@@ -138,10 +158,10 @@ class MakePostActivity : AppCompatActivity() {
         btnDone.setOnClickListener {
             val uid = FirebaseAuth.getInstance().currentUser?.uid ?: ""
             val usersRef = FirebaseDatabase.getInstance().getReference("/users/$uid/username")
-            usersRef.addValueEventListener(object: ValueEventListener{
+            usersRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(p0: DataSnapshot) {
                     Log.d("onDataChanged2", "${p0.value}")
-                    val author =p0.value.toString()
+                    val author = p0.value.toString()
                     savePostToFirebaseDatabase(uid, author)
                 }
 
@@ -153,33 +173,14 @@ class MakePostActivity : AppCompatActivity() {
         }
     }
 
-    private fun savePostToFirebaseDatabase(_uid :String, _author : String) {
+    private fun savePostToFirebaseDatabase(_uid: String, _author: String) {
         val lectureName = etLectureName_make_post.text.toString()
         val professorName = etProfessorName_make_post.text.toString()
-        val title : String = ""
+        val title: String = ""
         if (lectureName.isEmpty() || professorName.isEmpty()) return
 
         val year: Int?
-        when (rgYear_make_post.checkedRadioButtonId) {
-            R.id.rbtn_1year -> {
-                year = 1
-            }
-            R.id.rbtn_2year -> {
-                year = 2
-            }
-            R.id.rbtn_3year -> {
-                year = 3
-            }
-            R.id.rbtn_4year -> {
-                year = 4
-            }
-            R.id.rbtn_year_all -> {
-                year = 0
-            }
-            else -> {
-                year = null
-            }
-        }
+
         val test: Int?
         when (rgTest.checkedRadioButtonId) {
             R.id.rbtn_midterm -> {
@@ -200,30 +201,30 @@ class MakePostActivity : AppCompatActivity() {
         when (rgService.checkedRadioButtonId) {
             R.id.rbtn_QnA -> {
                 service = 1
-                contents = findViewById<EditText>(R.id.etQnA_qna).text.toString()
+                contents = findViewById<EditText>(R.id.etContents_qna).text.toString()
             }
             R.id.rbtn_Share -> {
                 service = 2
-                contents = findViewById<EditText>(R.id.etShare_share).text.toString()
+                contents = findViewById<EditText>(R.id.etContents_share).text.toString()
             }
             else -> {
                 service = null
             }
         }
 
-        val author : String =""
+        val author: String = ""
         val userUID = _uid
         val ref = FirebaseDatabase.getInstance().getReference("posts")
-        val postname=ref.push().key ?: ""
+        val postname = ref.push().key ?: ""
 
         ref.child(postname).setValue(
             Post(
-                    Uri_file,
+                Uri_file,
                 postname,
                 lectureName,
                 professorName,
                 title,
-                year!!,
+                grade,
                 test!!,
                 service!!,
                 0.0,
@@ -232,7 +233,8 @@ class MakePostActivity : AppCompatActivity() {
                 userUID,
                 contents,
                 0,
-                1
+                1,
+                major
             )
         )
             .addOnSuccessListener {
@@ -260,8 +262,9 @@ class MakePostActivity : AppCompatActivity() {
             .setValue("$Id")
 
     }
-    private  fun Post(){ //게시물 올릴때 트랜젝션을 만들어 서버에 전송
-        Coin+=30
+
+    private fun Post() { //게시물 올릴때 트랜젝션을 만들어 서버에 전송
+        Coin += 30
         Post_Transaction_ref.child(Post_Transaction_ref.push().key!!).setValue(Id)
 
         val Hash = Show_ref.push().key
@@ -269,7 +272,8 @@ class MakePostActivity : AppCompatActivity() {
         Vote_ref.child(Hash!!).setValue(Info)
 
     }
-    private  fun Process_Post(){ //개발자에게 만 주어지는 소스, 즉시 처리(Voting)
+
+    private fun Process_Post() { //개발자에게 만 주어지는 소스, 즉시 처리(Voting)
 
         Vote_ref.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
@@ -297,7 +301,6 @@ class MakePostActivity : AppCompatActivity() {
                     override fun onDataChange(p0: DataSnapshot) {
 
 
-
                         Key_List.clear()
                         for (h in p0.children) {
                             val hero = h.getValue(Key::class.java)
@@ -306,32 +309,29 @@ class MakePostActivity : AppCompatActivity() {
                         }
                     }
                 })
-                for(h in Plus_List){
+                for (h in Plus_List) {
 
-                    for(h2 in Key_List){
-                        if(h.id == h2.id){
-                            if(Fore_Check==0){
+                    for (h2 in Key_List) {
+                        if (h.id == h2.id) {
+                            if (Fore_Check == 0) {
 
                                 return
                             }
 
-                            val hero1 = Key(id=h2.id, uid=h2.uid, coin=h2.coin +30, hashID = h2.hashID)
-                            Key_List.set(h2.id.toInt()-1,hero1)
+                            val hero1 = Key(id = h2.id, uid = h2.uid, coin = h2.coin + 30, hashID = h2.hashID)
+                            Key_List.set(h2.id.toInt() - 1, hero1)
                             Key_Save_ref.child(h2.hashID).setValue(hero1)
 
-                            val hero2= ShowInfor2(id = h.id, check = 1, hashID = h.hashID)
+                            val hero2 = ShowInfor2(id = h.id, check = 1, hashID = h.hashID)
                             Vote_ref.child(h.hashID).setValue(hero2)
 
                         }
                     }
                 }
-                Fore_Check=0
+                Fore_Check = 0
             }
         })
     }
-
-
-
 
 
 }
