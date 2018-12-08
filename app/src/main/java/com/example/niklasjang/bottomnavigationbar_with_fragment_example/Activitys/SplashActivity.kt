@@ -16,9 +16,9 @@ class SplashActivity : AppCompatActivity() {
                 try {
                     // Thread will sleep for 1 seconds
                     Thread.sleep((3*1000).toLong())
-
                     // After 5 seconds redirect to another intent
                     val i = Intent(baseContext, MainActivity::class.java)
+                    i.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(i)
                     //Remove activity
                     finish()

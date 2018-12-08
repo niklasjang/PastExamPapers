@@ -162,10 +162,10 @@ class FilterActivity : AppCompatActivity() {
             }
         }
 
-        else if(filter == "year"){
+        else if(filter == "grade"){
             filterList = valueArray.filter { post ->
                 //userDTO.name!!.contains(filterString)
-                checkCharacter(post.year.toString(),filterString)
+                checkCharacter(post.grade.toString(),filterString)
             }
         }
 

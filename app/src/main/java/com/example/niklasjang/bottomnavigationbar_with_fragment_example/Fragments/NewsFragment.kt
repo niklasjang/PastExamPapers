@@ -1,5 +1,6 @@
 package com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments
 
+import android.content.Intent
 import android.support.v4.view.ViewPager
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -34,21 +35,24 @@ class NewsFragment : Fragment() {
 
 
 
+
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var viewPager = view.findViewById<ViewPager>(R.id.viewPager)
-        var vpAdapter =
+        val viewPager = view.findViewById<ViewPager>(R.id.viewPager)
+        val vpAdapter =
             MyAdapter(
                 childFragmentManager,
                 NUM_PAGE
             )
         viewPager.adapter = vpAdapter
+
+
     }
 
-    //Inner class
+    //Inner classo
     class MyAdapter(fm: FragmentManager, _pageCount: Int) : FragmentPagerAdapter(fm) {
         var pageCount: Int = _pageCount
         override fun getItem(p0: Int): Fragment {

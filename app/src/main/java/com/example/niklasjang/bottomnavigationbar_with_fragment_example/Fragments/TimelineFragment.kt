@@ -35,15 +35,18 @@ class TimelineFragment : Fragment() {
     val adapter = GroupAdapter<ViewHolder>()
     var recyclerView: RecyclerView? = null
     val ref = FirebaseDatabase.getInstance().getReference("/posts/")
+
     companion object {
         val USER_KEY = "USER_KEY"
         val POST_KEY = "POST_KEY"
     }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
 
         return inflater.inflate(R.layout.fragment_timeline, container, false)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.recyclerview_timeline)
@@ -57,12 +60,14 @@ class TimelineFragment : Fragment() {
             startActivityForResult(intent, 100)
         }
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 100 && resultCode == Activity.RESULT_OK && data != null) {
             //TODO 필터 구현
         }
     }
+
     private fun fetchPost() {
         //If the addValueEventListener() method is used to add the listener,
         //the app will be notified every time the data changes in the specified subtree.
@@ -71,7 +76,10 @@ class TimelineFragment : Fragment() {
             }
 
             override fun onChildAdded(p0: DataSnapshot, p1: String?) {
+                Log.d("TimelineActivity","p0 is $p0")
                 val post = p0.getValue(Post::class.java)
+                Log.d("TimelineActivity","post is $post")
+
                 if (post != null) {
                     //savePostToFirebaseDatabase에서 setValue한 형식대로 get을 한다.
 //                    adapter.add(adapter.itemCount, UserItem(post))
@@ -112,7 +120,8 @@ class TimelineFragment : Fragment() {
                             var pass = 1
                             val List: MutableList<Post>
                             List = mutableListOf()
-                            val ref = FirebaseDatabase.getInstance().getReference("posts/${item.post.postname}/Show_User_id")
+                            val ref =
+                                FirebaseDatabase.getInstance().getReference("posts/${item.post.postname}/Show_User_id")
                             ref.addValueEventListener(object : ValueEventListener {
                                 override fun onDataChange(p0: DataSnapshot) {
                                     List.clear()
@@ -291,12 +300,12 @@ class UserItem(val post: Post) : Item<ViewHolder>() {
 
 @Parcelize
 class Post(
-        var pdfFileUrl : String,
+    var pdfFileUrl: String,
     var postname: String,
     var lecturename: String,
     var professorName: String,
     var title: String,
-    var year: Int,
+    var grade: String,
     var test: Int,
     var service: Int,
     var reward: Double,
@@ -305,7 +314,8 @@ class Post(
     val uid: String,
     var contents: String,
     val views: Int,
-    var Id: Int
+    var Id: Int,
+    val major: String
 
 ) : Parcelable {
     constructor() : this(
@@ -314,15 +324,16 @@ class Post(
         "professorname",
         "title",
         "title",
-            0,
-            0,
-            0,
-            0.0,
-            0,
-            "author",
-            "uid",
-            "contents",
-            0,
-            0
+        "",
+        0,
+        0,
+        0.0,
+        0,
+        "author",
+        "uid",
+        "contents",
+        0,
+        0,
+        ""
     )
 }
