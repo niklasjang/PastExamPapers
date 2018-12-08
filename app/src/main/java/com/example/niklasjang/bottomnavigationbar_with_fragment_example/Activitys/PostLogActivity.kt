@@ -9,6 +9,7 @@ import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.Post
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.TimelineFragment
@@ -20,12 +21,17 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.xwray.groupie.GroupAdapter
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.Key
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.User
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ValueEventListener
+import com.squareup.picasso.Picasso
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_post_log.*
 import kotlinx.android.synthetic.main.activity_post_log.view.*
+import kotlinx.android.synthetic.main.fragment_my_accuont.*
 import okhttp3.internal.http2.Http2
+import java.io.File
 import java.lang.invoke.ConstantCallSite
 
 class PostLogActivity : AppCompatActivity() {
@@ -47,11 +53,58 @@ class PostLogActivity : AppCompatActivity() {
        // adapter.add(0,PostEntryItem(post))
         adapter.notifyDataSetChanged()
 
-        tvLecturename_post_entry.text  = post.lecturename
-        tvProfessorname_post_entry.text = post.professorName
+//        val urlRef = FirebaseDatabase.getInstance().getReference("users")
+
+
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+        val urlRef = FirebaseDatabase.getInstance().getReference("users")
+        val List : MutableList<User>
+        List= mutableListOf()
+
+        urlRef.addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(p0: DataSnapshot) {
+                for(h in p0.children){
+                    val hero = h.getValue(User ::class.java)
+                    List.add(hero!!)
+                }
+                for(h in List){
+                    if(uid!!.equals(h.uid)){
+                        var a=h.profileImageUrl
+                        tvuri.text = post.pdfFileUrl
+                        Picasso.get().load(a).into(userProfileImage)
+                        tvUsername_post_entry.text = h.username
+                        Thread.sleep((3*1000).toLong()) // 이거 오류고치자
+
+
+                    }
+
+                    plog_progress.visibility = View.INVISIBLE // 이거 오류고치자
+
+                }
+
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+            }
+        })
+
+
+
+
+
+
+
+
+
+        tvLecturename_post_entry.text  = "강의명 : ${post.lecturename}"
+        tvProfessorname_post_entry.text = "교수명 : ${post.professorName}"
+        tvContents_post_entry.text = "(내용) : ${post.contents}"
         tvTitle_post_entry.text = post.title
         tvReward_post_entry.text = post.reward.toString()
         tvVote_post_entry.text = post.vote.toString()
+//        tvUsername_post_entry.text = urlRef.child()
+//        Picasso.get().load(post.pdfFileUrl).into(userProfileImage)
+
 //        tvComment_post_entry.text = post.
         val btnVote = findViewById<Button>(R.id.tvVote_post_entry)
         tvReward_post_entry.text = "5.7"
