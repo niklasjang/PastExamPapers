@@ -47,7 +47,12 @@ class PostLogActivity : AppCompatActivity() {
        // adapter.add(0,PostEntryItem(post))
         adapter.notifyDataSetChanged()
 
-
+        tvLecturename_post_entry.text  = post.lecturename
+        tvProfessorname_post_entry.text = post.professorName
+        tvTitle_post_entry.text = post.title
+        tvReward_post_entry.text = post.reward.toString()
+        tvVote_post_entry.text = post.vote.toString()
+//        tvComment_post_entry.text = post.
         val btnVote = findViewById<Button>(R.id.tvVote_post_entry)
         tvReward_post_entry.text = "5.7"
 

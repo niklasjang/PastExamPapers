@@ -85,10 +85,6 @@ class TimelineFragment : Fragment() {
                     intent.putExtra(POST_KEY, userItem.post)
                     startActivity(intent)
                 }
-<<<<<<< HEAD
-
-=======
->>>>>>> login_hotfix
                 ref.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onCancelled(p0: DatabaseError) {
                         //Toast.make ~~
@@ -154,10 +150,6 @@ class TimelineFragment : Fragment() {
                     }
 
                 })
-<<<<<<< HEAD
-=======
-
->>>>>>> login_hotfix
             }
 
             override fun onChildChanged(p0: DataSnapshot, p1: String?) {
@@ -169,10 +161,6 @@ class TimelineFragment : Fragment() {
             override fun onChildRemoved(p0: DataSnapshot) {
             }
         })
-<<<<<<< HEAD
-
-=======
->>>>>>> login_hotfix
     }
 }
 

@@ -102,7 +102,7 @@ class NewsFragment : Fragment() {
 
                         val heroId = Key_Save_ref.push().key
                         val num = Key_List[Key_List.lastIndex].id.toInt()
-                        val hero = Key((num + 1).toString(), UserId, 30,heroId!!)
+                        val hero = Key((num + 1).toString(), UserId, 300,heroId!!)
 
                         Key_Save_ref.child(heroId!!).setValue(hero).addOnCompleteListener() {
                         }
