@@ -3,6 +3,7 @@ package com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activit
 import android.content.Intent
 import android.os.Build.ID
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -88,8 +89,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        verifyUserIsLoggedIn() //로그인 했는지 확인
-        loadFragment(NewsFragment()) //어플 실행하자마자 보이는 화면 설정
+
 
         Post_Transaction_ref = FirebaseDatabase.getInstance().getReference("Post_tx") //서버에 저장되어 있는 코인의 이동(코인 획득, 소모)의 트랜젝션을 참조
         Key_Save_ref = FirebaseDatabase.getInstance().getReference("Key")
@@ -110,16 +110,18 @@ class MainActivity : AppCompatActivity() {
         Third_Check =0
         Fore_Check=0
         Five_Check=0
+        verifyUserIsLoggedIn() //로그인 했는지 확인
+        loadFragment(NewsFragment()) //어플 실행하자마자 보이는 화면 설정
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
     }
 
+
+
     //로그인 했는지 확인
     private fun verifyUserIsLoggedIn() {
-        Log.d("LogTest","verifyUserIsLoggedIn 실행")
 
         val uid = FirebaseAuth.getInstance().uid
-
         if (uid == null) {
             val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -130,6 +132,8 @@ class MainActivity : AppCompatActivity() {
 
             UserId = uid
             plainID = UserId.substring(0, 16)
+            getKey()
+
         }
                //private_key는 16의 크기로 제한되어 있다 , 암호화 할때 private_key로 쓰임
     }
@@ -139,7 +143,6 @@ class MainActivity : AppCompatActivity() {
         if (resultCode==201) {// 201은 레지스터에서 202는 로그인에서 넘어올 떄
             Log.d("LogTest","resultCode 201 받음")
             verifyUserIsLoggedIn()
-//            getKey()
         }
     }
 
@@ -162,7 +165,58 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    private fun getKey() { //key 생성, 처음 login 했을 때
+        var name: String
 
+
+        Key_Save_ref.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+            override fun onDataChange(p0: DataSnapshot) {
+
+                if (p0.exists()) {
+                    if(First_Login ==1){
+                        return
+                    }
+
+                    Key_List.clear()
+
+                    for (h in p0.children) {
+                        val hero = h.getValue(Key::class.java)
+                        Key_List.add(hero!!)
+                    }
+
+                    for (h in Key_List) {
+                        if (h.uid.equals(UserId)) {
+
+                            Id = h.id.toInt()
+                            Coin =h.coin
+                            HashID =h.hashID
+                            First_Login = 1
+
+                        }
+                    }
+
+                    if (First_Login != 1) {
+
+                        val heroId = Key_Save_ref.push().key
+                        val num = Key_List[Key_List.lastIndex].id.toInt()
+                        val hero = Key((num + 1).toString(), UserId, 300,heroId!!)
+
+                        Key_Save_ref.child(heroId!!).setValue(hero).addOnCompleteListener() {
+                        }
+                    }
+                } else {
+                    val heroId = Key_Save_ref.push().key
+                    val hero = Key("1", UserId, 30,heroId!!)
+                    Key_Save_ref.child(heroId!!).setValue(hero).addOnCompleteListener() {
+                    }
+                }
+            }
+        })
+
+    }
 
 
 
@@ -210,5 +264,19 @@ class MainActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+    //back btn을 2초 이내에 두 번 눌러야지 어플 종료
+    private var doubleBackToExitPressedOnce = false
+    override fun onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed()
+            return
+        }
 
+        this.doubleBackToExitPressedOnce = true
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show()
+
+        Handler().postDelayed(Runnable { doubleBackToExitPressedOnce = false }, 2000)
+    }
 }
+
+
