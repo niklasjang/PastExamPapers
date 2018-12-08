@@ -49,10 +49,10 @@ class LoginActivity : AppCompatActivity() {
                     if (!it.isSuccessful) return@addOnCompleteListener
                     Log.d("Login Activity", "Login Success")
                     Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()
-//                    val intent = Intent(this, MainActivity::class.java)
-//                    startActivity(intent)
                     setResult(201)
-                    finish()
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
                     Log.d("LogTest","call Main Activity. resultcode is 201")
                 }
                 .addOnFailureListener {
@@ -85,7 +85,9 @@ class LoginActivity : AppCompatActivity() {
         if(requestCode==300 && resultCode==301){
             Log.d("LogTest","Back to Main Activity, resultCode is 201")
             setResult(201)
-            finish()
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
         }
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
             //구글 로그인에 성공했을 때 넘어오는 토큰 값을 가지는 task

@@ -112,6 +112,8 @@ class MainActivity : AppCompatActivity() {
 
     //로그인 했는지 확인
     private fun verifyUserIsLoggedIn() {
+        Log.d("LogTest","verifyUserIsLoggedIn 실행")
+
         val uid = FirebaseAuth.getInstance().uid
         Log.d("LogTest","Current user uid is $uid")
         if (uid == null) {
@@ -130,7 +132,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 200 && resultCode==201) {// 201은 레지스터에서 202는 로그인에서 넘어올 떄
+        if (resultCode==201) {// 201은 레지스터에서 202는 로그인에서 넘어올 떄
+            Log.d("LogTest","resultCode 201 받음")
             verifyUserIsLoggedIn()
             getKey()
         }
@@ -231,7 +234,10 @@ class MainActivity : AppCompatActivity() {
                 FirebaseAuth.getInstance().signOut()
                 val intent = Intent(this, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+
                 startActivity(intent)
+                Log.d("LogTest", "Sign out.. ")
             }
             R.id.menu_refresh ->{
                 //TODO 버튼 누르면 다시 업로드? 그냥 이 버튼을 지울까
