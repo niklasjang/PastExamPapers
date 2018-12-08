@@ -22,8 +22,10 @@ import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.V
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
 import com.xwray.groupie.GroupAdapter
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.Key
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.User
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R.array.grade
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R.array.major
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R.id.etComment_post_log
 import com.google.firebase.database.*
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
@@ -54,6 +56,8 @@ class PostLogActivity : AppCompatActivity() {
 //        android:MaxWidth
         post = intent.getParcelableExtra<Post>(TimelineFragment.POST_KEY)
         supportActionBar?.title = post.title
+
+        fetchExistComments()
 
         adapter = GroupAdapter<ViewHolder>()
         recyclerView = findViewById(R.id.recyclerview_post_log)
@@ -184,6 +188,21 @@ class PostLogActivity : AppCompatActivity() {
             }
 
     }
+    private fun fetchExistComments(){
+        val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/comments/")
+        ref.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+            }
+            override fun onDataChange(p0: DataSnapshot) {
+                for (i in p0.children) {
+                    val myComment = i.getValue(MyComment::class.java)
+                    Log.d("DataSnapshot", "DataSnapshotp0 is $i\n")
+                    adapter.add(CommentItem(myComment!!))
+                    adapter.notifyDataSetChanged()
+                }
+            }
+        })
+    }
 
     private fun fetchComment(commentName: String ) {
         //If the addValueEventListener() method is used to add the listener,
@@ -192,8 +211,8 @@ class PostLogActivity : AppCompatActivity() {
         val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/comments/$commentName")
         ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
-                Log.d("DataSnapshot", "p0 is $p0")
-                Log.d("DataSnapshot", "count is ${p0.childrenCount}")
+//                Log.d("DataSnapshot", "p0 is $p0")
+//                Log.d("DataSnapshot", "count is ${p0.childrenCount}")
 //                val post = p0.getValue(Post::class.java)
                 val myComment = p0.getValue(MyComment::class.java)
                 adapter.add(CommentItem(myComment!!))
