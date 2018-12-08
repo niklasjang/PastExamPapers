@@ -75,9 +75,9 @@ class TimelineFragment : Fragment() {
 //                    adapter.add(adapter.itemCount, UserItem(post))
                     Log.d("fetchPost", "${adapter.itemCount}")
                     adapter.add(0, UserItem(post))
-
                 }
                 adapter.notifyDataSetChanged()
+
                 //각 post들을 클릭했을 때 나오는 화면
                 adapter.setOnItemClickListener { item, view ->
                     val userItem = item as UserItem
@@ -85,7 +85,10 @@ class TimelineFragment : Fragment() {
                     intent.putExtra(POST_KEY, userItem.post)
                     startActivity(intent)
                 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> login_hotfix
                 ref.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onCancelled(p0: DatabaseError) {
                         //Toast.make ~~
@@ -151,6 +154,10 @@ class TimelineFragment : Fragment() {
                     }
 
                 })
+<<<<<<< HEAD
+=======
+
+>>>>>>> login_hotfix
             }
 
             override fun onChildChanged(p0: DataSnapshot, p1: String?) {
@@ -162,7 +169,10 @@ class TimelineFragment : Fragment() {
             override fun onChildRemoved(p0: DataSnapshot) {
             }
         })
+<<<<<<< HEAD
 
+=======
+>>>>>>> login_hotfix
     }
 }
 

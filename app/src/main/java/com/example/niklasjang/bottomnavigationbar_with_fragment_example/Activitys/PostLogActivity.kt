@@ -6,33 +6,30 @@ import android.opengl.GLES20
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
-import android.support.constraint.solver.widgets.ConstraintTableLayout
-import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Button
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.Post
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.TimelineFragment
-import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.Key
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.ShowInfor2
-import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.User
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.Vote
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.xwray.groupie.GroupAdapter
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.Key
+import com.google.firebase.database.ValueEventListener
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
+import kotlinx.android.synthetic.main.activity_post_log.*
 import kotlinx.android.synthetic.main.activity_post_log.view.*
-
 import okhttp3.internal.http2.Http2
 import java.lang.invoke.ConstantCallSite
 
 class PostLogActivity : AppCompatActivity() {
+    lateinit  var btnVote : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,8 +49,7 @@ class PostLogActivity : AppCompatActivity() {
 
 
         val btnVote = findViewById<Button>(R.id.tvVote_post_entry)
-
-
+        tvReward_post_entry.text = "5.7"
 
         val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Vote_User_id")
         ref.addValueEventListener(object :ValueEventListener{
@@ -65,13 +61,13 @@ class PostLogActivity : AppCompatActivity() {
                     for(h in p0.children){
                         val value = h.value.toString()
                         if (value.equals(Id.toString())) {
-                            btnVote?.isEnabled = false
+                            btnVote.isEnabled = false
                         }
                     }
                 }
             }
         })
-        btnVote?.setOnClickListener{
+        btnVote.setOnClickListener{
             ref.addValueEventListener(object : ValueEventListener{
                 override fun onCancelled(p0: DatabaseError) {
                 }
