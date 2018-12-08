@@ -2,9 +2,9 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-            android:drawable="@drawable/icon_q"
+            android:drawable="@drawable/icon_eye"
             android:width="17dp"
-            android:height="15dp"
+            android:height="@dimen/icon_size_20"
     />
 
 </layer-list >

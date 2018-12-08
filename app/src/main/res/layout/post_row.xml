@@ -6,6 +6,15 @@
 android:background="@drawable/post_background">
 
     <TextView
+            android:id="@+id/tvViews_post_row"
+            android:text="views"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/icon_eye_resized" android:drawablePadding="5dp"
+            app:layout_constraintTop_toTopOf="@+id/tvComment_post_row"
+            app:layout_constraintBottom_toBottomOf="@+id/tvComment_post_row"
+            app:layout_constraintStart_toEndOf="@+id/tvComment_post_row" android:layout_marginStart="8dp"/>
+    <TextView
             android:id="@+id/tvLectureName_post_row"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,7 +48,6 @@ android:background="@drawable/post_background">
             app:layout_constraintLeft_toLeftOf="@+id/tvTitle_post_row"
             app:layout_constraintEnd_toStartOf="@+id/tvVote_post_row"
             app:layout_constraintRight_toLeftOf="@+id/tvVote_post_row"
-            android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             app:layout_constraintTop_toTopOf="@+id/tvVote_post_row"
             app:layout_constraintBottom_toBottomOf="@+id/tvVote_post_row"
@@ -68,23 +76,11 @@ android:background="@drawable/post_background">
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@+id/tvVote_post_row"
             app:layout_constraintLeft_toRightOf="@+id/tvVote_post_row"
-            app:layout_constraintEnd_toEndOf="@+id/tvTitle_post_row"
-            app:layout_constraintRight_toRightOf="@+id/tvTitle_post_row"
-            android:layout_marginRight="8dp"
             android:layout_marginLeft="8dp"
             app:layout_constraintTop_toTopOf="@+id/tvVote_post_row"
             android:drawableLeft="@drawable/icon_comment_resized" android:drawablePadding="5dp"
             app:layout_constraintBottom_toBottomOf="@+id/tvVote_post_row"/>
     <!--android:drawableLeft="@drawable/icon_comment_resized" android:drawablePadding="5dp"/>-->
-    <TextView
-            android:text="uploadedFiles"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tvUploadedFiles_post_row" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/tvVote_post_row"
-            android:drawableLeft="@drawable/icon_files_resized" android:drawablePadding="5dp"
-
-            app:layout_constraintStart_toStartOf="@+id/tvTitle_post_row"/>
     <!--android:drawableLeft="@drawable/icon_files_resized" android:layout_marginStart="8dp"-->
     android:layout_marginLeft="8dp"/>
 

@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".Activitys.RegisterActivity"
-        android:background="@android:color/holo_green_light">
+        android:background="@color/pink">
 
     <EditText
             android:id="@+id/etUsername_register"
@@ -56,7 +56,7 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             app:layout_goneMarginTop="24dp"
-            android:background="@drawable/rounded_edittext_dark_green"
+            android:background="@drawable/rounded_edittext_dark_pink"
             android:textColor="@android:color/white"
             app:layout_constraintStart_toStartOf="@+id/etPassword_register"
             app:layout_constraintEnd_toEndOf="@+id/etPassword_register"

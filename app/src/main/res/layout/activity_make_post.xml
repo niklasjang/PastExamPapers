@@ -183,7 +183,7 @@
     <Button
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:text="PDF"
+            android:text="파일\n업로드"
             app:layout_constraintEnd_toStartOf="@+id/btnDone_make_post"
             app:layout_constraintTop_toTopOf="@+id/btnDone_make_post"
             app:layout_constraintBottom_toBottomOf="@+id/btnDone_make_post"

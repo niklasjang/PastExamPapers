@@ -9,7 +9,7 @@
             android:id="@+id/etContents_qna"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@drawable/rounded_edittext_dark_green"
+            android:background="@color/white"
             android:ems="10"
             android:hint="질문을 입력하세요."
             android:inputType="textMultiLine"
@@ -24,6 +24,8 @@
             android:inputType="textPersonName"
             android:ems="10"
             android:id="@+id/etTitle_qna"
+            android:backgroundTint="@color/pink"
+
             android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" android:hint="질문/답변의 제목을 입력하세요."

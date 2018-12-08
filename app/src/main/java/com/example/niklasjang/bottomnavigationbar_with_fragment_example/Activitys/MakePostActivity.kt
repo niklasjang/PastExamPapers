@@ -65,6 +65,7 @@ class MakePostActivity : AppCompatActivity() {
             intent.setType("*/*")
             intent.setAction(Intent.ACTION_GET_CONTENT)
             startActivityForResult(intent, PDF)
+            Toast.makeText(this, "업로드할 파일을 선택하세요.", Toast.LENGTH_LONG).show()
         })
         spinner_grade.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -93,7 +94,6 @@ class MakePostActivity : AppCompatActivity() {
             if (requestCode == PDF) {
                 uri = data!!.data
                 Log.d("small uri_file", "Finally we saved the fileUri to Firebase Database : $uri ")
-
                 upload()
 
             }
@@ -177,7 +177,10 @@ class MakePostActivity : AppCompatActivity() {
         val lectureName = etLectureName_make_post.text.toString()
         val professorName = etProfessorName_make_post.text.toString()
         val title: String = ""
-        if (lectureName.isEmpty() || professorName.isEmpty()) return
+        if (lectureName.isEmpty() || professorName.isEmpty()){
+            Toast.makeText(this, "텍스트를 모두 선택하세요.", Toast.LENGTH_SHORT).show()
+            return
+        }
 
         val year: Int?
 
@@ -216,7 +219,10 @@ class MakePostActivity : AppCompatActivity() {
         val userUID = _uid
         val ref = FirebaseDatabase.getInstance().getReference("posts")
         val postname = ref.push().key ?: ""
-
+        if(test == null || service == null){
+            Toast.makeText(this, "버튼을 모두 선택하세요.", Toast.LENGTH_SHORT).show()
+            return
+        }
         ref.child(postname).setValue(
             Post(
                 Uri_file,
@@ -225,8 +231,8 @@ class MakePostActivity : AppCompatActivity() {
                 professorName,
                 title,
                 grade,
-                test!!,
-                service!!,
+                test,
+                service,
                 0.0,
                 0,
                 author,
