@@ -1,10 +1,12 @@
 package com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Build.ID
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
@@ -83,8 +85,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        verifyUserIsLoggedIn() //로그인 했는지 확인
-        loadFragment(NewsFragment()) //어플 실행하자마자 보이는 화면 설정
+
 
         Post_Transaction_ref = FirebaseDatabase.getInstance().getReference("Post_tx") //서버에 저장되어 있는 코인의 이동(코인 획득, 소모)의 트랜젝션을 참조
         Key_Save_ref = FirebaseDatabase.getInstance().getReference("Key")
@@ -105,25 +106,39 @@ class MainActivity : AppCompatActivity() {
         Third_Check =0
         Fore_Check=0
         Five_Check=0
-
         getKey()
-
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        verifyUserIsLoggedIn() //로그인 했는지 확인
+        loadFragment(NewsFragment()) //어플 실행하자마자 보이는 화면 설정
 
     }
 
     //로그인 했는지 확인
     private fun verifyUserIsLoggedIn() {
         val uid = FirebaseAuth.getInstance().uid
-        UserId = FirebaseAuth.getInstance().uid!!
-        plainID = UserId.substring(0, 16)         //private_key는 16의 크기로 제한되어 있다 , 암호화 할때 private_key로 쓰임
-        if (uid == null) {
+
+        if (uid == null) {//로그인이 안되어있으면
             val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
+            startActivityForResult(intent, 5)
+        }else{
+            UserId = uid!!
         }
+//        plainID = UserId.substring(0, 16)         //private_key는 16의 크기로 제한되어 있다 , 암호화 할때 private_key로 쓰임
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode==5 && resultCode== Activity.RESULT_OK){
+            val uid = FirebaseAuth.getInstance().uid
+            UserId = uid!!
+
+        }
+    }
     //Navigation bar 전환
     private fun loadFragment(fragment: Fragment): Boolean {
         supportFragmentManager.beginTransaction()
