@@ -23,12 +23,13 @@ import com.bumptech.glide.module.AppGlideModule
 import android.graphics.BitmapFactory
 import android.graphics.Bitmap
 import android.util.Log
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.FilterActivity
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.PostLogActivity
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.RegisterActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.ViewHolder
 import java.io.InputStream
 import java.net.URL
 
@@ -40,18 +41,16 @@ import java.net.URL
 
 
 class MyAccuontFragment : Fragment() {
+    //추가한 값들
+    val ref = FirebaseDatabase.getInstance().getReference("/posts/")
+    val adapter = GroupAdapter<ViewHolder>()
+    //여기까지
     var recyclerView: RecyclerView? = null
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-
-
-
-
-        Log.d("profileImageUrl", " SSl BBAl  : ${RegisterActivity().profileImage_uri}")
-
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_my_accuont, container, false)
         val btnSettings = view.findViewById<Button>(R.id.btnSettings_my_account)
@@ -85,9 +84,8 @@ class MyAccuontFragment : Fragment() {
         })
 
 
+
 //        Picasso.get().load(url).into(profileImage)
-
-
 
 
 
@@ -96,6 +94,55 @@ class MyAccuontFragment : Fragment() {
             startActivity(intent)
         }
         return view
+    }
+    //프레그먼트는 여기서 받아온다. 여기 아래까지는 추가한 것이다.
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        recyclerView = view.findViewById(R.id.rv_myAccount)
+        recyclerView?.adapter = adapter
+        fetchPost()
+    }
+
+    fun adapterNotifyDataSetChanged(){
+        recyclerView?.adapter?.notifyDataSetChanged()
+    }
+
+    private fun fetchPost() {
+        //If the addValueEventListener() method is used to add the listener,
+        //the app will be notified every time the data changes in the specified subtree.
+        ref.addChildEventListener(object: ChildEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onChildAdded(p0: DataSnapshot, p1: String?) {
+                val post = p0.getValue(Post::class.java)
+                if (post != null) {
+                    if(post.uid == FirebaseAuth.getInstance().currentUser!!.uid){
+                        adapter.add(0, UserItem(post))
+                    }
+                    //savePostToFirebaseDatabase에서 setValue한 형식대로 get을 한다.
+//                    adapter.add(adapter.itemCount, UserItem(post))
+                }
+                adapterNotifyDataSetChanged()
+                //각 post들을 클릭했을 때 나오는 화면
+                adapter.setOnItemClickListener { item, view ->
+                    val userItem = item as UserItem
+                    val intent = Intent(view.context, PostLogActivity::class.java)
+                    intent.putExtra(TimelineFragment.POST_KEY, userItem.post)
+                    startActivity(intent)
+                }
+            }
+
+            override fun onChildChanged(p0: DataSnapshot, p1: String?) {
+
+            }
+
+            override fun onChildMoved(p0: DataSnapshot, p1: String?) {
+            }
+
+            override fun onChildRemoved(p0: DataSnapshot) {
+            }
+        })
     }
 
 
