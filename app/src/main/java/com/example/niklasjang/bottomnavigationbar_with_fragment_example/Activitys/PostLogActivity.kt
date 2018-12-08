@@ -5,6 +5,7 @@ import android.graphics.PostProcessor
 import android.opengl.GLES20
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
@@ -23,6 +24,7 @@ import com.google.firebase.database.ValueEventListener
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
+import kotlinx.android.synthetic.main.post_entry.*
 import kotlinx.android.synthetic.main.post_entry.view.*
 import okhttp3.internal.http2.Http2
 
@@ -39,39 +41,38 @@ class PostLogActivity : AppCompatActivity() {
         val adapter = GroupAdapter<ViewHolder>()
         val recyclerView : RecyclerView? = findViewById(R.id.recyclerview_post_log)
         recyclerView?.adapter = adapter
-        adapter.add(PostEntryItem(post))
+        adapter.add(0,PostEntryItem(post))
         adapter.notifyDataSetChanged()
 
-        val Button_Vote=findViewById<Button>(R.id.tvVote_post_entry)
-        Button_Vote.isEnabled = true
+        val postEntry = recyclerView?.layoutManager?.findViewByPosition(0)
+        val btnVote = postEntry?.findViewById<Button>(R.id.tvVote_post_entry)
+        btnVote?.isEnabled = true
 
         val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Vote_User_id")
         ref.addValueEventListener(object :ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
             override fun onDataChange(p0: DataSnapshot) {
                 if(p0.exists()){
                     for(h in p0.children){
                         val value = h.value.toString()
                         if (value.equals(Id.toString())) {
-                            Button_Vote.isEnabled = false
+                            btnVote?.isEnabled = false
                         }
                     }
                 }
             }
         })
-        Button_Vote.setOnClickListener(){
+        btnVote?.setOnClickListener{
             ref.addValueEventListener(object : ValueEventListener{
                 override fun onCancelled(p0: DatabaseError) {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                 }
                 override fun onDataChange(p0: DataSnapshot) {
                     if (p0.exists()) {
                         for (h in p0.children) {
                             val value = h.value.toString()
                             if (value.equals(Id.toString())) {
-                                Button_Vote.isEnabled = false
+                                btnVote.isEnabled = false
                             } else {
                                 Vote_User_ref.child("${post.postname}")
                                     .child("Vote_User_id")
@@ -137,7 +138,6 @@ class PostLogActivity : AppCompatActivity() {
 private  fun Process_Vote(){ //개발자에게 만 주어지는 소스, 즉시 처리(Voting)
     Vote_ref.addValueEventListener(object : ValueEventListener {
         override fun onCancelled(p0: DatabaseError) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
         override fun onDataChange(p0: DataSnapshot) {
             Plus_List.clear()
@@ -149,7 +149,6 @@ private  fun Process_Vote(){ //개발자에게 만 주어지는 소스, 즉시 �
             }
             Key_Save_ref.addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                 }
                 override fun onDataChange(p0: DataSnapshot) {
                     Key_List.clear()
@@ -190,7 +189,6 @@ private  fun Post_Vote(post :Post){
             }
             Key_Save_ref.addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                 }
                 override fun onDataChange(p0: DataSnapshot) {
 

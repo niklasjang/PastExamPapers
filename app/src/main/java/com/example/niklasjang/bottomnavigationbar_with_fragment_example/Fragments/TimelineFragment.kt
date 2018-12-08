@@ -61,7 +61,7 @@ class TimelineFragment : Fragment() {
             //TODO 필터 구현
         }
     }
-    fun fetchPost() {
+    private fun fetchPost() {
         //If the addValueEventListener() method is used to add the listener,
         //the app will be notified every time the data changes in the specified subtree.
         ref.addChildEventListener(object : ChildEventListener {
@@ -88,15 +88,12 @@ class TimelineFragment : Fragment() {
             }
 
             override fun onChildChanged(p0: DataSnapshot, p1: String?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
             override fun onChildMoved(p0: DataSnapshot, p1: String?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
             override fun onChildRemoved(p0: DataSnapshot) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
         })
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -170,7 +167,6 @@ class TimelineFragment : Fragment() {
 private fun Process_Show() { //개발자에게 만 주어지는 소스, 즉시 처리(게시물 볼 때)
     Show_ref.addValueEventListener(object : ValueEventListener {
         override fun onCancelled(p0: DatabaseError) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
 
         override fun onDataChange(p0: DataSnapshot) {
@@ -261,5 +257,20 @@ class Post(
     var Id: Int
 
 ) : Parcelable {
-//    constructor() : this("postName", "과목명", "Title","교수님", -1, -1, -1, -1.0, 0, "123", "", "",0
+    constructor() : this(
+        "postname",
+        "lecturename",
+        "professorname",
+        "title",
+        0,
+        0,
+        0,
+        0.0,
+        0,
+        "author",
+        "uid",
+        "contents",
+        0,
+        0
+    )
 }
