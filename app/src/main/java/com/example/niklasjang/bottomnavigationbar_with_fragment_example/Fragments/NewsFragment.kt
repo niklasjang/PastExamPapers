@@ -28,8 +28,7 @@ class NewsFragment : Fragment() {
     //뷰를 만들어서 return하고
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        UserId = FirebaseAuth.getInstance().uid!!
-        getKey()
+
 
         var view = inflater.inflate(R.layout.fragment_news, container, false)
 
@@ -65,56 +64,5 @@ class NewsFragment : Fragment() {
             return pageCount
         }
     }
-    private fun getKey() { //key 생성, 처음 login 했을 때
-        var name: String
 
-
-        Key_Save_ref.addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-
-            }
-            override fun onDataChange(p0: DataSnapshot) {
-
-                if (p0.exists()) {
-                    if(First_Login ==1){
-                        return
-                    }
-
-                    Key_List.clear()
-
-                    for (h in p0.children) {
-                        val hero = h.getValue(Key::class.java)
-                        Key_List.add(hero!!)
-                    }
-
-                    for (h in Key_List) {
-                        if (h.uid.equals(UserId)) {
-
-                            Id = h.id.toInt()
-                            Coin =h.coin
-                            HashID =h.hashID
-                            First_Login = 1
-
-                        }
-                    }
-
-                    if (First_Login != 1) {
-
-                        val heroId = Key_Save_ref.push().key
-                        val num = Key_List[Key_List.lastIndex].id.toInt()
-                        val hero = Key((num + 1).toString(), UserId, 300,heroId!!)
-
-                        Key_Save_ref.child(heroId!!).setValue(hero).addOnCompleteListener() {
-                        }
-                    }
-                } else {
-                    val heroId = Key_Save_ref.push().key
-                    val hero = Key("1", UserId, 30,heroId!!)
-                    Key_Save_ref.child(heroId!!).setValue(hero).addOnCompleteListener() {
-                    }
-                }
-            }
-        })
-
-    }
 }

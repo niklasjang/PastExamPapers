@@ -1,11 +1,8 @@
 package com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys
 
 import android.content.Intent
-import android.graphics.PostProcessor
-import android.opengl.GLES20
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
@@ -21,12 +18,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.xwray.groupie.GroupAdapter
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.Key
 import com.google.firebase.database.ValueEventListener
-import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_post_log.*
-import kotlinx.android.synthetic.main.activity_post_log.view.*
-import okhttp3.internal.http2.Http2
-import java.lang.invoke.ConstantCallSite
 
 class PostLogActivity : AppCompatActivity() {
     lateinit  var btnVote : Button
@@ -54,21 +47,49 @@ class PostLogActivity : AppCompatActivity() {
         tvVote_post_entry.text = post.vote.toString()
 //        tvComment_post_entry.text = post.
         val btnVote = findViewById<Button>(R.id.tvVote_post_entry)
+
         tvReward_post_entry.text = "5.7"
 
         val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Vote_User_id")
+        val ref2 = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Show_User_id")
+
+
         ref.addValueEventListener(object :ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {
             }
             override fun onDataChange(p0: DataSnapshot) {
 
                 if(p0.exists()){
+                    var voteCount=0
                     for(h in p0.children){
                         val value = h.value.toString()
+                        voteCount+=1
+                        println("TEST Vote${voteCount}")
                         if (value.equals(Id.toString())) {
                             btnVote.isEnabled = false
                         }
                     }
+                    voteCount-=1
+                    println("TEST Vote${voteCount}")
+                    btnVote.setText("$voteCount")
+                }
+            }
+        })
+        ref2.addValueEventListener(object :ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+            }
+            override fun onDataChange(p0: DataSnapshot) {
+
+                if(p0.exists()){
+                    var ShowCount=0
+                    for(h in p0.children){
+                        val value = h.value.toString()
+                        ShowCount+=1
+                        println("TEST Show${ShowCount}")
+                        }
+
+                    ShowCount-=1
+                    println("TEST Show${ShowCount}")
                 }
             }
         })
@@ -77,6 +98,7 @@ class PostLogActivity : AppCompatActivity() {
                 override fun onCancelled(p0: DatabaseError) {
                 }
                 override fun onDataChange(p0: DataSnapshot) {
+
                     if (p0.exists()) {
                         for (h in p0.children) {
                             val value = h.value.toString()
@@ -87,6 +109,7 @@ class PostLogActivity : AppCompatActivity() {
                                     .child("Vote_User_id")
                                     .child("${UserId}")
                                     .setValue("$Id")
+
 
                                 Second_Check = 1
                                 Coin += 5
@@ -100,7 +123,7 @@ class PostLogActivity : AppCompatActivity() {
                             }
                         }
                     }else{
-
+                        btnVote.setText("1")
                         Vote_User_ref.child("${post.postname}")
                             .child("Vote_User_id")
                             .child("${UserId}")
@@ -209,10 +232,8 @@ private  fun Post_Vote(post :Post){
                     for(h2 in Key_List){
                         if(post.Id == h2.id.toInt()){
                             if(Five_Check==0){
-                                println("TEST 2234")
                                 return
                             }else {
-                                println("TEST 2233")
                                 val hero1 = Key(id = h2.id, uid = h2.uid, coin = h2.coin + 2, hashID = h2.hashID)
                                 Key_List.set(h2.id.toInt() - 1, hero1)
                                 Key_Save_ref.child(h2.hashID).setValue(hero1)

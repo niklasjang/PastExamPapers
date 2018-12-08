@@ -59,7 +59,6 @@ class MainActivity : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         val fragment: Fragment?
 
-        println("TEST 444")
         when (item.itemId) {
             R.id.navigation_news -> {
 
@@ -73,6 +72,7 @@ class MainActivity : AppCompatActivity() {
                 println("TEST 1234 $Coin")
                 fragment = TimelineFragment()
                 loadTimelineFragment(fragment)
+                Toast.makeText(this,"click $Coin",Toast.LENGTH_SHORT).show()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_my_account -> {
@@ -87,9 +87,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        verifyUserIsLoggedIn() //로그인 했는지 확인
-        loadFragment(NewsFragment()) //어플 실행하자마자 보이는 화면 설정
 
         Post_Transaction_ref = FirebaseDatabase.getInstance().getReference("Post_tx") //서버에 저장되어 있는 코인의 이동(코인 획득, 소모)의 트랜젝션을 참조
         Key_Save_ref = FirebaseDatabase.getInstance().getReference("Key")
@@ -110,6 +107,11 @@ class MainActivity : AppCompatActivity() {
         Third_Check =0
         Fore_Check=0
         Five_Check=0
+
+
+        verifyUserIsLoggedIn() //로그인 했는지 확인
+        loadFragment(NewsFragment()) //어플 실행하자마자 보이는 화면 설정
+
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
     }
@@ -129,6 +131,7 @@ class MainActivity : AppCompatActivity() {
             Log.d("LogTest","you have already logged in...")
 
             UserId = uid
+            getKey()
             plainID = UserId.substring(0, 16)
         }
                //private_key는 16의 크기로 제한되어 있다 , 암호화 할때 private_key로 쓰임
@@ -162,7 +165,58 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    private fun getKey() { //key 생성, 처음 login 했을 때
+        var name: String
 
+
+        Key_Save_ref.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+            override fun onDataChange(p0: DataSnapshot) {
+
+                if (p0.exists()) {
+                    if(First_Login ==1){
+                        return
+                    }
+
+                    Key_List.clear()
+
+                    for (h in p0.children) {
+                        val hero = h.getValue(Key::class.java)
+                        Key_List.add(hero!!)
+                    }
+
+                    for (h in Key_List) {
+                        if (h.uid.equals(UserId)) {
+
+                            Id = h.id.toInt()
+                            Coin =h.coin
+                            HashID =h.hashID
+                            First_Login = 1
+
+                        }
+                    }
+
+                    if (First_Login != 1) {
+
+                        val heroId = Key_Save_ref.push().key
+                        val num = Key_List[Key_List.lastIndex].id.toInt()
+                        val hero = Key((num + 1).toString(), UserId, 300,heroId!!)
+
+                        Key_Save_ref.child(heroId!!).setValue(hero).addOnCompleteListener() {
+                        }
+                    }
+                } else {
+                    val heroId = Key_Save_ref.push().key
+                    val hero = Key("1", UserId, 30,heroId!!)
+                    Key_Save_ref.child(heroId!!).setValue(hero).addOnCompleteListener() {
+                    }
+                }
+            }
+        })
+
+    }
 
 
 

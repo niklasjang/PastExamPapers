@@ -41,6 +41,7 @@ class TimelineFragment : Fragment() {
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_timeline, container, false)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,6 +50,7 @@ class TimelineFragment : Fragment() {
         recyclerView?.adapter = adapter
         fetchPost()
         Process_Show()
+
         val btnFilter = view.findViewById<Button>(R.id.btnFilter)
         btnFilter?.setOnClickListener {
             val intent = Intent(activity, FilterActivity::class.java)
@@ -160,6 +162,58 @@ class TimelineFragment : Fragment() {
     }
 }
 
+private fun getKey() { //key 생성, 처음 login 했을 때
+    var name: String
+
+
+    Key_Save_ref.addValueEventListener(object : ValueEventListener {
+        override fun onCancelled(p0: DatabaseError) {
+
+        }
+        override fun onDataChange(p0: DataSnapshot) {
+
+            if (p0.exists()) {
+                if(First_Login ==1){
+                    return
+                }
+
+                Key_List.clear()
+
+                for (h in p0.children) {
+                    val hero = h.getValue(Key::class.java)
+                    Key_List.add(hero!!)
+                }
+
+                for (h in Key_List) {
+                    if (h.uid.equals(UserId)) {
+
+                        Id = h.id.toInt()
+                        Coin =h.coin
+                        HashID =h.hashID
+                        First_Login = 1
+
+                    }
+                }
+
+                if (First_Login != 1) {
+
+                    val heroId = Key_Save_ref.push().key
+                    val num = Key_List[Key_List.lastIndex].id.toInt()
+                    val hero = Key((num + 1).toString(), UserId, 300,heroId!!)
+
+                    Key_Save_ref.child(heroId!!).setValue(hero).addOnCompleteListener() {
+                    }
+                }
+            } else {
+                val heroId = Key_Save_ref.push().key
+                val hero = Key("1", UserId, 30,heroId!!)
+                Key_Save_ref.child(heroId!!).setValue(hero).addOnCompleteListener() {
+                }
+            }
+        }
+    })
+
+}
 private fun Process_Show() { //개발자에게 만 주어지는 소스, 즉시 처리(게시물 볼 때)
     Show_ref.addValueEventListener(object : ValueEventListener {
         override fun onCancelled(p0: DatabaseError) {
