@@ -36,9 +36,6 @@ class TimelineFragment : Fragment() {
         val USER_KEY = "USER_KEY"
         val POST_KEY = "POST_KEY"
     }
-
-
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_timeline, container, false)
@@ -54,8 +51,6 @@ class TimelineFragment : Fragment() {
             val intent = Intent(activity, FilterActivity::class.java)
             startActivityForResult(intent, 100)
         }
-
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -139,8 +134,8 @@ class Post(
     var reward: Double,
     var vote: Int,
     var author: String,
-    var contents: String,
-    var data : String
+    var data: String,
+    var contents: String
 ) : Parcelable {
     constructor() : this(
         "postName", "과목명", "교수명",

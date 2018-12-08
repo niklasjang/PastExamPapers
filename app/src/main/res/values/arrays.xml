@@ -8,4 +8,13 @@
         <item>yahoo</item>
         <item>google</item>
     </string-array>
+
+    <string-array name="lecture">
+        <item>강의명</item>
+        <item>교수명</item>
+    </string-array>
+    <string-array name="sememster">
+        <item>학년</item>
+    </string-array>
+
 </resources>

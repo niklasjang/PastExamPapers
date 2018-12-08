@@ -4,6 +4,7 @@ package com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragmen
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
 
 
 class MyAccuontFragment : Fragment() {
+    var recyclerView: RecyclerView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
