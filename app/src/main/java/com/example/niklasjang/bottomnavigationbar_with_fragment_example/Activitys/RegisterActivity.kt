@@ -88,6 +88,7 @@ class RegisterActivity : AppCompatActivity() {
 
     }
 
+    var profileImage_uri: String = ""
 
     private fun upLoadImageToFirebaseStorage() {
         if (selectedPhotoUri == null) return
@@ -101,6 +102,7 @@ class RegisterActivity : AppCompatActivity() {
                 //it is downloadUri where User can download uploaded image.
                 ref.downloadUrl.addOnSuccessListener {
                     Log.d("Register Activity", "downloadUri : $it")
+                    profileImage_uri = it.toString()
                     saveUserToFirebaseDatabase(it.toString())
                 }
             }

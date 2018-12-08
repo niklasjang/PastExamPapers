@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           package="com.example.niklasjang.bottomnavigationbar_with_fragment_example">
+    <uses-permission android:name="android.permission.INTERNET" />
+<!--인터넷퍼미션 -->
 
     <application
             android:allowBackup="true"
