@@ -178,7 +178,8 @@ class PostLogActivity : AppCompatActivity() {
         )
             .addOnSuccessListener {
                 Log.d("PostLog Activity", "Finally we saved the comment to Firebase Database ")
-                Toast.makeText(this, "Post upload success", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Comment upload success", Toast.LENGTH_SHORT).show()
+                etComment_post_log.text.clear()
                 fetchComment(commentName)
             }
             .addOnFailureListener {
