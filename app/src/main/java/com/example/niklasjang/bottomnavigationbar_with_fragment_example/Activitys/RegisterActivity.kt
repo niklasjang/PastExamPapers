@@ -37,7 +37,6 @@ class RegisterActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
         btnSelectImage.setOnClickListener {
             Log.d("RegisterActivity", "Select Image clicked")
             val intent = Intent(Intent.ACTION_PICK)

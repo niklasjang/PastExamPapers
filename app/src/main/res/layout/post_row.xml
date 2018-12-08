@@ -19,7 +19,8 @@ android:background="@drawable/post_background">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="[LectureName]"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:fontFamily="@font/baedal"/>
     <TextView
             android:id="@+id/tvProfessorName_post_row"
             android:text="Professor"
@@ -27,7 +28,8 @@ android:background="@drawable/post_background">
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@+id/tvLectureName_post_row"
             android:textSize="18sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/tvLectureName_post_row"/>
+            app:layout_constraintBaseline_toBaselineOf="@+id/tvLectureName_post_row"
+            android:fontFamily="@font/baedal"/>
     <TextView
             android:id="@+id/tvTitle_post_row"
             android:text="Title"

@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.Post
@@ -22,17 +23,24 @@ import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.V
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
 import com.xwray.groupie.GroupAdapter
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.Key
-
-import com.google.firebase.database.ValueEventListener
-
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.User
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R.id.tvContents_post_entry
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.squareup.picasso.Picasso
+import kotlinx.android.parcel.Parcelize
+import kotlinx.android.synthetic.main.activity_post_log.*
+
+
+
 //import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R.array.grade
 //import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R.array.major
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R.id.etComment_post_log
 import com.google.firebase.database.*
+import com.google.firebase.auth.FirebaseAuth
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
-import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_post_log.*
 import kotlinx.android.synthetic.main.activity_post_log.view.*
 import kotlinx.android.synthetic.main.comment_row.*
@@ -40,8 +48,9 @@ import kotlinx.android.synthetic.main.comment_row.view.*
 import kotlinx.android.synthetic.main.post_row.view.*
 import okhttp3.internal.http2.Http2
 import org.w3c.dom.Comment
+import kotlinx.android.synthetic.main.fragment_my_accuont.*
+import java.io.File
 import java.lang.invoke.ConstantCallSite
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ChildEventListener
 
@@ -68,12 +77,48 @@ class PostLogActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         // adapter.add(0,PostEntryItem(post))
 
+//        val urlRef = FirebaseDatabase.getInstance().getReference("users")
 
-        tvLecturename_post_entry.text = post.lecturename
-        tvProfessorname_post_entry.text = post.professorName
+
+        val uid = post.uid
+        val urlRef = FirebaseDatabase.getInstance().getReference("users")
+        val List : MutableList<User>
+        List= mutableListOf()
+
+        urlRef.addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(p0: DataSnapshot) {
+                for(h in p0.children){
+                    val hero = h.getValue(User ::class.java)
+                    List.add(hero!!)
+                }
+                for(h in List){
+                    if(uid!!.equals(h.uid)){
+                        var a=h.profileImageUrl
+                        tvuri.text = post.pdfFileUrl
+                        Picasso.get().load(a).into(userProfileImage)
+                        tvUsername_post_entry.text = h.username
+//                        Thread.sleep((3*1000).toLong()) // 이거 오류고치자
+                    }
+
+
+                }
+
+
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+            }
+        })
+
+        tvLecturename_post_entry.text  = "강의명 : ${post.lecturename}"
+        tvProfessorname_post_entry.text = "교수명 : ${post.professorName}"
+        tvContents_post_entry.text = "(내용) : ${post.contents}"
         tvTitle_post_entry.text = post.title
         tvReward_post_entry.text = post.reward.toString()
         tvVote_post_entry.text = post.vote.toString()
+//        tvUsername_post_entry.text = urlRef.child()
+//        Picasso.get().load(post.pdfFileUrl).into(userProfileImage)
+
 //        tvComment_post_entry.text = post.
         val btnVote = findViewById<Button>(R.id.tvVote_post_entry)
 
@@ -178,7 +223,19 @@ class PostLogActivity : AppCompatActivity() {
             Five_Check = 1
             Post_Vote(post)
         }
+        Thread.sleep((3*1000).toLong()) // 이거 오류고치자
+        plog_progress.visibility = View.INVISIBLE // 이거 오류고치자
+
     }
+
+
+
+//    override fun onPause() {
+////        plog_progress.visibility = View.INVISIBLE // 이거 오류고치자
+////        Thread.sleep((3*1000).toLong()) // 이거 오류고치자
+//
+//        super.onPause()
+//    }
 
     //상단 menu bar 생성하기
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

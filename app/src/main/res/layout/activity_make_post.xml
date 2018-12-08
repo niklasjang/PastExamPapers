@@ -175,7 +175,7 @@
             android:layout_height="50dp"
             android:text="완료"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:background="@color/grey" android:layout_marginTop="8dp"
             app:layout_constraintTop_toTopOf="@+id/rgTest" android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/rgService"/>
@@ -188,7 +188,8 @@
             app:layout_constraintTop_toTopOf="@+id/btnDone_make_post"
             app:layout_constraintBottom_toBottomOf="@+id/btnDone_make_post"
             android:background="@color/grey" app:layout_constraintVertical_bias="0.0"
-            android:id="@+id/btnPDF_make_post"/>
+            android:id="@+id/btnPDF_make_post" android:layout_marginRight="8dp"/>
+
 
 
 </android.support.constraint.ConstraintLayout>

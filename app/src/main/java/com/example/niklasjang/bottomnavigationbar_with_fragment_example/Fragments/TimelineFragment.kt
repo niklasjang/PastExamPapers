@@ -29,6 +29,7 @@ import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragment
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.ShowInfor
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.*
 import com.google.firebase.database.*
+import kotlinx.android.synthetic.main.activity_post_log.*
 
 
 class TimelineFragment : Fragment() {
@@ -90,6 +91,7 @@ class TimelineFragment : Fragment() {
 
                 //각 post들을 클릭했을 때 나오는 화면
                 adapter.setOnItemClickListener { item, view ->
+
                     val userItem = item as UserItem
                     val intent = Intent(view.context, PostLogActivity::class.java)
                     intent.putExtra(POST_KEY, userItem.post)
@@ -288,8 +290,8 @@ class UserItem(val post: Post) : Item<ViewHolder>() {
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         //viewHolder.itemView까지 하면 view를 얻는다고 보면 됨.
-        viewHolder.itemView.tvLectureName_post_row.text = "[${post.lecturename}]"
-        viewHolder.itemView.tvProfessorName_post_row.text = "[${post.professorName}]"
+        viewHolder.itemView.tvLectureName_post_row.text = "강의명 : ${post.lecturename} "
+        viewHolder.itemView.tvProfessorName_post_row.text = "교수명 : ${post.professorName}"
 
         //TODO 사진 업로드. 프로필 이미지 업로드 이렇게 하면 됨.
         //Picasso.get().load(user.profileImageUrl).into(viewHolder.itemView.ivPostImage)
