@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v4.app.Fragment
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,6 +40,7 @@ import java.net.URL
 
 
 class MyAccuontFragment : Fragment() {
+    var recyclerView: RecyclerView? = null
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
