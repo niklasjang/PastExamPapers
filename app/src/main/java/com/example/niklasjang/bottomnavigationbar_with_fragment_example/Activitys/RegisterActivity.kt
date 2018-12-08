@@ -90,29 +90,34 @@ class RegisterActivity : AppCompatActivity() {
 
 
     private fun upLoadImageToFirebaseStorage() {
-        if (selectedPhotoUri == null) return
+
         val filename = UUID.randomUUID().toString() //랜덤값 정의하기
         //"/images/ specify where image will be stored
+
         val ref = FirebaseStorage.getInstance().getReference("/images/$filename")
-        ref.putFile(selectedPhotoUri!!)
-            .addOnSuccessListener {
-                Log.d("RegisterActivity", "Successfully uploaded image : ${it.metadata?.path}")
+        if (selectedPhotoUri != null) {
+            ref.putFile(selectedPhotoUri!!)
+                .addOnSuccessListener {
+                    Log.d("RegisterActivity", "Successfully uploaded image : ${it.metadata?.path}")
 
-                //it is downloadUri where User can download uploaded image.
-                ref.downloadUrl.addOnSuccessListener {
-                    Log.d("Register Activity", "downloadUri : $it")
-                    saveUserToFirebaseDatabase(it.toString())
+                    //it is downloadUri where User can download uploaded image.
+                    ref.downloadUrl.addOnSuccessListener {
+                        Log.d("Register Activity", "downloadUri : $it")
+                        saveUserToFirebaseDatabase(it.toString())
+                    }
                 }
-            }
-            .addOnFailureListener {
-                Log.d("RegisterActivity", "Failed uploaded image : ${it.message}")
-            }
+                .addOnFailureListener {
+                    Log.d("RegisterActivity", "Failed uploaded image : ${it.message}")
+                }
+        }else{
+            saveUserToFirebaseDatabase("null")
+        }
     }
-
     private fun saveUserToFirebaseDatabase(profileImageUrl: String) {
         //every time this method is executed, correct uid is assigned to here.
         val uid = FirebaseAuth.getInstance().uid ?: ""
         val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
+
         ref.setValue(
             User(
                 uid,

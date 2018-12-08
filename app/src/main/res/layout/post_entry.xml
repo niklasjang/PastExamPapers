@@ -85,11 +85,11 @@
             android:drawableLeft="@drawable/icon_q_resized" android:drawablePadding="5dp"
 
             android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toStartOf="@+id/tvVote_post_entry" android:layout_marginRight="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/tvVote_post_entry"
             app:layout_constraintTop_toTopOf="@+id/tvVote_post_entry"
             app:layout_constraintBottom_toBottomOf="@+id/tvVote_post_entry"/>
 
-    <TextView
+    <Button
             android:id="@+id/tvVote_post_entry"
             android:text="vote"
             android:layout_width="wrap_content"
@@ -98,7 +98,7 @@
             android:drawableLeft="@drawable/icon_thumb_resized" android:drawablePadding="5dp"
 
             android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toStartOf="@+id/tvComment_post_entry" android:layout_marginRight="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/tvComment_post_entry"
             app:layout_constraintTop_toTopOf="@+id/tvComment_post_entry"
             app:layout_constraintBottom_toBottomOf="@+id/tvComment_post_entry"/>
     <TextView
