@@ -32,7 +32,6 @@ class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
-        performRegister()
         tvAlreadyHaveAccount_register.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
@@ -46,6 +45,7 @@ class RegisterActivity : AppCompatActivity() {
             startActivityForResult(intent, 0)
 
         }
+        performRegister()
     }
 
     //Register버튼과 Google 로그인 버튼 clickListener 정의하기.

@@ -129,6 +129,7 @@ class UserItem(val post: Post) : Item<ViewHolder>() {
 
 @Parcelize
 class Post(
+        var pdfFileUrl : String,
     var postname: String,
     var lecturename: String,
     var professorName: String,
@@ -144,6 +145,7 @@ class Post(
     val views : Int
 ) : Parcelable {
     constructor() : this(
+            "",
         "postName", "과목명", "Title",
         "교수님", -1, -1, -1, -1.0, 0, "123", "", "",0
     )
