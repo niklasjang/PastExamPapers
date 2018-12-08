@@ -40,6 +40,20 @@ class PostLogActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post_log)
+
+        val background = object : Thread() {
+            override fun run() {
+                try {
+                    // Thread will sleep for 1 seconds
+                    Thread.sleep((3*1000).toLong())
+                    // After 5 seconds redirect to another intent
+                    //Remove activity
+                    plog_progress.visibility = View.INVISIBLE
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
         //TODO SET MAX WIDth in xml
 //        android:MaxWidth
         val post = intent.getParcelableExtra<Post>(TimelineFragment.POST_KEY)
@@ -61,10 +75,6 @@ class PostLogActivity : AppCompatActivity() {
         val List : MutableList<User>
         List= mutableListOf()
 
-
-
-
-
         urlRef.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 for(h in p0.children){
@@ -78,27 +88,12 @@ class PostLogActivity : AppCompatActivity() {
                         Picasso.get().load(a).into(userProfileImage)
                         tvUsername_post_entry.text = h.username
 //                        Thread.sleep((3*1000).toLong()) // 이거 오류고치자
-
-
                     }
-
-
                 }
-
-
             }
-
             override fun onCancelled(p0: DatabaseError) {
             }
         })
-
-
-
-
-
-
-
-
 
         tvLecturename_post_entry.text  = "강의명 : ${post.lecturename}"
         tvProfessorname_post_entry.text = "교수명 : ${post.professorName}"
@@ -179,12 +174,8 @@ class PostLogActivity : AppCompatActivity() {
             Five_Check=1
             Post_Vote(post)
         }
-        Thread.sleep((3*1000).toLong()) // 이거 오류고치자
-        plog_progress.visibility = View.INVISIBLE // 이거 오류고치자
-
+        background.start()
     }
-
-
 
 //    override fun onPause() {
 ////        plog_progress.visibility = View.INVISIBLE // 이거 오류고치자
@@ -198,7 +189,6 @@ class PostLogActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.post_log_top_menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
-
     //상단 menu bar select listener.
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
@@ -301,36 +291,3 @@ private  fun Voteting(post :Post){ //vote 할 때 트랜젝션을 만들어 서�
     val vote: Vote =Vote(Id.toString(),0,herold!!)
     Vote_Transaction_ref.child("$name").child("$Id").setValue(vote)
 }
-
-
-//Item은  com.xwray.groupie에 정의된 타입으로  그냥 받아들이면 됨
-//class PostEntryItem(val post: Post) : Item<ViewHolder>() {
-//    //여기서 return한 layout 파일의 형식대로 recycler view에 추가됨.
-//    override fun getLayout(): Int {
-//        return R.layout.post_entry
-//    }
-//
-//    override fun bind(viewHolder: ViewHolder, position: Int) {
-//        //viewHolder.itemView까지 하면 view를 얻는다고 보면 됨.
-//        viewHolder.itemView.tvLecturename_post_entry.text = "[${post.lecturename}]"
-//        viewHolder.itemView.tvProfessorname_post_entry.text = "${post.professorName}교수님"
-//        viewHolder.itemView.tvService_post_entry.text = "${post.service}"
-//        viewHolder.itemView.tvYear_post_entry.text = "${post.year}학년"
-//        viewHolder.itemView.tvTest_post_entry.text = "[${post.test}시험"
-//        viewHolder.itemView.tvTitle_post_entry.text = "[${post.title}]"
-//        viewHolder.itemView.tvComment_post_entry.text = "[${post.contents}]"
-//        viewHolder.itemView.tvUsername_post_entry.text = "[${post.author}]"
-//        viewHolder.itemView.tvReward_post_entry.text = "[${post.reward}]"
-//        viewHolder.itemView.tvVote_post_entry.text = "[${post.vote}]"
-////        viewHolder.itemView.tvDate_post_entry.text = "[${post.data}]"
-//        //get CommentItemCount
-////        viewHolder.itemView.tvComment_post_entry.text = "[${post.c}]"
-//
-//
-//        //TODO 사진 업로드. 프로필 이미지 업로드 이렇게 하면 됨.
-//
-////        post.uid
-//        //Picasso.get().load(user.profileImageUrl).into(viewHolder.itemView.ivPostImage)
-//    }
-//
-//}

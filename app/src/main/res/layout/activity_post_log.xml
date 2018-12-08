@@ -89,93 +89,78 @@
         app:layout_constraintTop_toBottomOf="@+id/tvTitle_post_entry" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/userProfileImage"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/icon_my_account"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerview_post_log"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvContents_post_entry"
-        app:layout_constraintVertical_bias="1.0" />
+            android:id="@+id/userProfileImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/icon_my_account"
+            tools:layout_editor_absoluteY="102dp"
+            app:layout_constraintEnd_toStartOf="@+id/tvUsername_post_entry"
+            app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
-        android:id="@+id/tvUsername_post_entry"
+            android:id="@+id/tvUsername_post_entry"
 
-        android:layout_width="66dp"
-        android:layout_height="18dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="28dp"
-        android:text="Username"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerview_post_log"
-        app:layout_constraintEnd_toStartOf="@+id/tvReward_post_entry"
-        app:layout_constraintHorizontal_bias="0.166"
-        app:layout_constraintStart_toEndOf="@+id/userProfileImage"
-        app:layout_constraintTop_toBottomOf="@+id/tvContents_post_entry"
-        app:layout_constraintVertical_bias="0.0" />
+            android:layout_width="66dp"
+            android:layout_height="20dp"
+            android:text="Username"
+            app:layout_constraintEnd_toStartOf="@+id/tvReward_post_entry"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintTop_toTopOf="@+id/tvReward_post_entry"
+            app:layout_constraintBottom_toBottomOf="@+id/tvReward_post_entry"/>
 
     <TextView
-        android:id="@+id/tvReward_post_entry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:drawableLeft="@drawable/icon_q_resized"
-        android:drawablePadding="5dp"
-        android:text="reward"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerview_post_log"
-        app:layout_constraintEnd_toStartOf="@+id/tvVote_post_entry"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/tvUsername_post_entry"
-        app:layout_constraintTop_toTopOf="@id/tvContents_post_entry"
-        app:layout_constraintVertical_bias="0.709" />
+            android:id="@+id/tvReward_post_entry"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:drawableLeft="@drawable/icon_q_resized"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:text="0.0"
+            app:layout_constraintTop_toTopOf="@+id/tvVote_post_entry"
+            app:layout_constraintBottom_toBottomOf="@+id/tvVote_post_entry" tools:layout_editor_absoluteX="156dp"/>
 
     <Button
-        android:id="@+id/tvVote_post_entry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-
-        android:drawableLeft="@drawable/icon_thumb_resized"
-        android:drawablePadding="5dp"
-        android:text="vote"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerview_post_log"
-        app:layout_constraintEnd_toStartOf="@+id/tvComment_post_entry"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/tvReward_post_entry"
-        app:layout_constraintTop_toBottomOf="@+id/plog_progress" />
+            android:id="@+id/tvVote_post_entry"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:drawableLeft="@drawable/icon_thumb_resized"
+            android:text="0"
+            app:layout_constraintEnd_toStartOf="@+id/tvComment_post_entry"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvReward_post_entry"
+            app:layout_constraintTop_toTopOf="@+id/tvComment_post_entry"
+            app:layout_constraintBottom_toBottomOf="@+id/tvComment_post_entry"/>
 
     <TextView
-        android:id="@+id/tvComment_post_entry"
-        android:layout_width="wrap_content"
-        android:layout_height="21dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="28dp"
-        android:drawableLeft="@drawable/icon_comment_resized"
-        android:drawablePadding="5dp"
-        android:text="comment"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerview_post_log"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/tvVote_post_entry"
-        app:layout_constraintTop_toBottomOf="@+id/tvContents_post_entry"
-        app:layout_constraintVertical_bias="0.0" />
+            android:id="@+id/tvComment_post_entry"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:drawableLeft="@drawable/icon_comment_resized"
+            android:drawablePadding="5dp"
+            android:text="0"
+            app:layout_constraintBottom_toTopOf="@+id/recyclerview_post_log"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvVote_post_entry"
+            android:background="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/tvContents_post_entry"
+            app:layout_constraintVertical_bias="0.0"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview_post_log"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/plog_progress"
-        app:layout_constraintVertical_bias="0.0" />
+            android:id="@+id/recyclerview_post_log"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/plog_progress"
+            app:layout_constraintVertical_bias="0.0"/>
 
     <ProgressBar
         android:id="@+id/plog_progress"
@@ -190,20 +175,24 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvuri"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="54dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="16dp"
-        android:autoLink="web"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/tvVote_post_entry"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/plog_progress"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+            android:id="@+id/tvuri"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="54dp"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="16dp"
+            android:autoLink="web"
+            android:text="uri"
+            app:layout_constraintBottom_toTopOf="@+id/tvVote_post_entry"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/plog_progress"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"/>
+    <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" tools:layout_editor_absoluteY="144dp"
+            tools:layout_editor_absoluteX="124dp" android:id="@+id/space"/>
 
 </android.support.constraint.ConstraintLayout>

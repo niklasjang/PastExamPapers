@@ -44,9 +44,7 @@
                     android:value=".Activitys.MainActivity"/>
         </activity>
         <activity android:name=".Activitys.PostLogActivity">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".Activitys.MainActivity"/>
+
         </activity>
         <activity android:name=".Activitys.PreferenceActivity">
         </activity>
