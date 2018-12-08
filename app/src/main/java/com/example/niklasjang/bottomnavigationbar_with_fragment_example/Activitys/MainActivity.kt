@@ -106,8 +106,6 @@ class MainActivity : AppCompatActivity() {
         Fore_Check=0
         Five_Check=0
 
-        getKey()
-
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
     }
@@ -115,12 +113,26 @@ class MainActivity : AppCompatActivity() {
     //로그인 했는지 확인
     private fun verifyUserIsLoggedIn() {
         val uid = FirebaseAuth.getInstance().uid
-        UserId = FirebaseAuth.getInstance().uid!!
-        plainID = UserId.substring(0, 16)         //private_key는 16의 크기로 제한되어 있다 , 암호화 할때 private_key로 쓰임
+        Log.d("LogTest","Current user uid is $uid")
         if (uid == null) {
             val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
+            startActivityForResult(intent,200)
+            Log.d("LogTest","call Login Activity, requestCode is 200")
+        }else{
+            Log.d("LogTest","you have already logged in...")
+
+            UserId = uid
+            plainID = UserId.substring(0, 16)
+        }
+               //private_key는 16의 크기로 제한되어 있다 , 암호화 할때 private_key로 쓰임
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 200 && resultCode==201) {// 201은 레지스터에서 202는 로그인에서 넘어올 떄
+            verifyUserIsLoggedIn()
+            getKey()
         }
     }
 

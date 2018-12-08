@@ -21,17 +21,17 @@ import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
 
 class LoginActivity : AppCompatActivity() {
-    var gso : GoogleSignInOptions? = null
-    var googleSignInClient : GoogleSignInClient? = null
+    var gso: GoogleSignInOptions? = null
+    var googleSignInClient: GoogleSignInClient? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         performLogin()
         googleLoginSetup()
-        println("TEST 2")
         tvGoToCreateAccount.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent)
+            Log.d("LogTest","call Register Activity, requestCode is 300")
+            startActivityForResult(intent,300)
         }
     }
 
@@ -49,8 +49,11 @@ class LoginActivity : AppCompatActivity() {
                     if (!it.isSuccessful) return@addOnCompleteListener
                     Log.d("Login Activity", "Login Success")
                     Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
+//                    val intent = Intent(this, MainActivity::class.java)
+//                    startActivity(intent)
+                    setResult(201)
+                    finish()
+                    Log.d("LogTest","call Main Activity. resultcode is 201")
                 }
                 .addOnFailureListener {
                     Log.d("Login Activity", "Login Failed")
@@ -60,10 +63,10 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun googleLoginSetup(){
+    private fun googleLoginSetup() {
         //Google Login
 
-         gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
@@ -79,6 +82,11 @@ class LoginActivity : AppCompatActivity() {
     //구글 로그인 버튼 누르기 결과
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode==300 && resultCode==301){
+            Log.d("LogTest","Back to Main Activity, resultCode is 201")
+            setResult(201)
+            finish()
+        }
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
             //구글 로그인에 성공했을 때 넘어오는 토큰 값을 가지는 task
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
@@ -102,6 +110,8 @@ class LoginActivity : AppCompatActivity() {
                         val intent = Intent(this, MainActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)
+
+
                     } else {
                         Toast.makeText(this, "구글 계정 연동에 실패하였습니다.", Toast.LENGTH_LONG).show()
                     }

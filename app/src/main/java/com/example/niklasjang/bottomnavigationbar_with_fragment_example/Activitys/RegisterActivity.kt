@@ -71,11 +71,17 @@ class RegisterActivity : AppCompatActivity() {
                     Log.d("RegisterActivity", "Successfully created user with uid : ${it.result?.user?.uid}")
 
                     //main activity로 이동
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    startActivity(intent)
-
-                    //아이디 만들기 성공 후 선택한 이미지 파베에 올리기. + 유저정보를 DB에 저장하기
+//                    val intent = Intent(this, MainActivity::class.java)
+//                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+//                    startActivity(intent)
+                    Log.d("LogTest","Back to Login Activity, resultCode is 301")
+                    setResult(301)
+                    finish()
+//  val intent = Intent(this, LoginActivity::class.java)
+//                    val uid = FirebaseAuth.getInstance().currentUser?.uid
+//                    intent.putExtra("uid",uid)
+//                    startActivityForResult(intent,120)
+//                    아이디 만들기 성공 후 선택한 이미지 파베에 올리기. + 유저정보를 DB에 저장하기
                     upLoadImageToFirebaseStorage()
                 }
                 .addOnFailureListener { exception ->

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
@@ -29,6 +30,7 @@ import kotlinx.android.synthetic.main.post_entry.view.*
 import okhttp3.internal.http2.Http2
 
 class PostLogActivity : AppCompatActivity() {
+    lateinit  var btnVote : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +47,9 @@ class PostLogActivity : AppCompatActivity() {
         adapter.notifyDataSetChanged()
 
         val postEntry = recyclerView?.layoutManager?.findViewByPosition(0)
-        val btnVote = postEntry?.findViewById<Button>(R.id.tvVote_post_entry)
-        btnVote?.isEnabled = true
+        Log.d("PostLogActivity","recyclerview is ${recyclerView?.layoutManager}")
+        btnVote = postEntry?.findViewById(R.id.tvVote_post_entry)!!
+        btnVote.isEnabled = true
 
         val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Vote_User_id")
         ref.addValueEventListener(object :ValueEventListener{
@@ -57,13 +60,13 @@ class PostLogActivity : AppCompatActivity() {
                     for(h in p0.children){
                         val value = h.value.toString()
                         if (value.equals(Id.toString())) {
-                            btnVote?.isEnabled = false
+                            btnVote.isEnabled = false
                         }
                     }
                 }
             }
         })
-        btnVote?.setOnClickListener{
+        btnVote.setOnClickListener{
             ref.addValueEventListener(object : ValueEventListener{
                 override fun onCancelled(p0: DatabaseError) {
                 }
