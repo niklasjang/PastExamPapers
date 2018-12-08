@@ -28,7 +28,7 @@ class PostLogActivity : AppCompatActivity() {
         //TODO SET MAX WIDth in xml
 //        android:MaxWidth
         val post = intent.getParcelableExtra<Post>(TimelineFragment.POST_KEY)
-        supportActionBar?.title = post.lecturename
+        supportActionBar?.title = post.title
 
         val adapter = GroupAdapter<ViewHolder>()
         val recyclerView : RecyclerView? = findViewById(R.id.recyclerview_post_log)
