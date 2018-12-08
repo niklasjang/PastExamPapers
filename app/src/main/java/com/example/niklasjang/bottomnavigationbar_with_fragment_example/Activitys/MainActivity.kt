@@ -18,35 +18,41 @@ import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragment
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.NewsFragment
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.Post
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.TimelineFragment
-import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.Key
-import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.ShowInfor
-import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.ShowInfor2
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.*
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
 
+lateinit var Post_Transaction_ref: DatabaseReference
 lateinit var Key_Save_ref: DatabaseReference
 lateinit var Show_ref : DatabaseReference
 lateinit var Vote_ref:DatabaseReference
 lateinit var Vote_Transaction_ref: DatabaseReference
+
+lateinit var Post_Process_ref :DatabaseReference
 lateinit var Vote_User_ref: DatabaseReference
 lateinit var Show_User_ref: DatabaseReference
+lateinit var Coin_Transaction_List: MutableList<Hero>
 
 lateinit var Key_List: MutableList<Key>
 lateinit var Sub_List: MutableList<ShowInfor>
 lateinit var Plus_List:MutableList<ShowInfor2>
 lateinit var List :MutableList<Post>
+lateinit var Post_List:MutableList<Vote>
 
 lateinit var UserId: String
 lateinit var plainID: String
 lateinit var HashID: String
 
+
 var Coin: Int =0
 var Id:Int = 0 //클라이언트가 가지고 있는 고유 아이디
 var First_Login: Int = 0 //처음 로그인 했는지 판단
+var Second_Check : Int=0
 var Third_Check : Int=0
 var Fore_Check: Int=0
+var Five_Check: Int=0
 
 
 class MainActivity : AppCompatActivity() {
@@ -83,24 +89,25 @@ class MainActivity : AppCompatActivity() {
         verifyUserIsLoggedIn() //로그인 했는지 확인
         loadFragment(NewsFragment()) //어플 실행하자마자 보이는 화면 설정
 
-        UserId = FirebaseAuth.getInstance().uid!! //firebase에 저장되어 있는 클라인트의 고유 정보 UID
-        plainID = UserId.substring(0, 16)         //private_key는 16의 크기로 제한되어 있다 , 암호화 할때 private_key로 쓰임
-
+        Post_Transaction_ref = FirebaseDatabase.getInstance().getReference("Post_tx") //서버에 저장되어 있는 코인의 이동(코인 획득, 소모)의 트랜젝션을 참조
         Key_Save_ref = FirebaseDatabase.getInstance().getReference("Key")
         Show_ref=FirebaseDatabase.getInstance().getReference("Sub")
         Vote_ref=FirebaseDatabase.getInstance().getReference("Plus")
         Vote_Transaction_ref=FirebaseDatabase.getInstance().getReference("Vote") //서버에 저장 되어 있는 보팅 트랜젝션을 참조
-        Vote_User_ref=FirebaseDatabase.getInstance().getReference("Vote_User_id")
+        Vote_User_ref= FirebaseDatabase.getInstance().getReference("posts")
         Show_User_ref= FirebaseDatabase.getInstance().getReference("posts")
 
+        Coin_Transaction_List= mutableListOf()
         Sub_List= mutableListOf()
         List= mutableListOf()
         Key_List = mutableListOf()
         Plus_List= mutableListOf()
+        Post_List= mutableListOf()
 
         First_Login=0
         Third_Check =0
         Fore_Check=0
+        Five_Check=0
 
         getKey()
 
@@ -111,6 +118,8 @@ class MainActivity : AppCompatActivity() {
     //로그인 했는지 확인
     private fun verifyUserIsLoggedIn() {
         val uid = FirebaseAuth.getInstance().uid
+        UserId = FirebaseAuth.getInstance().uid!!
+        plainID = UserId.substring(0, 16)         //private_key는 16의 크기로 제한되어 있다 , 암호화 할때 private_key로 쓰임
         if (uid == null) {
             val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)

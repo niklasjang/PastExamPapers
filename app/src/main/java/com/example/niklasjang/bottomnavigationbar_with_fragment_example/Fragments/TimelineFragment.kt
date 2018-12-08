@@ -106,26 +106,54 @@ class TimelineFragment : Fragment() {
                 //각 post들을 클릭했을 때 나오는 화면
                 adapter.setOnItemClickListener { item, view ->
                     val userItem = item as UserItem
-                    val pass = 0
+                    var pass = 1
+                    val List : MutableList<Post>
 
-                    if (pass == 0) {
+                    List= mutableListOf()
 
-                    } else if (Coin >= 10) {
-                        Third_Check = 1
-                        Coin -= 5
-                        val Hash = Show_ref.push().key
-                        val Info = ShowInfor(id = Id.toString(), check = 0, hashID = Hash!!)
-                        Show_ref.child(Hash!!).setValue(Info)
+                    val ref = FirebaseDatabase.getInstance().getReference("posts/${item.post.postname}/Show_User_id")
 
-                        Show_User_ref.child("${userItem.post.postname}")
-                            .child("Show_User_id")
-                            .child("${Show_User_ref.push().key}")
-                            .setValue("$Id")
+                    ref.addValueEventListener(object : ValueEventListener{
 
-                    }
-                    val intent = Intent(view.context, PostLogActivity::class.java)
-                    intent.putExtra(POST_KEY, userItem.post)
-                    startActivity(intent)
+                        override fun onDataChange(p0: DataSnapshot) {
+                            List.clear()
+                            for(h in p0.children){
+                                val value=h.value.toString()
+                                println("TEST POST $value $Id")
+                                if(value.equals(Id.toString())){
+                                       pass=0
+
+                                   }
+                                }
+                            if (pass == 0) {
+                                val intent = Intent(view.context, PostLogActivity::class.java)
+                                intent.putExtra(POST_KEY, userItem.post)
+                                startActivity(intent)
+                            } else if (Coin >= 10) {
+                                Third_Check = 1
+                                Coin -= 5
+                                val Hash = Show_ref.push().key
+                                val Info = ShowInfor(id = Id.toString(), check = 0, hashID = Hash!!)
+                                Show_ref.child(Hash!!).setValue(Info)
+
+                                Show_User_ref.child("${userItem.post.postname}")
+                                    .child("Show_User_id")
+                                    .child("${UserId}")
+                                    .setValue("$Id")
+
+                                val intent = Intent(view.context, PostLogActivity::class.java)
+                                intent.putExtra(POST_KEY, userItem.post)
+                                startActivity(intent)
+                            }
+                        }
+
+                        override fun onCancelled(p0: DatabaseError) {
+
+                        }
+                    })
+
+
+
                 }
 
             }
@@ -225,10 +253,11 @@ class Post(
     var reward: Double,
     var vote: Int,
     var uid: String,
-    var contents: String
+    var contents: String,
+    var Id: Int
 ) : Parcelable {
     constructor() : this(
         "postName", "과목명",
-        "교수님", -1, -1, -1, -1.0, 0, "", ""
+        "교수님", -1, -1, -1, -1.0, 0, "", "",0
     )
 }

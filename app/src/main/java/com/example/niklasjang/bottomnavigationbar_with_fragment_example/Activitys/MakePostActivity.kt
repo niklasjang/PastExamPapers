@@ -1,6 +1,7 @@
 package com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys
 
 import android.content.Intent
+import android.os.Build.ID
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcelable
@@ -9,7 +10,7 @@ import android.widget.*
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.Post
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.TimelineFragment
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.TimelineFragment.Companion.USER_KEY
-import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.User
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.*
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R.id.*
 import com.google.firebase.auth.FirebaseAuth
@@ -62,6 +63,7 @@ class MakePostActivity : AppCompatActivity() {
         val btnDone = findViewById<Button>(R.id.btnDone_make_post)
         btnDone.setOnClickListener {
             savePostToFirebaseDatabase()
+
         }
     }
     private fun savePostToFirebaseDatabase() {
@@ -136,7 +138,8 @@ class MakePostActivity : AppCompatActivity() {
                 0.0,
                 0,
                 uid,
-                contents
+                contents,
+                Id
                 )
         )
             .addOnSuccessListener {
@@ -149,8 +152,91 @@ class MakePostActivity : AppCompatActivity() {
                 Toast.makeText(this,"Post upload Fail",Toast.LENGTH_SHORT).show()
                 Toast.makeText(this,"$it",Toast.LENGTH_LONG).show()
             }
-    }
 
+        Post()
+        Fore_Check = 1
+        Process_Post()
+        Vote_User_ref.child("${postname}")
+            .child("Vote_User_id")
+            .child("${UserId}")
+            .setValue("$Id")
+
+        Show_User_ref.child("${postname}")
+            .child("Show_User_id")
+            .child("${UserId}")
+            .setValue("$Id")
+
+    }
+    private  fun Post(){ //게시물 올릴때 트랜젝션을 만들어 서버에 전송
+        Coin+=30
+        Post_Transaction_ref.child(Post_Transaction_ref.push().key!!).setValue(Id)
+
+        val Hash = Show_ref.push().key
+        val Info = ShowInfor2(id = Id.toString(), check = 0, hashID = Hash!!)
+        Vote_ref.child(Hash!!).setValue(Info)
+
+    }
+    private  fun Process_Post(){ //개발자에게 만 주어지는 소스, 즉시 처리(Voting)
+
+        Vote_ref.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                Plus_List.clear()
+                for (h in p0.children) {
+                    val hero = h.getValue(ShowInfor2::class.java)
+
+                    if (hero!!.check == 0) {
+
+                        Plus_List.add(hero!!)
+
+                    }
+
+                }
+
+                Key_Save_ref.addValueEventListener(object : ValueEventListener {
+
+                    override fun onCancelled(p0: DatabaseError) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
+
+                    override fun onDataChange(p0: DataSnapshot) {
+
+
+
+                        Key_List.clear()
+                        for (h in p0.children) {
+                            val hero = h.getValue(Key::class.java)
+                            Key_List.add(hero!!)
+
+                        }
+                    }
+                })
+                for(h in Plus_List){
+
+                    for(h2 in Key_List){
+                        if(h.id == h2.id){
+                            if(Fore_Check==0){
+
+                                return
+                            }
+
+                            val hero1 = Key(id=h2.id, uid=h2.uid, coin=h2.coin +30, hashID = h2.hashID)
+                            Key_List.set(h2.id.toInt()-1,hero1)
+                            Key_Save_ref.child(h2.hashID).setValue(hero1)
+
+                            val hero2= ShowInfor2(id = h.id, check = 1, hashID = h.hashID)
+                            Vote_ref.child(h.hashID).setValue(hero2)
+
+                        }
+                    }
+                }
+                Fore_Check=0
+            }
+        })
+    }
 
 }
 
