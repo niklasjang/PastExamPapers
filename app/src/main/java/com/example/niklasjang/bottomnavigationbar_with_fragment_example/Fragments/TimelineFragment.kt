@@ -136,10 +136,6 @@ class TimelineFragment : Fragment() {
                                             .child("Show_User_id")
                                             .child("${UserId}")
                                             .setValue("$Id")
-
-                                        val intent = Intent(view.context, PostLogActivity::class.java)
-                                        intent.putExtra(POST_KEY, userItem.post)
-                                        startActivity(intent)
                                     }
                                 }
 
@@ -241,6 +237,7 @@ class UserItem(val post: Post) : Item<ViewHolder>() {
 
 @Parcelize
 class Post(
+        var pdfFileUrl : String,
     var postname: String,
     var lecturename: String,
     var professorName: String,
@@ -262,15 +259,16 @@ class Post(
         "lecturename",
         "professorname",
         "title",
-        0,
-        0,
-        0,
-        0.0,
-        0,
-        "author",
-        "uid",
-        "contents",
-        0,
-        0
+        "title",
+            0,
+            0,
+            0,
+            0.0,
+            0,
+            "author",
+            "uid",
+            "contents",
+            0,
+            0
     )
 }

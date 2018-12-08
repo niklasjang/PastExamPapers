@@ -32,7 +32,6 @@ class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
-        performRegister()
         tvAlreadyHaveAccount_register.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
@@ -46,6 +45,7 @@ class RegisterActivity : AppCompatActivity() {
             startActivityForResult(intent, 0)
 
         }
+        performRegister()
     }
 
     //Register버튼과 Google 로그인 버튼 clickListener 정의하기.
@@ -94,6 +94,7 @@ class RegisterActivity : AppCompatActivity() {
 
     }
 
+    var profileImage_uri: String = ""
 
     private fun upLoadImageToFirebaseStorage() {
 
@@ -121,6 +122,7 @@ class RegisterActivity : AppCompatActivity() {
     }
     private fun saveUserToFirebaseDatabase(profileImageUrl: String) {
         //every time this method is executed, correct uid is assigned to here.
+        profileImage_uri = profileImageUrl
         val uid = FirebaseAuth.getInstance().uid ?: ""
         val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
 

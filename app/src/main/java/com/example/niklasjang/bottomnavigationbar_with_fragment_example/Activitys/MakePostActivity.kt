@@ -1,18 +1,31 @@
 package com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys
 
+import android.app.Activity
 import android.content.Intent
-import android.os.Build.ID
-import android.support.v7.app.AppCompatActivity
+import android.net.Uri
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import android.util.Log
+import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.RadioGroup
+import android.widget.Toast
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R.id.frameLayout_make_post
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
+import java.util.*
+
+import android.os.Build.ID
 import android.os.Parcelable
 import android.support.v4.app.FragmentActivity
-import android.util.Log
+import android.view.View
 import android.widget.*
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.Post
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.TimelineFragment
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.TimelineFragment.Companion.USER_KEY
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.*
-import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R.id.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -30,14 +43,74 @@ import com.google.firebase.database.DataSnapshot
 
 class MakePostActivity : AppCompatActivity() {
 
+    var Uri_file : String = ""
+    val PDF :Int = 0
+    lateinit var uri : Uri
+    lateinit var mStorage : StorageReference
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //Make Post Activity에 reycler view 연습코드 적어둠.
         setContentView(R.layout.activity_make_post)
         supportActionBar?.title = "Make Post"
+        var pdfBtn = findViewById<View>(R.id.pdfBtn) as Button
+        mStorage = FirebaseStorage.getInstance().getReference("Uploads")
         inflateAccordingToService()
 
+        pdfBtn.setOnClickListener(View.OnClickListener {
+            view: View? -> val intent = Intent()
+            intent.setType("*/*")
+            intent.setAction(Intent.ACTION_GET_CONTENT)
+            startActivityForResult(intent, PDF)
+        })
+
+
+
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(resultCode == Activity.RESULT_OK){
+            if(requestCode == PDF){
+                uri = data!!.data
+                Log.d("small uri_file", "Finally we saved the fileUri to Firebase Database : $uri ")
+
+                upload()
+
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun upload(){
+        val mReference = mStorage.child(uri.lastPathSegment)
+        try{
+
+            val filename = UUID.randomUUID().toString() //랜덤값 정의하기
+            //"/images/ specify where image will be stored
+            val pdfref = FirebaseStorage.getInstance().getReference("/Uploads/$filename")
+
+
+
+            mReference.putFile(uri).addOnSuccessListener {
+                //여기  taskSnapshot!!. function --> 고쳐야 제대로된 다운로드 URL이 저장이 됨.
+                taskSnapshot: UploadTask.TaskSnapshot -> var url = taskSnapshot!!.uploadSessionUri
+//                val dwnTxt = findViewById<View>(R.id.dwnTxt) as TextView
+//                dwnTxt.text = url.toString()
+                mReference.downloadUrl.addOnSuccessListener {
+
+                    Uri_file = it.toString()
+                }
+                Log.d("Uri_file", "Finally we saved the fileUri to Firebase Database : $Uri_file ")
+
+                Toast.makeText(this, "업로드가 완료 되었습니다.", Toast.LENGTH_LONG).show()
+            }
+        }catch (e :Exception) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
+        }
+    }
+
+
 
     private fun inflateAccordingToService() {
         val rgService = findViewById<RadioGroup>(R.id.rgService)
@@ -142,9 +215,10 @@ class MakePostActivity : AppCompatActivity() {
         val userUID = _uid
         val ref = FirebaseDatabase.getInstance().getReference("posts")
         val postname=ref.push().key ?: ""
-        Log.d("onDataChanged3", "author is $author")
+
         ref.child(postname).setValue(
             Post(
+                    Uri_file,
                 postname,
                 lectureName,
                 professorName,
@@ -255,6 +329,10 @@ class MakePostActivity : AppCompatActivity() {
             }
         })
     }
+
+
+
+
 
 }
 
