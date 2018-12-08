@@ -41,8 +41,8 @@ import java.net.URL
 class MyAccuontFragment : Fragment() {
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
 
 
@@ -58,10 +58,24 @@ class MyAccuontFragment : Fragment() {
 
         var url = ""
         val uid = FirebaseAuth.getInstance().currentUser?.uid
-        val urlRef = FirebaseDatabase.getInstance().getReference("/users/$uid/profileImageUrl")
+        val urlRef = FirebaseDatabase.getInstance().getReference("users")
+        val List : MutableList<User>
+        List= mutableListOf()
         urlRef.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
-                Log.d("p0", "p0 : $p0")
+                for(h in p0.children){
+                    val hero = h.getValue(User ::class.java)
+                    List.add(hero!!)
+                }
+                for(h in List){
+                    if(uid!!.equals(h.uid)){
+                        println("TEST123 ${h.uid} ${h.profileImageUrl.toString()} ${h.username}")
+                        val a=h.profileImageUrl
+                        Picasso.get().load(a).into(profileImage)
+                    }
+                }
+
+
 //                url =p0.value.toString()
             }
             override fun onCancelled(p0: DatabaseError) {

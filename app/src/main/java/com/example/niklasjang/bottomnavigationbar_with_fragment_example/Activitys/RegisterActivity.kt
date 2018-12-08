@@ -113,6 +113,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun saveUserToFirebaseDatabase(profileImageUrl: String) {
         //every time this method is executed, correct uid is assigned to here.
+        profileImage_uri = profileImageUrl
         val uid = FirebaseAuth.getInstance().uid ?: ""
         val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
         ref.setValue(
