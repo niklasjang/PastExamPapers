@@ -74,7 +74,10 @@ class TimelineFragment : Fragment() {
             }
 
             override fun onChildAdded(p0: DataSnapshot, p1: String?) {
+                Log.d("TimelineActivity","p0 is $p0")
                 val post = p0.getValue(Post::class.java)
+                Log.d("TimelineActivity","post is $post")
+
                 if (post != null) {
                     //savePostToFirebaseDatabase에서 setValue한 형식대로 get을 한다.
 //                    adapter.add(adapter.itemCount, UserItem(post))

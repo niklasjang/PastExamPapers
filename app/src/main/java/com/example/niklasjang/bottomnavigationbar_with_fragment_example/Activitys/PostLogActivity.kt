@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcelable
 import android.support.constraint.ConstraintLayout
+import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.Menu
@@ -35,6 +36,11 @@ import kotlinx.android.synthetic.main.post_row.view.*
 import okhttp3.internal.http2.Http2
 import org.w3c.dom.Comment
 import java.lang.invoke.ConstantCallSite
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.ChildEventListener
+
+
 
 class PostLogActivity : AppCompatActivity() {
     lateinit var btnVote: Button
@@ -52,10 +58,9 @@ class PostLogActivity : AppCompatActivity() {
         adapter = GroupAdapter<ViewHolder>()
         recyclerView = findViewById(R.id.recyclerview_post_log)
 
-        recyclerView?.adapter = adapter
-
+        recyclerView.adapter = adapter
         // adapter.add(0,PostEntryItem(post))
-        adapter.notifyDataSetChanged()
+
 
         tvLecturename_post_entry.text = post.lecturename
         tvProfessorname_post_entry.text = post.professorName
@@ -66,7 +71,6 @@ class PostLogActivity : AppCompatActivity() {
         val btnVote = findViewById<Button>(R.id.tvVote_post_entry)
         tvReward_post_entry.text = "5.7"
         //PostLog 실행되자마자 댓글정보 가져오게.
-        fetchComment()
 
         val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Vote_User_id")
         ref.addValueEventListener(object : ValueEventListener {
@@ -151,27 +155,27 @@ class PostLogActivity : AppCompatActivity() {
                 //TODO 어떤 fragment에서 넘어온 건지 기억해서 돌아가기. 지금은 manifests에 parent actiyivty만 설정했음.
                 // TODO 그래서 Main Activit가 처음 시작될 때 News Fragment가 시작되게 설정한 것이 자동으로 시작됨.
                 // 댓글달기 완료 버튼
-                val comment = etComment_post_log?.text.toString()
-                uploadCommentToFirebaseDatabase(comment)
+                val contents = etComment_post_log?.text.toString()
+                uploadCommentToFirebaseDatabase(contents)
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun uploadCommentToFirebaseDatabase(comment : String) {
+    private fun uploadCommentToFirebaseDatabase(contents : String) {
         val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/comments/")
         val commentName = ref.push().key ?: ""
 
         ref.child(commentName).setValue(
-            Comment(
-                comment,
+            MyComment(
+                contents,
                 commentName
             )
         )
             .addOnSuccessListener {
                 Log.d("PostLog Activity", "Finally we saved the comment to Firebase Database ")
                 Toast.makeText(this, "Post upload success", Toast.LENGTH_SHORT).show()
-                fetchComment()
+                fetchComment(commentName)
             }
             .addOnFailureListener {
                 Log.d("PostLog Activity", "Badly we can't saved the comment to Firebase Database : $it ")
@@ -181,52 +185,24 @@ class PostLogActivity : AppCompatActivity() {
 
     }
 
-    private fun fetchComment() {
+    private fun fetchComment(commentName: String ) {
         //If the addValueEventListener() method is used to add the listener,
         //the app will be notified every time the data changes in the specified subtree.
-        val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/comments")
-        ref.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-            }
-
+//        var added :Int = 0
+        val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/comments/$commentName")
+        ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
-                Log.d("fetchComment", "p0 is ${p0}")
-                val comment = p0.getValue(Comment::class.java)
-                Log.d("PostLogActivity","p0 is $comment")
-                if (comment != null) {
-//                    Log.d("fetchComment", "${adapter.itemCount}")
-                    adapter.add(0, CommentItem(comment))
-                }
+                Log.d("DataSnapshot", "p0 is $p0")
+                Log.d("DataSnapshot", "count is ${p0.childrenCount}")
+//                val post = p0.getValue(Post::class.java)
+                val myComment = p0.getValue(MyComment::class.java)
+                adapter.add(CommentItem(myComment!!))
                 adapter.notifyDataSetChanged()
             }
+
+            override fun onCancelled(p0: DatabaseError) {
+            }
         })
-//      ref.addChildEventListener(object : ChildEventListener {
-//            override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-//
-//
-//                //각 comment들을 클릭했을 때 나오는 화면
-////                adapter.setOnItemClickListener { item, view ->
-////                    val userItem = item as UserItem
-////                    val intent = Intent(view.context, PostLogActivity::class.java)
-////                    intent.putExtra(TimelineFragment.POST_KEY, userItem.post)
-////                    startActivity(intent)
-////                }
-//            }
-//
-//            override fun onChildChanged(p0: DataSnapshot, p1: String?) {
-//            }
-//
-//            override fun onChildMoved(p0: DataSnapshot, p1: String?) {
-//            }
-//
-//            override fun onChildRemoved(p0: DataSnapshot) {
-//            }
-//
-//            override fun onCancelled(p0: DatabaseError) {
-//            }
-//
-//
-//        })
     }
 }
 
@@ -325,7 +301,7 @@ private fun Voteting(post: Post) { //vote 할 때 트랜젝션을 만들어 서�
 
 
 @Parcelize
-class Comment(
+class MyComment(
     var contents: kotlin.String,
     var commentName: kotlin.String
 ) : android.os.Parcelable {
@@ -337,7 +313,7 @@ class Comment(
 
 
 //Item은  com.xwray.groupie에 정의된 타입으로  그냥 받아들이면 됨
-class CommentItem(val comment: Comment) : Item<ViewHolder>() {
+class CommentItem(val myComment: MyComment) : Item<ViewHolder>() {
     //여기서 return한 layout 파일의 형식대로 recycler view에 추가됨.
     override fun getLayout(): Int {
         return R.layout.comment_row
@@ -345,7 +321,7 @@ class CommentItem(val comment: Comment) : Item<ViewHolder>() {
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         //viewHolder.itemView까지 하면 view를 얻는다고 보면 됨.
-//        viewHolder.itemView.tvComment_comment.text = comment.contents
+        viewHolder.itemView.tvComment_comment.text = myComment.contents
 
         //TODO 사진 업로드. 프로필 이미지 업로드 이렇게 하면 됨.
         //Picasso.get().load(user.profileImageUrl).into(viewHolder.itemView.ivPostImage)
