@@ -43,8 +43,6 @@ import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_post_log.*
 import kotlinx.android.synthetic.main.activity_post_log.view.*
-import kotlinx.android.synthetic.main.comment_row.*
-import kotlinx.android.synthetic.main.comment_row.view.*
 import kotlinx.android.synthetic.main.post_row.view.*
 import okhttp3.internal.http2.Http2
 import org.w3c.dom.Comment
@@ -53,7 +51,7 @@ import java.io.File
 import java.lang.invoke.ConstantCallSite
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ChildEventListener
-
+import kotlinx.android.synthetic.main.comment_row.view.*
 
 
 class PostLogActivity : AppCompatActivity() {
@@ -64,6 +62,20 @@ class PostLogActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post_log)
+
+        val background = object : Thread() {
+            override fun run() {
+                try {
+                    // Thread will sleep for 1 seconds
+                    Thread.sleep((3*1000).toLong())
+                    // After 5 seconds redirect to another intent
+                    //Remove activity
+                    plog_progress.visibility = View.INVISIBLE
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
         //TODO SET MAX WIDth in xml
 //        android:MaxWidth
         post = intent.getParcelableExtra<Post>(TimelineFragment.POST_KEY)
@@ -99,13 +111,8 @@ class PostLogActivity : AppCompatActivity() {
                         tvUsername_post_entry.text = h.username
 //                        Thread.sleep((3*1000).toLong()) // 이거 오류고치자
                     }
-
-
                 }
-
-
             }
-
             override fun onCancelled(p0: DatabaseError) {
             }
         })
@@ -223,12 +230,8 @@ class PostLogActivity : AppCompatActivity() {
             Five_Check = 1
             Post_Vote(post)
         }
-        Thread.sleep((3*1000).toLong()) // 이거 오류고치자
-        plog_progress.visibility = View.INVISIBLE // 이거 오류고치자
-
+        background.start()
     }
-
-
 
 //    override fun onPause() {
 ////        plog_progress.visibility = View.INVISIBLE // 이거 오류고치자
@@ -242,7 +245,6 @@ class PostLogActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.post_log_top_menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
-
     //상단 menu bar select listener.
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
@@ -438,5 +440,4 @@ class CommentItem(val myComment: MyComment) : Item<ViewHolder>() {
     }
 
 }
-
 

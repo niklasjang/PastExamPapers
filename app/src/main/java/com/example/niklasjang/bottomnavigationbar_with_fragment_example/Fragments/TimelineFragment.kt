@@ -77,9 +77,9 @@ class TimelineFragment : Fragment() {
             }
 
             override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-                Log.d("TimelineActivity","p0 is $p0")
+                Log.d("TimelineActivity", "p0 is $p0")
                 val post = p0.getValue(Post::class.java)
-                Log.d("TimelineActivity","post is $post")
+                Log.d("TimelineActiUserItevity", "post is $post")
 
                 if (post != null) {
                     //savePostToFirebaseDatabase에서 setValue한 형식대로 get을 한다.
@@ -181,10 +181,11 @@ private fun getKey() { //key 생성, 처음 login 했을 때
         override fun onCancelled(p0: DatabaseError) {
 
         }
+
         override fun onDataChange(p0: DataSnapshot) {
 
             if (p0.exists()) {
-                if(First_Login ==1){
+                if (First_Login == 1) {
                     return
                 }
 
@@ -199,8 +200,8 @@ private fun getKey() { //key 생성, 처음 login 했을 때
                     if (h.uid.equals(UserId)) {
 
                         Id = h.id.toInt()
-                        Coin =h.coin
-                        HashID =h.hashID
+                        Coin = h.coin
+                        HashID = h.hashID
                         First_Login = 1
 
                     }
@@ -210,14 +211,14 @@ private fun getKey() { //key 생성, 처음 login 했을 때
 
                     val heroId = Key_Save_ref.push().key
                     val num = Key_List[Key_List.lastIndex].id.toInt()
-                    val hero = Key((num + 1).toString(), UserId, 300,heroId!!)
+                    val hero = Key((num + 1).toString(), UserId, 300, heroId!!)
 
                     Key_Save_ref.child(heroId!!).setValue(hero).addOnCompleteListener() {
                     }
                 }
             } else {
                 val heroId = Key_Save_ref.push().key
-                val hero = Key("1", UserId, 30,heroId!!)
+                val hero = Key("1", UserId, 30, heroId!!)
                 Key_Save_ref.child(heroId!!).setValue(hero).addOnCompleteListener() {
                 }
             }
@@ -225,6 +226,7 @@ private fun getKey() { //key 생성, 처음 login 했을 때
     })
 
 }
+
 private fun Process_Show() { //개발자에게 만 주어지는 소스, 즉시 처리(게시물 볼 때)
     Show_ref.addValueEventListener(object : ValueEventListener {
         override fun onCancelled(p0: DatabaseError) {
@@ -290,8 +292,12 @@ class UserItem(val post: Post) : Item<ViewHolder>() {
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         //viewHolder.itemView까지 하면 view를 얻는다고 보면 됨.
-        viewHolder.itemView.tvLectureName_post_row.text = "강의명 : ${post.lecturename} "
+        viewHolder.itemView.tvLectureName_post_row.text = "[강의명 : ${post.lecturename}]"
         viewHolder.itemView.tvProfessorName_post_row.text = "교수명 : ${post.professorName}"
+        viewHolder.itemView.tvTitle_post_row.text = "제목 : ${post.title}"
+        viewHolder.itemView.tvReward_post_row.text = "$${post.reward}"
+        viewHolder.itemView.tvVote_post_row.text = "${post.vote}up"
+        viewHolder.itemView.tvViews_post_row.text = "${post.views}"
 
         //TODO 사진 업로드. 프로필 이미지 업로드 이렇게 하면 됨.
         //Picasso.get().load(user.profileImageUrl).into(viewHolder.itemView.ivPostImage)

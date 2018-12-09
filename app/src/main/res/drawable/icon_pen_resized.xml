@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+            android:drawable="@drawable/icon_pen"
+            android:width="@dimen/icon_size_30"
+            android:height="@dimen/icon_size_30"
+    />
+
+</layer-list >

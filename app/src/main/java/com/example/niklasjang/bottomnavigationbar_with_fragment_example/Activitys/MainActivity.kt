@@ -247,23 +247,6 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
                 Log.d("LogTest", "Sign out.. ")
             }
-            R.id.menu_refresh ->{
-                //TODO 버튼 누르면 다시 업로드? 그냥 이 버튼을 지울까
-                Log.d("MainActivity", "menu_refresh clicked")
-//                val currentTimelineFragment  = supportFragmentManager.findFragmentByTag("CurrentTimelineFragment")
-//                if(currentTimelineFragment ==null) return false
-//                (currentTimelineFragment as TimelineFragment).asdasd
-//                val rotate = RotateAnimation(
-//                    0f, 360f,
-//                    Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f
-//                rotate.duration = 1000
-//                rotate.repeatCount = Animation.INFINITE
-//                rotate.repeatMode = Animation.INFINITE
-//                rotate.interpolator = LinearInterpolator()
-//                val btnRefresh = findViewById<ActionMenuItemView>(R.id.menu_refresh)
-//                btnRefresh.startAnimation(rotate)
-//                btnRefresh.clearAnimation()
-            }
         }
         return super.onOptionsItemSelected(item)
     }
