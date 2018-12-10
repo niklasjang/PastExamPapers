@@ -123,59 +123,86 @@ class PostLogActivity : AppCompatActivity() {
         tvTitle_post_entry.text = post.title
         tvReward_post_entry.text = post.reward.toString()
         tvVote_post_entry.text = post.vote.toString()
+        rewardShow(post)
 //        tvUsername_post_entry.text = urlRef.child()
 //        Picasso.get().load(post.pdfFileUrl).into(userProfileImage)
 
 //        tvComment_post_entry.text = post.
         val btnVote = findViewById<Button>(R.id.tvVote_post_entry)
 
-        tvReward_post_entry.text = "5.7"
         //PostLog 실행되자마자 댓글정보 가져오게.
 
         val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Vote_User_id")
-        val ref2 = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Show_User_id")
 
 
-        ref.addValueEventListener(object :ValueEventListener{
+
+
+        ref.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
             }
 
             override fun onDataChange(p0: DataSnapshot) {
 
-                if(p0.exists()){
-                    var voteCount=0
-                    for(h in p0.children){
+                if (p0.exists()) {
+                    for (h in p0.children) {
                         val value = h.value.toString()
-                        voteCount+=1
-                        println("TEST Vote${voteCount}")
                         if (value.equals(Id.toString())) {
                             btnVote.isEnabled = false
                         }
                     }
+                    var voteCount=p0.childrenCount
                     voteCount-=1
                     println("TEST Vote${voteCount}")
                     btnVote.setText("$voteCount")
                 }
             }
         })
-        ref2.addValueEventListener(object :ValueEventListener{
+
+        val ref2 =FirebaseDatabase.getInstance().getReference("posts/${post.postname}/comments")
+
+        ref2.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
             }
+
             override fun onDataChange(p0: DataSnapshot) {
 
-                if(p0.exists()){
-                    var ShowCount=0
-                    for(h in p0.children){
-                        val value = h.value.toString()
-                        ShowCount+=1
-                        println("TEST Show${ShowCount}")
-                        }
+                if (p0.exists()) {
 
-                    ShowCount-=1
-                    println("TEST Show${ShowCount}")
+                    var commentCount=p0.childrenCount
+
+                    println("TEST Vote${commentCount}")
+                    tvComment_post_entry.setText("$commentCount")
                 }
             }
         })
+
+
+
+
+
+
+// val ref2 = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Show_User_id")
+//
+//
+//
+//        ref2.addValueEventListener(object :ValueEventListener{
+//            override fun onCancelled(p0: DatabaseError) {
+//            }
+//            override fun onDataChange(p0: DataSnapshot) {
+//
+//                if(p0.exists()){
+//                    var ShowCount=0
+//                    for(h in p0.children){
+//                        val value = h.value.toString()
+//                        ShowCount+=1
+//                        println("TEST Show${ShowCount}")
+//                        }
+//
+//                    ShowCount-=1
+//                    println("TEST Show${ShowCount}")
+//                }
+//            }
+//        })
         btnVote.setOnClickListener {
             ref.addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
@@ -261,6 +288,27 @@ class PostLogActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+
+    private fun rewardShow(post : Post) {
+        val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Vote_User_id")
+        var voteCount=0
+
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+
+
+                var voteCount=p0.childrenCount
+                voteCount-=1
+                println("TEST Vote${voteCount}")
+                tvReward_post_entry.setText("${20+voteCount*0.5}")
+            }
+        })
+
     }
 
     private fun uploadCommentToFirebaseDatabase(contents : String) {
