@@ -40,6 +40,7 @@ import java.util.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import com.google.firebase.database.DataSnapshot
+import kotlinx.android.synthetic.main.activity_post_log.*
 
 class MakePostActivity : AppCompatActivity() {
 
@@ -59,6 +60,9 @@ class MakePostActivity : AppCompatActivity() {
         var pdfBtn = findViewById<View>(R.id.btnPDF_make_post) as Button
         mStorage = FirebaseStorage.getInstance().getReference("Uploads")
         inflateAccordingToService()
+
+        mk_progress.visibility = View.INVISIBLE
+
 
         pdfBtn.setOnClickListener(View.OnClickListener {
                 view: View? -> val intent = Intent()
@@ -111,6 +115,7 @@ class MakePostActivity : AppCompatActivity() {
             val pdfref = FirebaseStorage.getInstance().getReference("/Uploads/$filename")
 
 
+            mk_progress.visibility = View.VISIBLE
 
             mReference.putFile(uri).addOnSuccessListener {
                 //여기  taskSnapshot!!. function --> 고쳐야 제대로된 다운로드 URL이 저장이 됨.
@@ -125,6 +130,8 @@ class MakePostActivity : AppCompatActivity() {
                 Log.d("Uri_file", "Finally we saved the fileUri to Firebase Database : $Uri_file ")
 
                 Toast.makeText(this, "업로드가 완료 되었습니다.", Toast.LENGTH_LONG).show()
+                mk_progress.visibility = View.INVISIBLE
+
             }
         } catch (e: Exception) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
@@ -176,7 +183,7 @@ class MakePostActivity : AppCompatActivity() {
     private fun savePostToFirebaseDatabase(_uid: String, _author: String) {
         val lectureName = etLectureName_make_post.text.toString()
         val professorName = etProfessorName_make_post.text.toString()
-        val title: String = ""
+        var title: String = ""
         if (lectureName.isEmpty() || professorName.isEmpty()){
             Toast.makeText(this, "텍스트를 모두 선택하세요.", Toast.LENGTH_SHORT).show()
             return
@@ -205,10 +212,14 @@ class MakePostActivity : AppCompatActivity() {
             R.id.rbtn_QnA -> {
                 service = 1
                 contents = findViewById<EditText>(R.id.etContents_qna).text.toString()
+                title = findViewById<EditText>(R.id.etTitle_qna).text.toString()
+
             }
             R.id.rbtn_Share -> {
                 service = 2
                 contents = findViewById<EditText>(R.id.etContents_share).text.toString()
+                title = findViewById<EditText>(R.id.etTitle_share).text.toString()
+
             }
             else -> {
                 service = null

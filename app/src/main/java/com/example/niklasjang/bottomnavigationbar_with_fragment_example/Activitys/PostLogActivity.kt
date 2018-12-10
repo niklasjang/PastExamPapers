@@ -70,7 +70,8 @@ class PostLogActivity : AppCompatActivity() {
                     Thread.sleep((3*1000).toLong())
                     // After 5 seconds redirect to another intent
                     //Remove activity
-                    plog_progress.visibility = View.INVISIBLE
+                            plog_progress.visibility = View.INVISIBLE
+
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -79,7 +80,7 @@ class PostLogActivity : AppCompatActivity() {
         //TODO SET MAX WIDth in xml
 //        android:MaxWidth
         post = intent.getParcelableExtra<Post>(TimelineFragment.POST_KEY)
-        supportActionBar?.title = post.title
+        supportActionBar?.title = "게시글 제목 : ${post.title}"
 
         fetchExistComments()
 
@@ -107,8 +108,16 @@ class PostLogActivity : AppCompatActivity() {
                     if(uid!!.equals(h.uid)){
                         var a=h.profileImageUrl
                         tvuri.text = post.pdfFileUrl
+                        tvTitle_post_entry.text = "제목 : ${post.title}"
                         Picasso.get().load(a).into(userProfileImage)
                         tvUsername_post_entry.text = h.username
+
+//                        tvLecturename_post_entry.text  = "강의명 : ${post.lecturename}"
+//                        tvProfessorname_post_entry.text = "교수명 : ${post.professorName}"
+//                        tvContents_post_entry.text = "(내용) : ${post.contents}"
+//                        tvTitle_post_entry.text = post.title
+//                        tvReward_post_entry.text = post.reward.toString()
+//                        tvVote_post_entry.text = post.vote.toString()
 //                        Thread.sleep((3*1000).toLong()) // 이거 오류고치자
                     }
                 }
@@ -175,6 +184,7 @@ class PostLogActivity : AppCompatActivity() {
                 }
             }
         })
+//        plog_progress.visibility = View.INVISIBLE
 
 
 
@@ -258,6 +268,8 @@ class PostLogActivity : AppCompatActivity() {
             Post_Vote(post)
         }
         background.start()
+//        plog_progress.visibility = View.INVISIBLE
+
     }
 
 //    override fun onPause() {
