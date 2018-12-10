@@ -9,7 +9,7 @@
 
     <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="0dp" app:srcCompat="@drawable/songolmae"
+            android:layout_height="0dp" app:srcCompat="@drawable/songgolmae_soft"
             android:id="@+id/iv_splashSongolmae"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

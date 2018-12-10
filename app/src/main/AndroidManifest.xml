@@ -14,6 +14,11 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity android:name=".Activitys.SplashActivity">
+
+        </activity>
+        <activity
+                android:name=".Activitys.MainActivity"
+                android:label="@string/app_name">
             <intent-filter>
 
                 <!-- Specify the ACTION_VIEW intent action so that the intent filter can be reached from Google Search. -->
@@ -22,10 +27,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-        </activity>
-        <activity
-                android:name=".Activitys.MainActivity"
-                android:label="@string/app_name">
         </activity>
         <activity android:name=".Activitys.RegisterActivity">
         </activity>
