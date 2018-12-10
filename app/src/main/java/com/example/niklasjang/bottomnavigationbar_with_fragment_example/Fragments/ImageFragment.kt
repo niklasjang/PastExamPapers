@@ -10,6 +10,11 @@ import android.widget.ImageView
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.ImageModel
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
 import java.util.ArrayList
+import android.graphics.BitmapFactory
+import android.graphics.Bitmap
+import android.R.attr.src
+import android.support.design.R.attr.height
+
 
 class ImageFragment() : Fragment() {
     private var imageModelArrayList = ArrayList<ImageModel>()
@@ -45,9 +50,20 @@ class ImageFragment() : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 //        Log.d("ImageFragment", "onViewCreated, ${this.arguments}")
 
+        val options = BitmapFactory.Options()
+        options.inSampleSize = 4
+
+
+
         imageModelArrayList = populateList()
+
+
         val ivPhoto = view.findViewById<ImageView>(R.id.ivPhoto)
+
+
         ivPhoto?.setImageResource(imageModelArrayList[arguments!!.getInt("index")].getImage_drawables())
+
+
 
     }
 

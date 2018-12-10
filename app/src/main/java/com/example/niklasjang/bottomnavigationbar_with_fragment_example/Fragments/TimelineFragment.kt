@@ -28,8 +28,10 @@ import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activity
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.TimelineFragment.Companion.POST_KEY
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.ShowInfor
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.*
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R.id.tvReward_post_entry
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_post_log.*
+import kotlinx.android.synthetic.main.activity_post_log.view.*
 
 
 class TimelineFragment : Fragment() {
@@ -297,7 +299,7 @@ class UserItem(val post: Post) : Item<ViewHolder>() {
         viewHolder.itemView.tvLectureName_post_row.text = "[강의명 : ${post.lecturename}]"
         viewHolder.itemView.tvProfessorName_post_row.text = "교수명 : ${post.professorName}"
         viewHolder.itemView.tvTitle_post_row.text = "제목 : ${post.title}"
-        viewHolder.itemView.tvReward_post_row.text = "$${post.reward}"
+        rewardShow(post, viewHolder)
         voteCounter(post, viewHolder)
         showCounter(post, viewHolder)
         commentCounter(post, viewHolder)
@@ -305,6 +307,31 @@ class UserItem(val post: Post) : Item<ViewHolder>() {
 
         //TODO 사진 업로드. 프로필 이미지 업로드 이렇게 하면 됨.
         //Picasso.get().load(user.profileImageUrl).into(viewHolder.itemView.ivPostImage)
+    }
+
+    private fun rewardShow(post : Post, viewHolder: ViewHolder) {
+        val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Vote_User_id")
+        var voteCount=0
+
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+
+
+                var voteCount=p0.childrenCount
+
+                voteCount-=1
+                println("TEST Vote${voteCount}")
+
+                val reward=20+(voteCount.toInt()*0.5)
+
+                viewHolder.itemView.tvReward_post_row.setText("${reward}")
+
+            }
+        })
+
     }
     private fun voteCounter(post : Post, viewHolder: ViewHolder) {
         val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Vote_User_id")
@@ -361,6 +388,7 @@ class UserItem(val post: Post) : Item<ViewHolder>() {
 
                 var commentCount = p0.childrenCount
                 println("TEST Vote${commentCount}")
+
                 viewHolder.itemView.tvComment_post_row.text="${commentCount}"
             }
 

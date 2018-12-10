@@ -123,13 +123,13 @@ class PostLogActivity : AppCompatActivity() {
         tvTitle_post_entry.text = post.title
         tvReward_post_entry.text = post.reward.toString()
         tvVote_post_entry.text = post.vote.toString()
+        rewardShow(post)
 //        tvUsername_post_entry.text = urlRef.child()
 //        Picasso.get().load(post.pdfFileUrl).into(userProfileImage)
 
 //        tvComment_post_entry.text = post.
         val btnVote = findViewById<Button>(R.id.tvVote_post_entry)
 
-        tvReward_post_entry.text = "5.7"
         //PostLog 실행되자마자 댓글정보 가져오게.
 
         val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Vote_User_id")
@@ -284,6 +284,27 @@ class PostLogActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+
+    private fun rewardShow(post : Post) {
+        val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Vote_User_id")
+        var voteCount=0
+
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+
+
+                var voteCount=p0.childrenCount
+                voteCount-=1
+                println("TEST Vote${voteCount}")
+                tvReward_post_entry.setText("${20+voteCount*0.5}")
+            }
+        })
+
     }
 
     private fun uploadCommentToFirebaseDatabase(contents : String) {
