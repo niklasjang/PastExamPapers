@@ -25,6 +25,7 @@
         <item>운항</item>
         <item>교물</item>
         <item>자전</item>
+        <item>경영</item>
     </string-array>
 
     <string-array name="grade">

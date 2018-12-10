@@ -29,6 +29,7 @@ class MajorTimeLineActivity : AppCompatActivity() {
         setContentView(R.layout.activity_major_time_line)
         recyclerView = findViewById<RecyclerView>(R.id.rv_majorTimeline)
         recyclerView?.adapter = adapter
+        supportActionBar?.title = "전공별 게시판"
         println("major is" + major)
         fetchPost(major)
     }

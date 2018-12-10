@@ -79,7 +79,7 @@ class PostLogActivity : AppCompatActivity() {
         //TODO SET MAX WIDth in xml
 //        android:MaxWidth
         post = intent.getParcelableExtra<Post>(TimelineFragment.POST_KEY)
-        supportActionBar?.title = post.title
+        supportActionBar?.title = "게시물 정보"
 
         fetchExistComments()
 
@@ -253,6 +253,10 @@ class PostLogActivity : AppCompatActivity() {
                 // TODO 그래서 Main Activit가 처음 시작될 때 News Fragment가 시작되게 설정한 것이 자동으로 시작됨.
                 // 댓글달기 완료 버튼
                 val contents = etComment_post_log?.text.toString()
+                if (contents.isEmpty()){
+                    Toast.makeText(this,"댓글을 입력해주세요.",Toast.LENGTH_SHORT).show()
+                    return false
+                }
                 uploadCommentToFirebaseDatabase(contents)
             }
         }
