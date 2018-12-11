@@ -285,71 +285,10 @@ class PostLogActivity : AppCompatActivity() {
                 var voteCount = p0.childrenCount
                 voteCount -= 1
                 println("TEST Vote${voteCount}")
-                tvReward_post_entry.setText("${20 + voteCount * 0.5}")
+                tvReward_post_entry.setText("${2 + voteCount * 0.5}")
 
             }
         })
-
-
-
-//        btnVote.setOnClickListener {
-//            ref.addValueEventListener(object : ValueEventListener {
-//                override fun onCancelled(p0: DatabaseError) {
-//                }
-//
-//                override fun onDataChange(p0: DataSnapshot) {
-//
-//                    if (p0.exists()) {
-//                        for (h in p0.children) {
-//                            val value = h.value.toString()
-//                            if (value.equals(Id.toString())) {
-//                                btnVote.isEnabled = false
-//                            } else {
-//                                Vote_User_ref.child("${post.postname}")
-//                                    .child("Vote_User_id")
-//                                    .child("${UserId}")
-//                                    .setValue("$Id")
-//
-//
-//                                Second_Check = 1
-//                                Coin += 0.5
-//
-//                                val Hash = Vote_ref.push().key
-//                                val Info = ShowInfor2(id = Id.toString(), check = 0, hashID = Hash!!)
-//
-//                                Vote_ref.child(Hash!!).setValue(Info)
-//                                com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.Voteting(post)
-//                                Process_Vote()
-//                            }
-//                        }
-//                    }else{
-//                        btnVote.setText("1")
-//
-//                        Vote_User_ref.child("${post.postname}")
-//                            .child("Vote_User_id")
-//                            .child("${UserId}")
-//                            .setValue("$Id")
-//
-//                        Coin +=0.5
-//
-//                        Second_Check = 1
-//
-//                        val Hash = Vote_ref.push().key
-//                        val Info = ShowInfor2(id = Id.toString(), check = 0, hashID = Hash!!)
-//                        Vote_ref.child(Hash!!).setValue(Info)
-//
-//                        com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.Voteting(post)
-//                        Process_Vote()
-//                    }
-//                }
-//            })
-//            Five_Check = 1
-//            Post_Vote(post)
-//        }
-
-//        background.start()
-//        plog_progress.visibility = View.INVISIBLE
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -485,15 +424,6 @@ private fun Process_Vote() { //개발자에게 만 주어지는 소스, 즉시 �
 }
 
 private fun Post_Vote(post: Post) {
-    Vote_User_ref.addValueEventListener(object : ValueEventListener {
-        override fun onCancelled(p0: DatabaseError) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
-
-        override fun onDataChange(p0: DataSnapshot) {
-            if (Five_Check == 0) {
-                return
-            }
             Key_Save_ref.addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
                 }
@@ -522,8 +452,6 @@ private fun Post_Vote(post: Post) {
                 }
             })
         }
-    })
-}
 
 private fun Voteting(post: Post) { //vote 할 때 트랜젝션을 만들어 서버에 전송
     val name = post.postname

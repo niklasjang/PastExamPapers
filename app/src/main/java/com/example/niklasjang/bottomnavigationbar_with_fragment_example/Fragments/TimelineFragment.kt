@@ -139,9 +139,11 @@ class TimelineFragment : Fragment() {
                                     }
 
                                     if (pass == 0) {
+                                        pass = 1
                                         val intent = Intent(view.context, PostLogActivity::class.java)
                                         intent.putExtra(POST_KEY, userItem.post)
                                         startActivity(intent)
+
                                     } else if (Coin >= 1) {
                                         Toast.makeText(view.context, "코인 1 소모 되었습니다.", Toast.LENGTH_LONG).show()
                                         Third_Check = 1
@@ -279,7 +281,7 @@ class UserItem(val post: Post) : Item<ViewHolder>() {
                 voteCount-=1
                 println("TEST Vote${voteCount}")
 
-                val reward=20+(voteCount.toInt()*0.5)
+                val reward=2+(voteCount.toInt()*0.5)
 
                 viewHolder.itemView.tvReward_post_row.setText("$ ${reward}")
 
