@@ -254,9 +254,20 @@ class MakePostActivity : AppCompatActivity() {
                 Toast.makeText(this, "$it", Toast.LENGTH_LONG).show()
             }
 
-        Post()
+        Post() //게시물 올릴때 트랜젝션을 만들어 서버에 전송
+
         Fore_Check = 1
-        Process_Post()
+
+        Process_Post() // 즉시 처리(Voting)
+
+        PostAcess(postname) // 게시물 원작자가  vote 하는 것을 막는 것, show 할 때  coin이 소모를 막는 것
+        
+
+    }
+
+
+
+    private  fun PostAcess(postname :String){
         Vote_User_ref.child("${postname}")
             .child("Vote_User_id")
             .child("${UserId}")
@@ -266,7 +277,6 @@ class MakePostActivity : AppCompatActivity() {
             .child("Show_User_id")
             .child("${UserId}")
             .setValue("$Id")
-
     }
 
     private fun Post() { //게시물 올릴때 트랜젝션을 만들어 서버에 전송
@@ -279,7 +289,7 @@ class MakePostActivity : AppCompatActivity() {
 
     }
 
-    private fun Process_Post() { //개발자에게 만 주어지는 소스, 즉시 처리(Voting)
+    private fun Process_Post() { // 즉시 처리(Voting)
 
         Vote_ref.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {

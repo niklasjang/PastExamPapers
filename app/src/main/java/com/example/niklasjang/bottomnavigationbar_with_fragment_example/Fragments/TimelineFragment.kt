@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.post_row.view.*
 import android.view.animation.LinearInterpolator
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
+import android.widget.Toast
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.*
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.TimelineFragment.Companion.POST_KEY
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.ShowInfor
@@ -91,14 +92,14 @@ class TimelineFragment : Fragment() {
                 }
                 adapter.notifyDataSetChanged()
 
-                //각 post들을 클릭했을 때 나오는 화면
-                adapter.setOnItemClickListener { item, view ->
-
-                    val userItem = item as UserItem
-                    val intent = Intent(view.context, PostLogActivity::class.java)
-                    intent.putExtra(POST_KEY, userItem.post)
-                    startActivity(intent)
-                }
+//                //각 post들을 클릭했을 때 나오는 화면
+//                adapter.setOnItemClickListener { item, view ->
+//
+//                    val userItem = item as UserItem
+//                    val intent = Intent(view.context, PostLogActivity::class.java)
+//                    intent.putExtra(POST_KEY, userItem.post)
+//                    startActivity(intent)
+//                }
                 ref.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onCancelled(p0: DatabaseError) {
                         //Toast.make ~~
@@ -117,15 +118,15 @@ class TimelineFragment : Fragment() {
                         for (h in List) {
                             adapter.add(UserItem(h))
                         }
-                        Log.d("FetchPost", "${adapter.itemCount}")
+
                         //각 post들을 클릭했을 때 나오는 화면
+
                         adapter.setOnItemClickListener { item, view ->
                             val userItem = item as UserItem
                             var pass = 1
                             val List: MutableList<Post>
                             List = mutableListOf()
-                            val ref =
-                                FirebaseDatabase.getInstance().getReference("posts/${item.post.postname}/Show_User_id")
+                            val ref =FirebaseDatabase.getInstance().getReference("posts/${item.post.postname}/Show_User_id")
                             ref.addValueEventListener(object : ValueEventListener {
                                 override fun onDataChange(p0: DataSnapshot) {
                                     List.clear()
@@ -136,11 +137,13 @@ class TimelineFragment : Fragment() {
                                             pass = 0
                                         }
                                     }
+
                                     if (pass == 0) {
                                         val intent = Intent(view.context, PostLogActivity::class.java)
                                         intent.putExtra(POST_KEY, userItem.post)
                                         startActivity(intent)
                                     } else if (Coin >= 10) {
+                                        Toast.makeText(view.context, "코인 0.5 소모 되었습니다.", Toast.LENGTH_LONG).show()
                                         Third_Check = 1
                                         Coin -= 5
                                         val Hash = Show_ref.push().key
@@ -151,6 +154,9 @@ class TimelineFragment : Fragment() {
                                             .child("Show_User_id")
                                             .child("${UserId}")
                                             .setValue("$Id")
+
+                                    }else{
+                                        Toast.makeText(view.context, "코인 1 이상이 필요합니다.", Toast.LENGTH_SHORT).show()
                                     }
                                 }
 

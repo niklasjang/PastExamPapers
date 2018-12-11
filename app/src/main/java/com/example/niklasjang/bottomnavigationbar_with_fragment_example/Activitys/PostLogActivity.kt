@@ -62,7 +62,10 @@ class PostLogActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post_log)
-
+//        if(pass.equals("1")){
+//            Toast.makeText(this, "코인 1 소모 되었습니다.", Toast.LENGTH_SHORT).show()
+//            pass="0"
+//        }
         val background = object : Thread() {
             override fun run() {
                 try {
@@ -85,7 +88,7 @@ class PostLogActivity : AppCompatActivity() {
 
         adapter = GroupAdapter<ViewHolder>()
         recyclerView = findViewById(R.id.recyclerview_post_log)
-
+        btnVote=findViewById(R.id.tvVote_post_entry)
         recyclerView.adapter = adapter
         // adapter.add(0,PostEntryItem(post))
 
@@ -124,138 +127,22 @@ class PostLogActivity : AppCompatActivity() {
         tvReward_post_entry.text = post.reward.toString()
         tvVote_post_entry.text = post.vote.toString()
         rewardShow(post)
-//        tvUsername_post_entry.text = urlRef.child()
-//        Picasso.get().load(post.pdfFileUrl).into(userProfileImage)
 
-//        tvComment_post_entry.text = post.
-        val btnVote = findViewById<Button>(R.id.tvVote_post_entry)
+
 
         //PostLog 실행되자마자 댓글정보 가져오게.
 
         val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Vote_User_id")
 
-
-
-
-        ref.addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-            }
-
-            override fun onDataChange(p0: DataSnapshot) {
-
-                if (p0.exists()) {
-                    for (h in p0.children) {
-                        val value = h.value.toString()
-                        if (value.equals(Id.toString())) {
-                            btnVote.isEnabled = false
-                        }
-                    }
-                    var voteCount=p0.childrenCount
-                    voteCount-=1
-                    println("TEST Vote${voteCount}")
-                    btnVote.setText("$voteCount")
-                }
-            }
-        })
-
         val ref2 =FirebaseDatabase.getInstance().getReference("posts/${post.postname}/comments")
 
-        ref2.addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-            }
 
-            override fun onDataChange(p0: DataSnapshot) {
+        voteCheck(ref)
+        commentCheck(ref2)
 
-                if (p0.exists()) {
-
-                    var commentCount=p0.childrenCount
-
-                    println("TEST Vote${commentCount}")
-                    tvComment_post_entry.setText("$commentCount")
-                }
-            }
-        })
-
-
-
-
-
-
-// val ref2 = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Show_User_id")
-//
-//
-//
-//        ref2.addValueEventListener(object :ValueEventListener{
-//            override fun onCancelled(p0: DatabaseError) {
-//            }
-//            override fun onDataChange(p0: DataSnapshot) {
-//
-//                if(p0.exists()){
-//                    var ShowCount=0
-//                    for(h in p0.children){
-//                        val value = h.value.toString()
-//                        ShowCount+=1
-//                        println("TEST Show${ShowCount}")
-//                        }
-//
-//                    ShowCount-=1
-//                    println("TEST Show${ShowCount}")
-//                }
-//            }
-//        })
         btnVote.setOnClickListener {
-            ref.addValueEventListener(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
-                }
-
-                override fun onDataChange(p0: DataSnapshot) {
-
-                    if (p0.exists()) {
-                        for (h in p0.children) {
-                            val value = h.value.toString()
-                            if (value.equals(Id.toString())) {
-                                btnVote.isEnabled = false
-                            } else {
-                                Vote_User_ref.child("${post.postname}")
-                                    .child("Vote_User_id")
-                                    .child("${UserId}")
-                                    .setValue("$Id")
-
-
-                                Second_Check = 1
-                                Coin += 5
-
-                                val Hash = Vote_ref.push().key
-                                val Info = ShowInfor2(id = Id.toString(), check = 0, hashID = Hash!!)
-
-                                Vote_ref.child(Hash!!).setValue(Info)
-                                com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.Voteting(post)
-                                Process_Vote()
-                            }
-                        }
-                    }else{
-                        btnVote.setText("1")
-
-                        Vote_User_ref.child("${post.postname}")
-                            .child("Vote_User_id")
-                            .child("${UserId}")
-                            .setValue("$Id")
-
-                        Coin += 5
-
-                        Second_Check = 1
-
-                        val Hash = Vote_ref.push().key
-                        val Info = ShowInfor2(id = Id.toString(), check = 0, hashID = Hash!!)
-                        Vote_ref.child(Hash!!).setValue(Info)
-
-                        com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.Voteting(post)
-                        Process_Vote()
-                    }
-                }
-            })
-            Five_Check = 1
-            Post_Vote(post)
+            firestProcess(ref) // vote 했을때 처리
+            Toast.makeText(this, "코인 0.5 받았습니다", Toast.LENGTH_SHORT).show()
         }
         background.start()
     }
@@ -285,7 +172,106 @@ class PostLogActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+    private  fun firestProcess(ref :DatabaseReference){
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
 
+            override fun onDataChange(p0: DataSnapshot) {
+
+                if (p0.exists()) {
+                    for (h in p0.children) {
+                        val value = h.value.toString()
+                        if (value.equals(Id.toString())) {
+
+                            btnVote.isEnabled = false //데이터 베이스에서 해당 post에 vote트랜젝션을 보고 이미 한것이 있다면 버튼을 못누르게 만들었습니다.
+
+                        } else {
+                            //vote하고 이후 처리
+
+                            Vote_User_ref.child("${post.postname}")
+                                .child("Vote_User_id")
+                                .child("${UserId}")
+                                .setValue("$Id")
+
+
+                            Second_Check = 1
+                            Coin += 5
+
+                            val Hash = Vote_ref.push().key
+                            val Info = ShowInfor2(id = Id.toString(), check = 0, hashID = Hash!!)
+
+                            Vote_ref.child(Hash!!).setValue(Info)
+                            com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.Voteting(post)
+                            Process_Vote()
+                        }
+                    }
+                }else{
+                    btnVote.setText("1")
+
+                    Vote_User_ref.child("${post.postname}")
+                        .child("Vote_User_id")
+                        .child("${UserId}")
+                        .setValue("$Id")
+
+                    Coin += 5
+
+                    Second_Check = 1
+
+                    val Hash = Vote_ref.push().key
+                    val Info = ShowInfor2(id = Id.toString(), check = 0, hashID = Hash!!)
+                    Vote_ref.child(Hash!!).setValue(Info)
+
+                    com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.Voteting(post)
+                    Process_Vote()
+                }
+            }
+        })
+        Five_Check = 1
+        Post_Vote(post)
+    }
+    private  fun voteCheck(ref : DatabaseReference){
+
+
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+
+                if (p0.exists()) {
+                    for (h in p0.children) {
+                        val value = h.value.toString()
+                        if (value.equals(Id.toString())) {
+                            btnVote.isEnabled = false
+                        }
+                    }
+                    var voteCount=p0.childrenCount
+                    voteCount-=1
+                    println("TEST Vote${voteCount}")
+                    btnVote.setText("$voteCount")
+                }
+            }
+        })
+    }
+
+    private  fun commentCheck(ref2 : DatabaseReference){
+        ref2.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+
+                if (p0.exists()) {
+
+                    var commentCount=p0.childrenCount
+
+                    println("TEST Vote${commentCount}")
+                    tvComment_post_entry.setText("$commentCount")
+                }
+            }
+        })
+    }
 
     private fun rewardShow(post : Post) {
         val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Vote_User_id")

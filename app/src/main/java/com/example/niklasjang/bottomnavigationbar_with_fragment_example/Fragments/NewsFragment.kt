@@ -51,7 +51,7 @@ class NewsFragment : Fragment() {
         viewPager.adapter = vpAdapter
         iv_newsFragmentSoft.setOnClickListener {
             var intent = Intent(activity,MajorTimeLineActivity::class.java)
-            intent.putExtra("major","소프트")
+            intent.putExtra("major","소프트웨어")
             startActivity(intent)
         }
         iv_newsFragmentAero.setOnClickListener {
