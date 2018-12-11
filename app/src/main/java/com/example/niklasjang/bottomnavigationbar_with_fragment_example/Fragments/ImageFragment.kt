@@ -14,9 +14,9 @@ import java.util.ArrayList
 class ImageFragment() : Fragment() {
     private var imageModelArrayList = ArrayList<ImageModel>()
     private val myImageList = intArrayOf(
-        R.drawable.notebook_songgolmae1,
-        R.drawable.phone_solggolmae1,
-        R.drawable.book_songgolmae1
+        R.drawable.songgolmae_book_text,
+        R.drawable.songgolmae_notebook_text,
+        R.drawable.songgolmae_phone_text
     )
     private var mIndex: Int = 0
     fun newInstance(position: Int): ImageFragment {

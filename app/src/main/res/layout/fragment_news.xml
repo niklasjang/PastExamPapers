@@ -35,11 +35,13 @@
     <ImageView
             android:id="@+id/iv_newsFragmentAutonomy"
             android:layout_width="78dp"
-            android:layout_height="78dp" app:srcCompat="@drawable/songgolmae_mechanic"
-            app:layout_constraintStart_toEndOf="@+id/iv_newsFragmentTraffic" android:layout_marginStart="8dp"
+            android:layout_height="78dp" app:srcCompat="@drawable/songgolmae_automony"
             app:layout_constraintTop_toTopOf="@+id/iv_newsFragmentTraffic"
             app:layout_constraintBottom_toBottomOf="@+id/iv_newsFragmentTraffic"
-            app:layout_constraintVertical_bias="0.0"/>
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/iv_newsFragmentTraffic"
+            app:layout_constraintEnd_toEndOf="@+id/viewPager"
+    />
     <android.support.v4.view.ViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
@@ -56,54 +58,62 @@
             android:scaleType="fitXY"
             app:layout_constraintStart_toEndOf="@+id/iv_newsFragmentMechanic"
             app:layout_constraintBottom_toBottomOf="@+id/iv_newsFragmentMechanic"
-            app:layout_constraintTop_toTopOf="@+id/iv_newsFragmentMechanic" app:layout_constraintVertical_bias="0.0"
-            android:layout_marginStart="8dp"/>
+            app:layout_constraintTop_toTopOf="@+id/iv_newsFragmentMechanic" app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintEnd_toStartOf="@+id/iv_newsFragmentMaterial"
+            app:layout_constraintHorizontal_bias="0.5"/>
     <ImageView
             android:layout_width="78dp"
             android:layout_height="78dp" app:srcCompat="@drawable/songgolmae_mechanic"
             android:id="@+id/iv_newsFragmentMechanic"
             android:scaleType="fitXY"
             app:layout_constraintStart_toEndOf="@+id/iv_newsFragmentSoft"
-            android:layout_marginStart="8dp" app:layout_constraintTop_toTopOf="@+id/iv_newsFragmentSoft"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_newsFragmentSoft"/>
+            app:layout_constraintTop_toTopOf="@+id/iv_newsFragmentSoft"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_newsFragmentSoft" app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/iv_newsFragmentAero"/>
     <ImageView
             android:layout_width="78dp"
-            android:layout_height="78dp" app:srcCompat="@drawable/songgolmae_mechanic"
+            android:layout_height="78dp" app:srcCompat="@drawable/songgolmae_business"
             android:id="@+id/iv_newsFragmentManage"
-            app:layout_constraintStart_toStartOf="@+id/iv_newsFragmentSoft" android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/tv_newsFragmentSoft"/>
+            app:layout_constraintStart_toStartOf="@+id/viewPager" android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/tv_newsFragmentSoft" app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/iv_newsFragmentElec"
+            />
     <ImageView
             android:id="@+id/iv_newsFragmentElec"
             android:layout_width="78dp"
-            android:layout_height="78dp" app:srcCompat="@drawable/songgolmae_mechanic"
-            app:layout_constraintStart_toEndOf="@+id/iv_newsFragmentManage" android:layout_marginStart="8dp"
+            android:layout_height="78dp" app:srcCompat="@drawable/songgolmae_elec"
+            app:layout_constraintStart_toEndOf="@+id/iv_newsFragmentManage"
             app:layout_constraintTop_toTopOf="@+id/iv_newsFragmentManage"
             app:layout_constraintBottom_toBottomOf="@+id/iv_newsFragmentManage"
-            app:layout_constraintVertical_bias="0.0"/>
+            app:layout_constraintVertical_bias="0.0" app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/iv_newsFragmentTraffic"/>
     <ImageView
             android:id="@+id/iv_newsFragmentTraffic"
             android:layout_width="78dp"
-            android:layout_height="78dp" app:srcCompat="@drawable/songgolmae_mechanic"
+            android:layout_height="78dp" app:srcCompat="@drawable/songgolmae_traffic"
             app:layout_constraintStart_toEndOf="@+id/iv_newsFragmentElec"
             app:layout_constraintTop_toTopOf="@+id/iv_newsFragmentElec"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_newsFragmentElec" android:layout_marginStart="8dp"
-            app:layout_constraintVertical_bias="0.0"/>
+            app:layout_constraintBottom_toBottomOf="@+id/iv_newsFragmentElec"
+            app:layout_constraintVertical_bias="0.0" app:layout_constraintEnd_toStartOf="@+id/iv_newsFragmentAutonomy"
+            app:layout_constraintHorizontal_bias="0.5"/>
     <ImageView
             android:id="@+id/iv_newsFragmentMaterial"
             android:layout_width="78dp"
             android:layout_height="78dp" app:srcCompat="@drawable/songgolmae_material"
             app:layout_constraintTop_toTopOf="@+id/iv_newsFragmentAero"
             app:layout_constraintBottom_toBottomOf="@+id/iv_newsFragmentAero"
-            app:layout_constraintVertical_bias="0.0" app:layout_constraintStart_toEndOf="@+id/iv_newsFragmentAero"
-            android:layout_marginStart="8dp"
-            app:layout_constraintEnd_toEndOf="@+id/viewPager" android:layout_marginEnd="8dp"/>
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/iv_newsFragmentAero"
+            app:layout_constraintEnd_toEndOf="@+id/viewPager"/>
     <ImageView
             android:id="@+id/iv_newsFragmentSoft"
             android:layout_width="78dp"
-            android:layout_height="78dp" app:srcCompat="@drawable/songgolmae_mechanic"
+            android:layout_height="78dp" app:srcCompat="@drawable/songgolmae_soft"
             android:scaleType="fitXY"
-            app:layout_constraintStart_toStartOf="@+id/viewPager" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/viewPager"/>
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/viewPager"
+            app:layout_constraintEnd_toStartOf="@+id/iv_newsFragmentMechanic"
+             app:layout_constraintStart_toStartOf="@+id/viewPager"/>
 
     <TextView
             android:text="항우기"

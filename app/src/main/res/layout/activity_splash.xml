@@ -5,11 +5,11 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".Activitys.SplashActivity" android:background="@drawable/background_pink">
+        tools:context=".Activitys.SplashActivity" android:background="@drawable/background_square_pink">
 
     <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="0dp" app:srcCompat="@drawable/songolmae"
+            android:layout_height="0dp" app:srcCompat="@drawable/songolmae_splash"
             android:id="@+id/iv_splashSongolmae"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
