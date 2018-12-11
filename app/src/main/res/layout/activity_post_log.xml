@@ -7,18 +7,18 @@
     tools:context=".Activitys.PostLogActivity">
 
     <TextView
-        android:id="@+id/tvTitle_post_entry"
-        android:layout_width="129dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/baedal"
-        android:text="Title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.368"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvService_post_entry" />
+            android:id="@+id/tvTitle_post_entry"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/baedal"
+            android:text="Title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.368"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvService_post_entry"/>
 
     <TextView
         android:id="@+id/tvLecturename_post_entry"
@@ -49,6 +49,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Service"
+        android:fontFamily="@font/baedal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvLecturename_post_entry" />
 
@@ -58,6 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:text="Year"
+        android:fontFamily="@font/baedal"
         app:layout_constraintBottom_toBottomOf="@+id/tvService_post_entry"
         app:layout_constraintStart_toEndOf="@+id/tvService_post_entry"
         app:layout_constraintTop_toTopOf="@+id/tvService_post_entry" />
@@ -68,6 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="Test"
+        android:fontFamily="@font/baedal"
         app:layout_constraintBottom_toBottomOf="@+id/tvYear_post_entry"
         app:layout_constraintStart_toEndOf="@+id/tvYear_post_entry"
         app:layout_constraintTop_toTopOf="@+id/tvYear_post_entry" />

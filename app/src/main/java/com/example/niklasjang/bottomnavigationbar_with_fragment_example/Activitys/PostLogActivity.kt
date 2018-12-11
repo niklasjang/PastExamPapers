@@ -51,6 +51,7 @@ import java.io.File
 import java.lang.invoke.ConstantCallSite
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ChildEventListener
+import kotlinx.android.synthetic.main.activity_make_post.*
 import kotlinx.android.synthetic.main.comment_row.view.*
 
 class PostLogActivity : AppCompatActivity() {
@@ -72,7 +73,7 @@ class PostLogActivity : AppCompatActivity() {
                     Thread.sleep((3 * 1000).toLong())
                     // After 5 seconds redirect to another intent
                     //Remove activity
-                            plog_progress.visibility = View.INVISIBLE
+                    plog_progress.visibility = View.INVISIBLE
 
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -132,6 +133,17 @@ class PostLogActivity : AppCompatActivity() {
         tvLecturename_post_entry.text = "강의명 : ${post.lecturename}"
         tvProfessorname_post_entry.text = "교수명 : ${post.professorName}"
         tvContents_post_entry.text = "(내용) : ${post.contents}"
+        tvYear_post_entry.text = "#${post.grade}"
+        when (post.service) {
+            1 -> tvService_post_entry.text = "#질문/답변"
+            2 -> tvService_post_entry.text = "#지식공유"
+            else -> tvService_post_entry.text = "#질문/답변"
+        }
+        when(post.test) {
+            1 -> tvTest_post_entry.text = "#중간고사"
+            2 -> tvTest_post_entry.text = "#기말고사"
+            else -> tvTest_post_entry.text = "#중간고사"
+        }
         tvTitle_post_entry.text = post.title
         tvReward_post_entry.text = post.reward.toString()
         tvVote_post_entry.text = post.vote.toString()
@@ -161,7 +173,6 @@ class PostLogActivity : AppCompatActivity() {
 //
 //        super.onPause()
 //    }
-
 
 
     private fun firestProcess(ref: DatabaseReference) {
@@ -335,7 +346,7 @@ class PostLogActivity : AppCompatActivity() {
                                 Process_Vote()
                             }
                         }
-                    }else{
+                    } else {
                         btnVote.setText("1")
 
                         Vote_User_ref.child("${post.postname}")
@@ -369,6 +380,7 @@ class PostLogActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.post_log_top_menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
+
     //상단 menu bar select listener.
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
