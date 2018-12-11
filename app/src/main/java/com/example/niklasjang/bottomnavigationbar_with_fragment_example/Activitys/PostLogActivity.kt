@@ -256,6 +256,7 @@ class PostLogActivity : AppCompatActivity() {
                 val contents = etComment_post_log?.text.toString()
                 if(contents.isEmpty()){
                     Toast.makeText(this,"댓글 내용을 입력하세요.",Toast.LENGTH_SHORT).show()
+                    return false
                 }
                 uploadCommentToFirebaseDatabase(contents)
             }
