@@ -291,7 +291,7 @@ class MakePostActivity : AppCompatActivity() {
     }
 
     private fun Post() { //게시물 올릴때 트랜젝션을 만들어 서버에 전송
-        Coin += 30
+        Coin += 2
         Post_Transaction_ref.child(Post_Transaction_ref.push().key!!).setValue(Id)
 
         val Hash = Show_ref.push().key
@@ -345,7 +345,7 @@ class MakePostActivity : AppCompatActivity() {
                                 return
                             }
 
-                            val hero1 = Key(id = h2.id, uid = h2.uid, coin = h2.coin + 30, hashID = h2.hashID)
+                            val hero1 = Key(id = h2.id, uid = h2.uid, coin = h2.coin + 2, hashID = h2.hashID)
                             Key_List.set(h2.id.toInt() - 1, hero1)
                             Key_Save_ref.child(h2.hashID).setValue(hero1)
 

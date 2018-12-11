@@ -46,7 +46,7 @@ lateinit var plainID: String
 lateinit var HashID: String
 lateinit var pass :String
 
-var Coin: Int =0
+var Coin: Double =0.0
 var Id:Int = 0 //클라이언트가 가지고 있는 고유 아이디
 var First_Login: Int = 0 //처음 로그인 했는지 판단
 var Second_Check : Int=0
@@ -206,14 +206,14 @@ class MainActivity : AppCompatActivity() {
 
                         val heroId = Key_Save_ref.push().key
                         val num = Key_List[Key_List.lastIndex].id.toInt()
-                        val hero = Key((num + 1).toString(), UserId, 300,heroId!!)
+                        val hero = Key((num + 1).toString(), UserId, 0.0,heroId!!)
 
                         Key_Save_ref.child(heroId!!).setValue(hero).addOnCompleteListener() {
                         }
                     }
                 } else {
                     val heroId = Key_Save_ref.push().key
-                    val hero = Key("1", UserId, 30,heroId!!)
+                    val hero = Key("1", UserId, 0.0,heroId!!)
                     Key_Save_ref.child(heroId!!).setValue(hero).addOnCompleteListener() {
                     }
                 }

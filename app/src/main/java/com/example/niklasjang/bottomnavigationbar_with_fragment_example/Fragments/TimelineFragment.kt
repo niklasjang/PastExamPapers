@@ -142,10 +142,10 @@ class TimelineFragment : Fragment() {
                                         val intent = Intent(view.context, PostLogActivity::class.java)
                                         intent.putExtra(POST_KEY, userItem.post)
                                         startActivity(intent)
-                                    } else if (Coin >= 10) {
-                                        Toast.makeText(view.context, "코인 0.5 소모 되었습니다.", Toast.LENGTH_LONG).show()
+                                    } else if (Coin >= 1) {
+                                        Toast.makeText(view.context, "코인 1 소모 되었습니다.", Toast.LENGTH_LONG).show()
                                         Third_Check = 1
-                                        Coin -= 5
+                                        Coin -= 1
                                         val Hash = Show_ref.push().key
                                         val Info = ShowInfor(id = Id.toString(), check = 0, hashID = Hash!!)
                                         Show_ref.child(Hash!!).setValue(Info)
@@ -181,59 +181,7 @@ class TimelineFragment : Fragment() {
     }
 }
 
-private fun getKey() { //key 생성, 처음 login 했을 때
-    var name: String
 
-
-    Key_Save_ref.addValueEventListener(object : ValueEventListener {
-        override fun onCancelled(p0: DatabaseError) {
-
-        }
-
-        override fun onDataChange(p0: DataSnapshot) {
-
-            if (p0.exists()) {
-                if (First_Login == 1) {
-                    return
-                }
-
-                Key_List.clear()
-
-                for (h in p0.children) {
-                    val hero = h.getValue(Key::class.java)
-                    Key_List.add(hero!!)
-                }
-
-                for (h in Key_List) {
-                    if (h.uid.equals(UserId)) {
-
-                        Id = h.id.toInt()
-                        Coin = h.coin
-                        HashID = h.hashID
-                        First_Login = 1
-
-                    }
-                }
-
-                if (First_Login != 1) {
-
-                    val heroId = Key_Save_ref.push().key
-                    val num = Key_List[Key_List.lastIndex].id.toInt()
-                    val hero = Key((num + 1).toString(), UserId, 300, heroId!!)
-
-                    Key_Save_ref.child(heroId!!).setValue(hero).addOnCompleteListener() {
-                    }
-                }
-            } else {
-                val heroId = Key_Save_ref.push().key
-                val hero = Key("1", UserId, 30, heroId!!)
-                Key_Save_ref.child(heroId!!).setValue(hero).addOnCompleteListener() {
-                }
-            }
-        }
-    })
-
-}
 
 private fun Process_Show() { //개발자에게 만 주어지는 소스, 즉시 처리(게시물 볼 때)
     Show_ref.addValueEventListener(object : ValueEventListener {
@@ -277,7 +225,7 @@ private fun Process_Show() { //개발자에게 만 주어지는 소스, 즉시 �
                             return
                         }
 
-                        val hero1 = Key(id = h2.id, uid = h2.uid, coin = h2.coin - 5, hashID = h2.hashID)
+                        val hero1 = Key(id = h2.id, uid = h2.uid, coin = h2.coin - 1, hashID = h2.hashID)
                         Key_List.set(h2.id.toInt() - 1, hero1)
                         Key_Save_ref.child(h2.hashID).setValue(hero1)
                         val hero2 = ShowInfor(h.id, 1, h.hashID)

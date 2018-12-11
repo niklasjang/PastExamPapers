@@ -135,20 +135,15 @@ class PostLogActivity : AppCompatActivity() {
         tvTitle_post_entry.text = post.title
         tvReward_post_entry.text = post.reward.toString()
         tvVote_post_entry.text = post.vote.toString()
+
         rewardShow(post)
-
-
-        //PostLog 실행되자마자 댓글정보 가져오게.
-
         val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Vote_User_id")
-
         val ref2 = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/comments")
-
-
         voteCheck(ref)
         commentCheck(ref2)
 
         btnVote.setOnClickListener {
+            Six_Check=1
             firestProcess(ref) // vote 했을때 처리
             Toast.makeText(this, "코인 0.5 받았습니다", Toast.LENGTH_SHORT).show()
         }
@@ -172,6 +167,7 @@ class PostLogActivity : AppCompatActivity() {
             override fun onDataChange(p0: DataSnapshot) {
 
                 if (p0.exists()) {
+
                     for (h in p0.children) {
                         val value = h.value.toString()
                         if (value.equals(Id.toString())) {
@@ -180,7 +176,9 @@ class PostLogActivity : AppCompatActivity() {
 
                         } else {
                             //vote하고 이후 처리
-
+                            if(Six_Check==0){
+                                return
+                            }
                             Vote_User_ref.child("${post.postname}")
                                 .child("Vote_User_id")
                                 .child("${UserId}")
@@ -188,39 +186,49 @@ class PostLogActivity : AppCompatActivity() {
 
 
                             Second_Check = 1
-                            Coin += 5
+                            Coin += 0.5
 
                             val Hash = Vote_ref.push().key
                             val Info = ShowInfor2(id = Id.toString(), check = 0, hashID = Hash!!)
 
                             Vote_ref.child(Hash!!).setValue(Info)
+
                             com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.Voteting(post)
                             Process_Vote()
+                            Five_Check=1
+                            Post_Vote(post)
+                            Six_Check=0
                         }
                     }
                 } else {
+
                     btnVote.setText("1")
 
+                    if(Six_Check==0){
+                        return
+                    }
                     Vote_User_ref.child("${post.postname}")
                         .child("Vote_User_id")
                         .child("${UserId}")
                         .setValue("$Id")
 
-                    Coin += 5
-
+                    Coin += 0.5
                     Second_Check = 1
 
                     val Hash = Vote_ref.push().key
                     val Info = ShowInfor2(id = Id.toString(), check = 0, hashID = Hash!!)
-                    Vote_ref.child(Hash!!).setValue(Info)
 
+                    Vote_ref.child(Hash!!).setValue(Info)
                     com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.Voteting(post)
                     Process_Vote()
+                    Five_Check=1
+                    Post_Vote(post)
+                    Six_Check=0
                 }
             }
         })
-        Five_Check = 1
-        Post_Vote(post)
+//        Five_Check = 1
+//        Post_Vote(post)
     }
 
     private fun voteCheck(ref: DatabaseReference) {
@@ -283,82 +291,61 @@ class PostLogActivity : AppCompatActivity() {
         })
 
 
-// val ref2 = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Show_User_id")
-//
-//
-//
-//        ref2.addValueEventListener(object :ValueEventListener{
-//            override fun onCancelled(p0: DatabaseError) {
-//            }
-//            override fun onDataChange(p0: DataSnapshot) {
-//
-//                if(p0.exists()){
-//                    var ShowCount=0
-//                    for(h in p0.children){
-//                        val value = h.value.toString()
-//                        ShowCount+=1
-//                        println("TEST Show${ShowCount}")
-//                        }
-//
-//                    ShowCount-=1
-//                    println("TEST Show${ShowCount}")
+
+//        btnVote.setOnClickListener {
+//            ref.addValueEventListener(object : ValueEventListener {
+//                override fun onCancelled(p0: DatabaseError) {
 //                }
-//            }
-//        })
-        btnVote.setOnClickListener {
-            ref.addValueEventListener(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
-                }
-
-                override fun onDataChange(p0: DataSnapshot) {
-
-                    if (p0.exists()) {
-                        for (h in p0.children) {
-                            val value = h.value.toString()
-                            if (value.equals(Id.toString())) {
-                                btnVote.isEnabled = false
-                            } else {
-                                Vote_User_ref.child("${post.postname}")
-                                    .child("Vote_User_id")
-                                    .child("${UserId}")
-                                    .setValue("$Id")
-
-
-                                Second_Check = 1
-                                Coin += 5
-
-                                val Hash = Vote_ref.push().key
-                                val Info = ShowInfor2(id = Id.toString(), check = 0, hashID = Hash!!)
-
-                                Vote_ref.child(Hash!!).setValue(Info)
-                                com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.Voteting(post)
-                                Process_Vote()
-                            }
-                        }
-                    }else{
-                        btnVote.setText("1")
-
-                        Vote_User_ref.child("${post.postname}")
-                            .child("Vote_User_id")
-                            .child("${UserId}")
-                            .setValue("$Id")
-
-                        Coin += 5
-
-                        Second_Check = 1
-
-                        val Hash = Vote_ref.push().key
-                        val Info = ShowInfor2(id = Id.toString(), check = 0, hashID = Hash!!)
-                        Vote_ref.child(Hash!!).setValue(Info)
-
-                        com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.Voteting(post)
-                        Process_Vote()
-                    }
-                }
-            })
-            Five_Check = 1
-            Post_Vote(post)
-        }
+//
+//                override fun onDataChange(p0: DataSnapshot) {
+//
+//                    if (p0.exists()) {
+//                        for (h in p0.children) {
+//                            val value = h.value.toString()
+//                            if (value.equals(Id.toString())) {
+//                                btnVote.isEnabled = false
+//                            } else {
+//                                Vote_User_ref.child("${post.postname}")
+//                                    .child("Vote_User_id")
+//                                    .child("${UserId}")
+//                                    .setValue("$Id")
+//
+//
+//                                Second_Check = 1
+//                                Coin += 0.5
+//
+//                                val Hash = Vote_ref.push().key
+//                                val Info = ShowInfor2(id = Id.toString(), check = 0, hashID = Hash!!)
+//
+//                                Vote_ref.child(Hash!!).setValue(Info)
+//                                com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.Voteting(post)
+//                                Process_Vote()
+//                            }
+//                        }
+//                    }else{
+//                        btnVote.setText("1")
+//
+//                        Vote_User_ref.child("${post.postname}")
+//                            .child("Vote_User_id")
+//                            .child("${UserId}")
+//                            .setValue("$Id")
+//
+//                        Coin +=0.5
+//
+//                        Second_Check = 1
+//
+//                        val Hash = Vote_ref.push().key
+//                        val Info = ShowInfor2(id = Id.toString(), check = 0, hashID = Hash!!)
+//                        Vote_ref.child(Hash!!).setValue(Info)
+//
+//                        com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.Voteting(post)
+//                        Process_Vote()
+//                    }
+//                }
+//            })
+//            Five_Check = 1
+//            Post_Vote(post)
+//        }
 
 //        background.start()
 //        plog_progress.visibility = View.INVISIBLE
@@ -482,10 +469,10 @@ private fun Process_Vote() { //개발자에게 만 주어지는 소스, 즉시 �
                         if (Second_Check == 0) {
                             return
                         } else {
-                            val hero1 =
-                                Key(id = h2.id, uid = h2.uid, coin = h2.coin + 5, hashID = h2.hashID)
+                            val hero1 = Key(id = h2.id, uid = h2.uid, coin = h2.coin + 0.5, hashID = h2.hashID)
                             Key_List.set(h2.id.toInt() - 1, hero1)
                             Key_Save_ref.child(h2.hashID).setValue(hero1)
+
                             val Info = ShowInfor2(id = Id.toString(), check = 1, hashID = h.hashID!!)
                             Vote_ref.child(h.hashID!!).setValue(Info)
                         }
@@ -525,7 +512,7 @@ private fun Post_Vote(post: Post) {
                             } else {
 
                                 val hero1 =
-                                    Key(id = h2.id, uid = h2.uid, coin = h2.coin + 2, hashID = h2.hashID)
+                                    Key(id = h2.id, uid = h2.uid, coin = h2.coin + 1, hashID = h2.hashID)
                                 Key_List.set(h2.id.toInt() - 1, hero1)
                                 Key_Save_ref.child(h2.hashID).setValue(hero1)
                             }
