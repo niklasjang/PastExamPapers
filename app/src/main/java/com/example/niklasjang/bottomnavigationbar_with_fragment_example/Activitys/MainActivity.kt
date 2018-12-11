@@ -89,6 +89,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        supportActionBar?.title = "Question Coin"
 
         Post_Transaction_ref = FirebaseDatabase.getInstance().getReference("Post_tx") //서버에 저장되어 있는 코인의 이동(코인 획득, 소모)의 트랜젝션을 참조
         Key_Save_ref = FirebaseDatabase.getInstance().getReference("Key") //서버에 저장 되어 있는 코인를 참조

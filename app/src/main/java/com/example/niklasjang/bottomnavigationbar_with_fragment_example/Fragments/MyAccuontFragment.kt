@@ -57,12 +57,6 @@ class MyAccuontFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_my_accuont, container, false)
         val btnSettings = view.findViewById<Button>(R.id.btnSettings_my_account)
 
-//
-
-//
-
-
-
         val profileImage = view.findViewById<CircleImageView>(R.id.profile_image)
 
 

@@ -333,7 +333,7 @@ class UserItem(val post: Post) : Item<ViewHolder>() {
 
                 val reward=20+(voteCount.toInt()*0.5)
 
-                viewHolder.itemView.tvReward_post_row.setText("${reward}")
+                viewHolder.itemView.tvReward_post_row.setText("$ ${reward}")
 
             }
         })

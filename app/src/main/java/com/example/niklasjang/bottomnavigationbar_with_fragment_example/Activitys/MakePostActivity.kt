@@ -56,7 +56,7 @@ class MakePostActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         //Make Post Activity에 reycler view 연습코드 적어둠.
         setContentView(R.layout.activity_make_post)
-        supportActionBar?.title = "Make Post"
+        supportActionBar?.title = "게시물 만들기"
         var pdfBtn = findViewById<View>(R.id.btnPDF_make_post) as Button
         mStorage = FirebaseStorage.getInstance().getReference("Uploads")
         inflateAccordingToService()
