@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.MyAccuontFragment
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.NewsFragment
@@ -21,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
 import android.widget.Button
+import kotlinx.android.synthetic.main.fragment_my_accuont.*
 
 lateinit var Post_Transaction_ref: DatabaseReference
 lateinit var Key_Save_ref: DatabaseReference

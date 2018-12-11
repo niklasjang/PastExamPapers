@@ -53,7 +53,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ChildEventListener
 import kotlinx.android.synthetic.main.comment_row.view.*
 
-
 class PostLogActivity : AppCompatActivity() {
     lateinit var btnVote: Button
     lateinit var post: Post
@@ -66,14 +65,15 @@ class PostLogActivity : AppCompatActivity() {
 //            Toast.makeText(this, "코인 1 소모 되었습니다.", Toast.LENGTH_SHORT).show()
 //            pass="0"
 //        }
-        val background = object : Thread() {
+        var background = object : Thread() {
             override fun run() {
                 try {
                     // Thread will sleep for 1 seconds
                     Thread.sleep((3 * 1000).toLong())
                     // After 5 seconds redirect to another intent
                     //Remove activity
-                    plog_progress.visibility = View.INVISIBLE
+                            plog_progress.visibility = View.INVISIBLE
+
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -82,7 +82,7 @@ class PostLogActivity : AppCompatActivity() {
         //TODO SET MAX WIDth in xml
 //        android:MaxWidth
         post = intent.getParcelableExtra<Post>(TimelineFragment.POST_KEY)
-        supportActionBar?.title = post.title
+        supportActionBar?.title = "게시글 제목 : ${post.title}"
 
         fetchExistComments()
 
@@ -110,8 +110,16 @@ class PostLogActivity : AppCompatActivity() {
                     if (uid!!.equals(h.uid)) {
                         var a = h.profileImageUrl
                         tvuri.text = post.pdfFileUrl
+                        tvTitle_post_entry.text = "제목 : ${post.title}"
                         Picasso.get().load(a).into(userProfileImage)
                         tvUsername_post_entry.text = h.username
+
+//                        tvLecturename_post_entry.text  = "강의명 : ${post.lecturename}"
+//                        tvProfessorname_post_entry.text = "교수명 : ${post.professorName}"
+//                        tvContents_post_entry.text = "(내용) : ${post.contents}"
+//                        tvTitle_post_entry.text = post.title
+//                        tvReward_post_entry.text = post.reward.toString()
+//                        tvVote_post_entry.text = post.vote.toString()
 //                        Thread.sleep((3*1000).toLong()) // 이거 오류고치자
                     }
                 }
@@ -254,6 +262,7 @@ class PostLogActivity : AppCompatActivity() {
             }
         })
     }
+//        plog_progress.visibility = View.INVISIBLE
 
     private fun rewardShow(post: Post) {
         val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Vote_User_id")
@@ -272,6 +281,88 @@ class PostLogActivity : AppCompatActivity() {
 
             }
         })
+
+
+// val ref2 = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Show_User_id")
+//
+//
+//
+//        ref2.addValueEventListener(object :ValueEventListener{
+//            override fun onCancelled(p0: DatabaseError) {
+//            }
+//            override fun onDataChange(p0: DataSnapshot) {
+//
+//                if(p0.exists()){
+//                    var ShowCount=0
+//                    for(h in p0.children){
+//                        val value = h.value.toString()
+//                        ShowCount+=1
+//                        println("TEST Show${ShowCount}")
+//                        }
+//
+//                    ShowCount-=1
+//                    println("TEST Show${ShowCount}")
+//                }
+//            }
+//        })
+        btnVote.setOnClickListener {
+            ref.addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+
+                    if (p0.exists()) {
+                        for (h in p0.children) {
+                            val value = h.value.toString()
+                            if (value.equals(Id.toString())) {
+                                btnVote.isEnabled = false
+                            } else {
+                                Vote_User_ref.child("${post.postname}")
+                                    .child("Vote_User_id")
+                                    .child("${UserId}")
+                                    .setValue("$Id")
+
+
+                                Second_Check = 1
+                                Coin += 5
+
+                                val Hash = Vote_ref.push().key
+                                val Info = ShowInfor2(id = Id.toString(), check = 0, hashID = Hash!!)
+
+                                Vote_ref.child(Hash!!).setValue(Info)
+                                com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.Voteting(post)
+                                Process_Vote()
+                            }
+                        }
+                    }else{
+                        btnVote.setText("1")
+
+                        Vote_User_ref.child("${post.postname}")
+                            .child("Vote_User_id")
+                            .child("${UserId}")
+                            .setValue("$Id")
+
+                        Coin += 5
+
+                        Second_Check = 1
+
+                        val Hash = Vote_ref.push().key
+                        val Info = ShowInfor2(id = Id.toString(), check = 0, hashID = Hash!!)
+                        Vote_ref.child(Hash!!).setValue(Info)
+
+                        com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.Voteting(post)
+                        Process_Vote()
+                    }
+                }
+            })
+            Five_Check = 1
+            Post_Vote(post)
+        }
+
+//        background.start()
+//        plog_progress.visibility = View.INVISIBLE
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -99,8 +99,6 @@ class MyAccuontFragment : Fragment() {
                     }
                 }
                 myacc_progress.visibility = View.INVISIBLE
-
-
 //                url =p0.value.toString()
             }
             override fun onCancelled(p0: DatabaseError) {

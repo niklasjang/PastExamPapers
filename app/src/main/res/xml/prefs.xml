@@ -27,13 +27,13 @@
             android:title="어플 정보">
         <Preference
                 android:title="개발자정보"
-                android:summary="KAU pastExam team (KHS, PGY, OSH, JHS)"/>
+                android:summary="KAU QuestionCoin Team (KHS, PGY, OSH, JHS)"/>
         <Preference
                 android:title="버전정보"
                 android:summary="version 1.0.0"/>
         <Preference
                 android:title="문의사항"
-                android:summary="PH:010-1234-5678 email: abcd1234@gmail.com"/>
+                android:summary="PH:010-4153-5876 email: abcd1224@gmail.com"/>
     </PreferenceCategory>
 
     <!--<PreferenceCategory-->

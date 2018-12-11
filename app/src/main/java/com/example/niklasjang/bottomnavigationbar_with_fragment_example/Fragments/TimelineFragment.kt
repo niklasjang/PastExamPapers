@@ -302,7 +302,7 @@ class UserItem(val post: Post) : Item<ViewHolder>() {
 
 
         //viewHolder.itemView까지 하면 view를 얻는다고 보면 됨.
-        viewHolder.itemView.tvLectureName_post_row.text = "[강의명 : ${post.lecturename}]"
+        viewHolder.itemView.tvLectureName_post_row.text = "[강의명 : ${post.lecturename}] "
         viewHolder.itemView.tvProfessorName_post_row.text = "교수명 : ${post.professorName}"
         viewHolder.itemView.tvTitle_post_row.text = "제목 : ${post.title}"
         rewardShow(post, viewHolder)
