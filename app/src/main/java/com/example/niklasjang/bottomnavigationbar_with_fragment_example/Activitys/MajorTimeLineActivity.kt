@@ -47,7 +47,7 @@ class MajorTimeLineActivity : AppCompatActivity() {
             override fun onChildAdded(p0: DataSnapshot, p1: String?) {
                 val post = p0.getValue(Post::class.java)
                 if (post != null) {
-                    if(major == "소프트"){
+                    if(post.major == major){
                         adapter.add(0, UserItem(post))
                     }
                     //savePostToFirebaseDatabase에서 setValue한 형식대로 get을 한다.

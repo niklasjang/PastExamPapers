@@ -51,7 +51,7 @@ class NewsFragment : Fragment() {
         viewPager.adapter = vpAdapter
         iv_newsFragmentSoft.setOnClickListener {
             var intent = Intent(activity,MajorTimeLineActivity::class.java)
-            intent.putExtra("major","소프트")
+            intent.putExtra("major","소프트웨어")
             startActivity(intent)
         }
         iv_newsFragmentAero.setOnClickListener {
@@ -81,6 +81,18 @@ class NewsFragment : Fragment() {
         iv_newsFragmentMechanic.setOnClickListener {
             var intent = Intent(activity,MajorTimeLineActivity::class.java)
             intent.putExtra("major","항우기")
+            startActivity(intent)
+
+        }
+        iv_newsFragmentTraffic.setOnClickListener {
+            var intent = Intent(activity,MajorTimeLineActivity::class.java)
+            intent.putExtra("major","교물")
+            startActivity(intent)
+
+        }
+        iv_newsFragmentAutonomy.setOnClickListener {
+            var intent = Intent(activity,MajorTimeLineActivity::class.java)
+            intent.putExtra("major","자전")
             startActivity(intent)
 
         }

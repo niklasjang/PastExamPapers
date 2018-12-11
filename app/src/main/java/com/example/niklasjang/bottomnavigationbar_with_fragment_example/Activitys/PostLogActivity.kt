@@ -1,5 +1,6 @@
 package com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys
 
+import android.app.ProgressDialog.show
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -253,6 +254,9 @@ class PostLogActivity : AppCompatActivity() {
                 // TODO 그래서 Main Activit가 처음 시작될 때 News Fragment가 시작되게 설정한 것이 자동으로 시작됨.
                 // 댓글달기 완료 버튼
                 val contents = etComment_post_log?.text.toString()
+                if(contents.isEmpty()){
+                    Toast.makeText(this,"댓글 내용을 입력하세요.",Toast.LENGTH_SHORT).show()
+                }
                 uploadCommentToFirebaseDatabase(contents)
             }
         }
