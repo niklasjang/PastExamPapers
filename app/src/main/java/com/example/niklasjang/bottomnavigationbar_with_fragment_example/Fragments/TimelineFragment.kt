@@ -24,12 +24,15 @@ import kotlinx.android.synthetic.main.post_row.view.*
 import android.view.animation.LinearInterpolator
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
+import android.widget.Toast
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.*
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Fragments.TimelineFragment.Companion.POST_KEY
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.ShowInfor
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.Models.*
+import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R.id.tvReward_post_entry
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_post_log.*
+import kotlinx.android.synthetic.main.activity_post_log.view.*
 
 
 class TimelineFragment : Fragment() {
@@ -89,14 +92,14 @@ class TimelineFragment : Fragment() {
                 }
                 adapter.notifyDataSetChanged()
 
-                //각 post들을 클릭했을 때 나오는 화면
-                adapter.setOnItemClickListener { item, view ->
-
-                    val userItem = item as UserItem
-                    val intent = Intent(view.context, PostLogActivity::class.java)
-                    intent.putExtra(POST_KEY, userItem.post)
-                    startActivity(intent)
-                }
+//                //각 post들을 클릭했을 때 나오는 화면
+//                adapter.setOnItemClickListener { item, view ->
+//
+//                    val userItem = item as UserItem
+//                    val intent = Intent(view.context, PostLogActivity::class.java)
+//                    intent.putExtra(POST_KEY, userItem.post)
+//                    startActivity(intent)
+//                }
                 ref.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onCancelled(p0: DatabaseError) {
                         //Toast.make ~~
@@ -115,15 +118,15 @@ class TimelineFragment : Fragment() {
                         for (h in List) {
                             adapter.add(UserItem(h))
                         }
-                        Log.d("FetchPost", "${adapter.itemCount}")
+
                         //각 post들을 클릭했을 때 나오는 화면
+
                         adapter.setOnItemClickListener { item, view ->
                             val userItem = item as UserItem
                             var pass = 1
                             val List: MutableList<Post>
                             List = mutableListOf()
-                            val ref =
-                                FirebaseDatabase.getInstance().getReference("posts/${item.post.postname}/Show_User_id")
+                            val ref =FirebaseDatabase.getInstance().getReference("posts/${item.post.postname}/Show_User_id")
                             ref.addValueEventListener(object : ValueEventListener {
                                 override fun onDataChange(p0: DataSnapshot) {
                                     List.clear()
@@ -134,11 +137,13 @@ class TimelineFragment : Fragment() {
                                             pass = 0
                                         }
                                     }
+
                                     if (pass == 0) {
                                         val intent = Intent(view.context, PostLogActivity::class.java)
                                         intent.putExtra(POST_KEY, userItem.post)
                                         startActivity(intent)
                                     } else if (Coin >= 10) {
+                                        Toast.makeText(view.context, "코인 0.5 소모 되었습니다.", Toast.LENGTH_LONG).show()
                                         Third_Check = 1
                                         Coin -= 5
                                         val Hash = Show_ref.push().key
@@ -149,6 +154,9 @@ class TimelineFragment : Fragment() {
                                             .child("Show_User_id")
                                             .child("${UserId}")
                                             .setValue("$Id")
+
+                                    }else{
+                                        Toast.makeText(view.context, "코인 1 이상이 필요합니다.", Toast.LENGTH_SHORT).show()
                                     }
                                 }
 
@@ -291,19 +299,110 @@ class UserItem(val post: Post) : Item<ViewHolder>() {
     }
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
+
+
         //viewHolder.itemView까지 하면 view를 얻는다고 보면 됨.
         viewHolder.itemView.tvLectureName_post_row.text = "[강의명 : ${post.lecturename}]"
         viewHolder.itemView.tvProfessorName_post_row.text = "교수명 : ${post.professorName}"
         viewHolder.itemView.tvTitle_post_row.text = "제목 : ${post.title}"
-        viewHolder.itemView.tvReward_post_row.text = "$${post.reward}"
-        viewHolder.itemView.tvVote_post_row.text = "${post.vote}up"
-        viewHolder.itemView.tvViews_post_row.text = "${post.views}"
+        rewardShow(post, viewHolder)
+        voteCounter(post, viewHolder)
+        showCounter(post, viewHolder)
+        commentCounter(post, viewHolder)
+
 
         //TODO 사진 업로드. 프로필 이미지 업로드 이렇게 하면 됨.
         //Picasso.get().load(user.profileImageUrl).into(viewHolder.itemView.ivPostImage)
     }
 
+    private fun rewardShow(post : Post, viewHolder: ViewHolder) {
+        val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Vote_User_id")
+        var voteCount=0
+
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+
+
+                var voteCount=p0.childrenCount
+
+                voteCount-=1
+                println("TEST Vote${voteCount}")
+
+                val reward=20+(voteCount.toInt()*0.5)
+
+                viewHolder.itemView.tvReward_post_row.setText("${reward}")
+
+            }
+        })
+
+    }
+    private fun voteCounter(post : Post, viewHolder: ViewHolder) {
+        val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Vote_User_id")
+        var voteCount=0
+
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+
+
+                    var voteCount=p0.childrenCount
+                    voteCount-=1
+                    println("TEST Vote${voteCount}")
+                    viewHolder.itemView.tvVote_post_row.text = "${voteCount}up"
+                }
+
+        })
+
+    }
+
+    private fun showCounter(post : Post, viewHolder: ViewHolder){
+        val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Show_User_id")
+        var showCount=0
+
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+
+
+                var showCount=p0.childrenCount
+                showCount-=1
+                println("TEST Vote${showCount}")
+                viewHolder.itemView.tvViews_post_row.text="${showCount}"
+
+            }
+
+        })
+
+    }
+    private fun commentCounter(post : Post,  viewHolder: ViewHolder) {
+        val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/comments")
+        var commentCount = 0
+
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+
+
+                var commentCount = p0.childrenCount
+                println("TEST Vote${commentCount}")
+
+                viewHolder.itemView.tvComment_post_row.text="${commentCount}"
+            }
+
+        })
+
+    }
 }
+
 
 
 @Parcelize

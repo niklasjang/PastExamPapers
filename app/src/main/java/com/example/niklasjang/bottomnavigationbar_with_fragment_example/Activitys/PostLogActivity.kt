@@ -34,7 +34,6 @@ import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_post_log.*
 
 
-
 //import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R.array.grade
 //import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R.array.major
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R.id.etComment_post_log
@@ -63,12 +62,15 @@ class PostLogActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post_log)
-
+//        if(pass.equals("1")){
+//            Toast.makeText(this, "코인 1 소모 되었습니다.", Toast.LENGTH_SHORT).show()
+//            pass="0"
+//        }
         val background = object : Thread() {
             override fun run() {
                 try {
                     // Thread will sleep for 1 seconds
-                    Thread.sleep((3*1000).toLong())
+                    Thread.sleep((3 * 1000).toLong())
                     // After 5 seconds redirect to another intent
                     //Remove activity
                     plog_progress.visibility = View.INVISIBLE
@@ -86,7 +88,7 @@ class PostLogActivity : AppCompatActivity() {
 
         adapter = GroupAdapter<ViewHolder>()
         recyclerView = findViewById(R.id.recyclerview_post_log)
-
+        btnVote = findViewById(R.id.tvVote_post_entry)
         recyclerView.adapter = adapter
         // adapter.add(0,PostEntryItem(post))
 
@@ -95,18 +97,18 @@ class PostLogActivity : AppCompatActivity() {
 
         val uid = post.uid
         val urlRef = FirebaseDatabase.getInstance().getReference("users")
-        val List : MutableList<User>
-        List= mutableListOf()
+        val List: MutableList<User>
+        List = mutableListOf()
 
-        urlRef.addValueEventListener(object: ValueEventListener {
+        urlRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
-                for(h in p0.children){
-                    val hero = h.getValue(User ::class.java)
+                for (h in p0.children) {
+                    val hero = h.getValue(User::class.java)
                     List.add(hero!!)
                 }
-                for(h in List){
-                    if(uid!!.equals(h.uid)){
-                        var a=h.profileImageUrl
+                for (h in List) {
+                    if (uid!!.equals(h.uid)) {
+                        var a = h.profileImageUrl
                         tvuri.text = post.pdfFileUrl
                         Picasso.get().load(a).into(userProfileImage)
                         tvUsername_post_entry.text = h.username
@@ -114,122 +116,33 @@ class PostLogActivity : AppCompatActivity() {
                     }
                 }
             }
+
             override fun onCancelled(p0: DatabaseError) {
             }
         })
 
-        tvLecturename_post_entry.text  = "강의명 : ${post.lecturename}"
+        tvLecturename_post_entry.text = "강의명 : ${post.lecturename}"
         tvProfessorname_post_entry.text = "교수명 : ${post.professorName}"
         tvContents_post_entry.text = "(내용) : ${post.contents}"
         tvTitle_post_entry.text = post.title
         tvReward_post_entry.text = post.reward.toString()
         tvVote_post_entry.text = post.vote.toString()
-//        tvUsername_post_entry.text = urlRef.child()
-//        Picasso.get().load(post.pdfFileUrl).into(userProfileImage)
+        rewardShow(post)
 
-//        tvComment_post_entry.text = post.
-        val btnVote = findViewById<Button>(R.id.tvVote_post_entry)
 
-        tvReward_post_entry.text = "5.7"
         //PostLog 실행되자마자 댓글정보 가져오게.
 
         val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Vote_User_id")
-        val ref2 = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Show_User_id")
+
+        val ref2 = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/comments")
 
 
-        ref.addValueEventListener(object :ValueEventListener{
-            override fun onCancelled(p0: DatabaseError) {
-            }
+        voteCheck(ref)
+        commentCheck(ref2)
 
-            override fun onDataChange(p0: DataSnapshot) {
-
-                if(p0.exists()){
-                    var voteCount=0
-                    for(h in p0.children){
-                        val value = h.value.toString()
-                        voteCount+=1
-                        println("TEST Vote${voteCount}")
-                        if (value.equals(Id.toString())) {
-                            btnVote.isEnabled = false
-                        }
-                    }
-                    voteCount-=1
-                    println("TEST Vote${voteCount}")
-                    btnVote.setText("$voteCount")
-                }
-            }
-        })
-        ref2.addValueEventListener(object :ValueEventListener{
-            override fun onCancelled(p0: DatabaseError) {
-            }
-            override fun onDataChange(p0: DataSnapshot) {
-
-                if(p0.exists()){
-                    var ShowCount=0
-                    for(h in p0.children){
-                        val value = h.value.toString()
-                        ShowCount+=1
-                        println("TEST Show${ShowCount}")
-                        }
-
-                    ShowCount-=1
-                    println("TEST Show${ShowCount}")
-                }
-            }
-        })
         btnVote.setOnClickListener {
-            ref.addValueEventListener(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
-                }
-
-                override fun onDataChange(p0: DataSnapshot) {
-
-                    if (p0.exists()) {
-                        for (h in p0.children) {
-                            val value = h.value.toString()
-                            if (value.equals(Id.toString())) {
-                                btnVote.isEnabled = false
-                            } else {
-                                Vote_User_ref.child("${post.postname}")
-                                    .child("Vote_User_id")
-                                    .child("${UserId}")
-                                    .setValue("$Id")
-
-
-                                Second_Check = 1
-                                Coin += 5
-
-                                val Hash = Vote_ref.push().key
-                                val Info = ShowInfor2(id = Id.toString(), check = 0, hashID = Hash!!)
-
-                                Vote_ref.child(Hash!!).setValue(Info)
-                                com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.Voteting(post)
-                                Process_Vote()
-                            }
-                        }
-                    }else{
-                        btnVote.setText("1")
-
-                        Vote_User_ref.child("${post.postname}")
-                            .child("Vote_User_id")
-                            .child("${UserId}")
-                            .setValue("$Id")
-
-                        Coin += 5
-
-                        Second_Check = 1
-
-                        val Hash = Vote_ref.push().key
-                        val Info = ShowInfor2(id = Id.toString(), check = 0, hashID = Hash!!)
-                        Vote_ref.child(Hash!!).setValue(Info)
-
-                        com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.Voteting(post)
-                        Process_Vote()
-                    }
-                }
-            })
-            Five_Check = 1
-            Post_Vote(post)
+            firestProcess(ref) // vote 했을때 처리
+            Toast.makeText(this, "코인 0.5 받았습니다", Toast.LENGTH_SHORT).show()
         }
         background.start()
     }
@@ -241,7 +154,126 @@ class PostLogActivity : AppCompatActivity() {
 //        super.onPause()
 //    }
 
-    //상단 menu bar 생성하기
+
+
+    private fun firestProcess(ref: DatabaseReference) {
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+
+                if (p0.exists()) {
+                    for (h in p0.children) {
+                        val value = h.value.toString()
+                        if (value.equals(Id.toString())) {
+
+                            btnVote.isEnabled = false //데이터 베이스에서 해당 post에 vote트랜젝션을 보고 이미 한것이 있다면 버튼을 못누르게 만들었습니다.
+
+                        } else {
+                            //vote하고 이후 처리
+
+                            Vote_User_ref.child("${post.postname}")
+                                .child("Vote_User_id")
+                                .child("${UserId}")
+                                .setValue("$Id")
+
+
+                            Second_Check = 1
+                            Coin += 5
+
+                            val Hash = Vote_ref.push().key
+                            val Info = ShowInfor2(id = Id.toString(), check = 0, hashID = Hash!!)
+
+                            Vote_ref.child(Hash!!).setValue(Info)
+                            com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.Voteting(post)
+                            Process_Vote()
+                        }
+                    }
+                } else {
+                    btnVote.setText("1")
+
+                    Vote_User_ref.child("${post.postname}")
+                        .child("Vote_User_id")
+                        .child("${UserId}")
+                        .setValue("$Id")
+
+                    Coin += 5
+
+                    Second_Check = 1
+
+                    val Hash = Vote_ref.push().key
+                    val Info = ShowInfor2(id = Id.toString(), check = 0, hashID = Hash!!)
+                    Vote_ref.child(Hash!!).setValue(Info)
+
+                    com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.Voteting(post)
+                    Process_Vote()
+                }
+            }
+        })
+        Five_Check = 1
+        Post_Vote(post)
+    }
+
+    private fun voteCheck(ref: DatabaseReference) {
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                if (p0.exists()) {
+                    for (h in p0.children) {
+                        val value = h.value.toString()
+                        if (value.equals(Id.toString())) {
+                            btnVote.isEnabled = false
+                        }
+                    }
+                    var voteCount = p0.childrenCount
+                    voteCount -= 1
+                    println("TEST Vote${voteCount}")
+                    btnVote.setText("$voteCount")
+                }
+            }
+        })
+    }
+
+    private fun commentCheck(ref2: DatabaseReference) {
+        ref2.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+
+                if (p0.exists()) {
+
+                    var commentCount = p0.childrenCount
+
+                    println("TEST Vote${commentCount}")
+                    tvComment_post_entry.setText("$commentCount")
+                }
+            }
+        })
+    }
+
+    private fun rewardShow(post: Post) {
+        val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Vote_User_id")
+        var voteCount = 0
+
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                //상단 menu bar 생성하기
+                var voteCount = p0.childrenCount
+                voteCount -= 1
+                println("TEST Vote${voteCount}")
+                tvReward_post_entry.setText("${20 + voteCount * 0.5}")
+
+            }
+        })
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.post_log_top_menu, menu)
         return super.onCreateOptionsMenu(menu)
@@ -254,17 +286,18 @@ class PostLogActivity : AppCompatActivity() {
                 // TODO 그래서 Main Activit가 처음 시작될 때 News Fragment가 시작되게 설정한 것이 자동으로 시작됨.
                 // 댓글달기 완료 버튼
                 val contents = etComment_post_log?.text.toString()
-                if(contents.isEmpty()){
-                    Toast.makeText(this,"댓글 내용을 입력하세요.",Toast.LENGTH_SHORT).show()
+                if (contents.isEmpty()) {
+                    Toast.makeText(this, "댓글 내용을 입력하세요.", Toast.LENGTH_SHORT).show()
                     return false
                 }
                 uploadCommentToFirebaseDatabase(contents)
+
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun uploadCommentToFirebaseDatabase(contents : String) {
+    private fun uploadCommentToFirebaseDatabase(contents: String) {
         val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/comments/")
         val commentName = ref.push().key ?: ""
 
@@ -287,11 +320,13 @@ class PostLogActivity : AppCompatActivity() {
             }
 
     }
-    private fun fetchExistComments(){
+
+    fun fetchExistComments() {
         val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/comments/")
-        ref.addListenerForSingleValueEvent(object : ValueEventListener{
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
             }
+
             override fun onDataChange(p0: DataSnapshot) {
                 for (i in p0.children) {
                     val myComment = i.getValue(MyComment::class.java)
@@ -303,11 +338,12 @@ class PostLogActivity : AppCompatActivity() {
         })
     }
 
-    private fun fetchComment(commentName: String ) {
+    fun fetchComment(commentName: String) {
         //If the addValueEventListener() method is used to add the listener,
         //the app will be notified every time the data changes in the specified subtree.
 //        var added :Int = 0
-        val ref = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/comments/$commentName")
+        val ref =
+            FirebaseDatabase.getInstance().getReference("posts/${post.postname}/comments/$commentName")
         ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
 //                Log.d("DataSnapshot", "p0 is $p0")
@@ -355,7 +391,8 @@ private fun Process_Vote() { //개발자에게 만 주어지는 소스, 즉시 �
                         if (Second_Check == 0) {
                             return
                         } else {
-                            val hero1 = Key(id = h2.id, uid = h2.uid, coin = h2.coin + 5, hashID = h2.hashID)
+                            val hero1 =
+                                Key(id = h2.id, uid = h2.uid, coin = h2.coin + 5, hashID = h2.hashID)
                             Key_List.set(h2.id.toInt() - 1, hero1)
                             Key_Save_ref.child(h2.hashID).setValue(hero1)
                             val Info = ShowInfor2(id = Id.toString(), check = 1, hashID = h.hashID!!)
@@ -390,13 +427,14 @@ private fun Post_Vote(post: Post) {
                         val hero = h.getValue(Key::class.java)
                         Key_List.add(hero!!)
                     }
-                    for(h2 in Key_List){
-                        if(post.Id == h2.id.toInt()){
-                            if(Five_Check==0){
+                    for (h2 in Key_List) {
+                        if (post.Id == h2.id.toInt()) {
+                            if (Five_Check == 0) {
                                 return
-                            }else {
+                            } else {
 
-                                val hero1 = Key(id = h2.id, uid = h2.uid, coin = h2.coin + 2, hashID = h2.hashID)
+                                val hero1 =
+                                    Key(id = h2.id, uid = h2.uid, coin = h2.coin + 2, hashID = h2.hashID)
                                 Key_List.set(h2.id.toInt() - 1, hero1)
                                 Key_Save_ref.child(h2.hashID).setValue(hero1)
                             }

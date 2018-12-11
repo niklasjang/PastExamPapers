@@ -42,7 +42,7 @@ lateinit var Post_List:MutableList<Vote>
 lateinit var UserId: String
 lateinit var plainID: String
 lateinit var HashID: String
-
+lateinit var pass :String
 
 var Coin: Int =0
 var Id:Int = 0 //클라이언트가 가지고 있는 고유 아이디
@@ -70,10 +70,9 @@ class MainActivity : AppCompatActivity() {
             R.id.navigation_timeline -> {
 
 
-                println("TEST 1234 $Coin")
                 fragment = TimelineFragment()
                 loadTimelineFragment(fragment)
-                Toast.makeText(this,"click $Coin",Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this,"click $Coin",Toast.LENGTH_SHORT).show()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_my_account -> {
@@ -90,12 +89,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         Post_Transaction_ref = FirebaseDatabase.getInstance().getReference("Post_tx") //서버에 저장되어 있는 코인의 이동(코인 획득, 소모)의 트랜젝션을 참조
-        Key_Save_ref = FirebaseDatabase.getInstance().getReference("Key")
-        Show_ref=FirebaseDatabase.getInstance().getReference("Sub")
-        Vote_ref=FirebaseDatabase.getInstance().getReference("Plus")
+        Key_Save_ref = FirebaseDatabase.getInstance().getReference("Key") //서버에 저장 되어 있는 코인를 참조
+        Show_ref=FirebaseDatabase.getInstance().getReference("Sub") //코인 소모 트랜젝션 참조
+        Vote_ref=FirebaseDatabase.getInstance().getReference("Plus") // 코인 획득 트랜젝션 참조
         Vote_Transaction_ref=FirebaseDatabase.getInstance().getReference("Vote") //서버에 저장 되어 있는 보팅 트랜젝션을 참조
-        Vote_User_ref= FirebaseDatabase.getInstance().getReference("posts")
-        Show_User_ref= FirebaseDatabase.getInstance().getReference("posts")
+        Vote_User_ref= FirebaseDatabase.getInstance().getReference("posts") //게시물 참조
+        Show_User_ref= FirebaseDatabase.getInstance().getReference("posts") //게시물 참조
 
         Coin_Transaction_List= mutableListOf()
         Sub_List= mutableListOf()
@@ -133,12 +132,11 @@ class MainActivity : AppCompatActivity() {
             Log.d("LogTest","you have already logged in...")
 
             UserId = uid
-            getKey()
-            plainID = UserId.substring(0, 16)
-            getKey()
+            getKey() //유저의 고유 정보 가져오기
+
 
         }
-               //private_key는 16의 크기로 제한되어 있다 , 암호화 할때 private_key로 쓰임
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
