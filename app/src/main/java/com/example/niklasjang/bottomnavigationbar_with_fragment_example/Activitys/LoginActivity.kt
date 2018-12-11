@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 import com.example.niklasjang.bottomnavigationbar_with_fragment_example.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -33,6 +34,8 @@ class LoginActivity : AppCompatActivity() {
             Log.d("LogTest","call Register Activity, requestCode is 300")
             startActivityForResult(intent,300)
         }
+        val btnGoogle = btGoogle.getChildAt(0) as TextView
+        btnGoogle.text = "게스트 로그인"
     }
 
     //Firebase 로그인 실행

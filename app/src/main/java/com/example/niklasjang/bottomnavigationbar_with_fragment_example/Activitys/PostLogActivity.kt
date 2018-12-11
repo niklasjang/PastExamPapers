@@ -66,11 +66,12 @@ class PostLogActivity : AppCompatActivity() {
 //            Toast.makeText(this, "코인 1 소모 되었습니다.", Toast.LENGTH_SHORT).show()
 //            pass="0"
 //        }
-        var background = object : Thread() {
+
+        val background = object : Thread() {
             override fun run() {
                 try {
                     // Thread will sleep for 1 seconds
-                    Thread.sleep((3 * 1000).toLong())
+                    Thread.sleep((3*1000).toLong())
                     // After 5 seconds redirect to another intent
                     //Remove activity
                     plog_progress.visibility = View.INVISIBLE
@@ -80,6 +81,10 @@ class PostLogActivity : AppCompatActivity() {
                 }
             }
         }
+
+
+
+
         //TODO SET MAX WIDth in xml
 //        android:MaxWidth
         post = intent.getParcelableExtra<Post>(TimelineFragment.POST_KEY)
@@ -110,18 +115,14 @@ class PostLogActivity : AppCompatActivity() {
                 for (h in List) {
                     if (uid!!.equals(h.uid)) {
                         var a = h.profileImageUrl
+                        Picasso.get().load(a).into(userProfileImage)
+                        background.start()
+
                         tvuri.text = post.pdfFileUrl
                         tvTitle_post_entry.text = "제목 : ${post.title}"
-                        Picasso.get().load(a).into(userProfileImage)
-                        tvUsername_post_entry.text = h.username
 
-//                        tvLecturename_post_entry.text  = "강의명 : ${post.lecturename}"
-//                        tvProfessorname_post_entry.text = "교수명 : ${post.professorName}"
-//                        tvContents_post_entry.text = "(내용) : ${post.contents}"
-//                        tvTitle_post_entry.text = post.title
-//                        tvReward_post_entry.text = post.reward.toString()
-//                        tvVote_post_entry.text = post.vote.toString()
-//                        Thread.sleep((3*1000).toLong()) // 이거 오류고치자
+                        tvUsername_post_entry.text = "작성자 : ${h.username}"
+
                     }
                 }
             }
@@ -164,15 +165,8 @@ class PostLogActivity : AppCompatActivity() {
             firestProcess(ref) // vote 했을때 처리
             Toast.makeText(this, "코인 0.5 받았습니다", Toast.LENGTH_SHORT).show()
         }
-        background.start()
     }
 
-//    override fun onPause() {
-////        plog_progress.visibility = View.INVISIBLE // 이거 오류고치자
-////        Thread.sleep((3*1000).toLong()) // 이거 오류고치자
-//
-//        super.onPause()
-//    }
 
 
     private fun firestProcess(ref: DatabaseReference) {
@@ -234,6 +228,7 @@ class PostLogActivity : AppCompatActivity() {
         Post_Vote(post)
     }
 
+
     private fun voteCheck(ref: DatabaseReference) {
         ref.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
@@ -294,28 +289,6 @@ class PostLogActivity : AppCompatActivity() {
         })
 
 
-// val ref2 = FirebaseDatabase.getInstance().getReference("posts/${post.postname}/Show_User_id")
-//
-//
-//
-//        ref2.addValueEventListener(object :ValueEventListener{
-//            override fun onCancelled(p0: DatabaseError) {
-//            }
-//            override fun onDataChange(p0: DataSnapshot) {
-//
-//                if(p0.exists()){
-//                    var ShowCount=0
-//                    for(h in p0.children){
-//                        val value = h.value.toString()
-//                        ShowCount+=1
-//                        println("TEST Show${ShowCount}")
-//                        }
-//
-//                    ShowCount-=1
-//                    println("TEST Show${ShowCount}")
-//                }
-//            }
-//        })
         btnVote.setOnClickListener {
             ref.addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
@@ -371,8 +344,7 @@ class PostLogActivity : AppCompatActivity() {
             Post_Vote(post)
         }
 
-//        background.start()
-//        plog_progress.visibility = View.INVISIBLE
+
 
     }
 

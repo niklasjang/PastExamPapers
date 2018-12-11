@@ -7,18 +7,17 @@
     tools:context=".Activitys.PostLogActivity">
 
     <TextView
-            android:id="@+id/tvTitle_post_entry"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/baedal"
-            android:text="Title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.368"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvService_post_entry"/>
+        android:id="@+id/tvTitle_post_entry"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/baedal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.368"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvService_post_entry" />
 
     <TextView
         android:id="@+id/tvLecturename_post_entry"
@@ -27,7 +26,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/baedal"
-        android:text="Lecturename"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,7 +35,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:fontFamily="@font/baedal"
-        android:text="Professorname"
         app:layout_constraintBottom_toBottomOf="@+id/tvLecturename_post_entry"
         app:layout_constraintStart_toEndOf="@+id/tvLecturename_post_entry"
         app:layout_constraintTop_toTopOf="@+id/tvLecturename_post_entry" />
@@ -48,7 +45,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Service"
         android:fontFamily="@font/baedal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvLecturename_post_entry" />
@@ -58,7 +54,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:text="Year"
         android:fontFamily="@font/baedal"
         app:layout_constraintBottom_toBottomOf="@+id/tvService_post_entry"
         app:layout_constraintStart_toEndOf="@+id/tvService_post_entry"
@@ -69,7 +64,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="Test"
         android:fontFamily="@font/baedal"
         app:layout_constraintBottom_toBottomOf="@+id/tvYear_post_entry"
         app:layout_constraintStart_toEndOf="@+id/tvYear_post_entry"
@@ -85,7 +79,6 @@
         android:layout_marginTop="8dp"
         android:fontFamily="@font/baedal"
         android:maxHeight="200dp"
-        android:text="Contents"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -103,10 +96,11 @@
     <TextView
         android:id="@+id/tvUsername_post_entry"
 
-        android:layout_width="66dp"
+        android:layout_width="126dp"
         android:layout_height="20dp"
         android:layout_marginStart="8dp"
-        android:text="Username"
+        android:fontFamily="@font/baedal"
+        android:textColor="@color/default_underline_indicator_selected_color"
         app:layout_constraintBottom_toBottomOf="@+id/tvReward_post_entry"
         app:layout_constraintStart_toEndOf="@+id/userProfileImage"
         app:layout_constraintTop_toTopOf="@+id/tvReward_post_entry" />
@@ -200,14 +194,13 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="54dp"
-        android:layout_marginStart="56dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:autoLink="web"
-        android:text="uri"
         app:layout_constraintBottom_toTopOf="@+id/tvVote_post_entry"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/plog_progress"
+        app:layout_constraintHorizontal_bias="0.145"
+        app:layout_constraintStart_toEndOf="@+id/tvContents_post_entry"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
