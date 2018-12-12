@@ -87,7 +87,7 @@ class MyAccuontFragment : Fragment() {
                         Thread.sleep((3*1000).toLong())
                         tvUsername!!.text = "내 이름 : ${h.username}"
                         tvEmail!!.text = "내 계정 : ${email!!.email}"
-                        tvCoinCnt!!.text = "보유 코인 수 : ${Coin.toString()}개"
+                        tvCoinCnt!!.text = "보유 코인 수 : $${Coin.toString()}개"
                         tvMyPost!!.text = "<내 게시물>"
 
                     }

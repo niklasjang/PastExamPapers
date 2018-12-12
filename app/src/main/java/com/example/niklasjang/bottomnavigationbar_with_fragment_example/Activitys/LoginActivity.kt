@@ -19,6 +19,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
+import android.widget.TextView
+
+
 
 class LoginActivity : AppCompatActivity() {
     var gso: GoogleSignInOptions? = null
@@ -26,6 +29,10 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        val btnGoogle = btGoogle.getChildAt(0) as TextView
+        btnGoogle.text = "게스트 로그인"
+
         performLogin()
         googleLoginSetup()
         tvGoToCreateAccount.setOnClickListener {
