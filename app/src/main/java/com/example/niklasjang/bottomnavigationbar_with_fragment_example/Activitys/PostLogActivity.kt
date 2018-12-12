@@ -51,6 +51,7 @@ import java.io.File
 import java.lang.invoke.ConstantCallSite
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ChildEventListener
+import kotlinx.android.synthetic.main.activity_make_post.*
 import kotlinx.android.synthetic.main.comment_row.view.*
 
 class PostLogActivity : AppCompatActivity() {
@@ -65,20 +66,25 @@ class PostLogActivity : AppCompatActivity() {
 //            Toast.makeText(this, "코인 1 소모 되었습니다.", Toast.LENGTH_SHORT).show()
 //            pass="0"
 //        }
-        var background = object : Thread() {
+
+        val background = object : Thread() {
             override fun run() {
                 try {
                     // Thread will sleep for 1 seconds
-                    Thread.sleep((3 * 1000).toLong())
+                    Thread.sleep((3*1000).toLong())
                     // After 5 seconds redirect to another intent
                     //Remove activity
-                            plog_progress.visibility = View.INVISIBLE
+                    plog_progress.visibility = View.INVISIBLE
 
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
         }
+
+
+
+
         //TODO SET MAX WIDth in xml
 //        android:MaxWidth
         post = intent.getParcelableExtra<Post>(TimelineFragment.POST_KEY)
@@ -109,18 +115,14 @@ class PostLogActivity : AppCompatActivity() {
                 for (h in List) {
                     if (uid!!.equals(h.uid)) {
                         var a = h.profileImageUrl
+                        Picasso.get().load(a).into(userProfileImage)
+                        background.start()
+
                         tvuri.text = post.pdfFileUrl
                         tvTitle_post_entry.text = "제목 : ${post.title}"
-                        Picasso.get().load(a).into(userProfileImage)
-                        tvUsername_post_entry.text = h.username
 
-//                        tvLecturename_post_entry.text  = "강의명 : ${post.lecturename}"
-//                        tvProfessorname_post_entry.text = "교수명 : ${post.professorName}"
-//                        tvContents_post_entry.text = "(내용) : ${post.contents}"
-//                        tvTitle_post_entry.text = post.title
-//                        tvReward_post_entry.text = post.reward.toString()
-//                        tvVote_post_entry.text = post.vote.toString()
-//                        Thread.sleep((3*1000).toLong()) // 이거 오류고치자
+                        tvUsername_post_entry.text = "작성자 : ${h.username}"
+
                     }
                 }
             }
@@ -132,6 +134,17 @@ class PostLogActivity : AppCompatActivity() {
         tvLecturename_post_entry.text = "강의명 : ${post.lecturename}"
         tvProfessorname_post_entry.text = "교수명 : ${post.professorName}"
         tvContents_post_entry.text = "(내용) : ${post.contents}"
+        tvYear_post_entry.text = "#${post.grade}"
+        when (post.service) {
+            1 -> tvService_post_entry.text = "#질문/답변"
+            2 -> tvService_post_entry.text = "#지식공유"
+            else -> tvService_post_entry.text = "#질문/답변"
+        }
+        when(post.test) {
+            1 -> tvTest_post_entry.text = "#중간고사"
+            2 -> tvTest_post_entry.text = "#기말고사"
+            else -> tvTest_post_entry.text = "#중간고사"
+        }
         tvTitle_post_entry.text = post.title
         tvReward_post_entry.text = post.reward.toString()
         tvVote_post_entry.text = post.vote.toString()
@@ -142,20 +155,13 @@ class PostLogActivity : AppCompatActivity() {
         voteCheck(ref)
         commentCheck(ref2)
 
+
         btnVote.setOnClickListener {
             Six_Check=1
             firestProcess(ref) // vote 했을때 처리
             Toast.makeText(this, "코인 0.5 받았습니다", Toast.LENGTH_SHORT).show()
         }
-        background.start()
     }
-
-//    override fun onPause() {
-////        plog_progress.visibility = View.INVISIBLE // 이거 오류고치자
-////        Thread.sleep((3*1000).toLong()) // 이거 오류고치자
-//
-//        super.onPause()
-//    }
 
 
 
@@ -231,6 +237,7 @@ class PostLogActivity : AppCompatActivity() {
 //        Post_Vote(post)
     }
 
+
     private fun voteCheck(ref: DatabaseReference) {
         ref.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
@@ -289,12 +296,14 @@ class PostLogActivity : AppCompatActivity() {
 
             }
         })
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.post_log_top_menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
+
     //상단 menu bar select listener.
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {

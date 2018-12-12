@@ -20,6 +20,7 @@ import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.module.AppGlideModule
 import android.graphics.BitmapFactory
 import android.graphics.Bitmap
+import android.os.AsyncTask
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.widget.ProgressBar
@@ -31,6 +32,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
+import kotlinx.android.synthetic.main.activity_post_log.*
 import kotlinx.android.synthetic.main.fragment_my_accuont.*
 import java.io.InputStream
 import java.net.URL
@@ -73,6 +75,11 @@ class MyAccuontFragment : Fragment() {
         val urlRef = FirebaseDatabase.getInstance().getReference("users")
         val List : MutableList<User>
         List= mutableListOf()
+
+
+
+
+
         urlRef.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 for(h in p0.children){
@@ -84,44 +91,24 @@ class MyAccuontFragment : Fragment() {
                         println("TEST123 ${h.uid} ${h.profileImageUrl.toString()} ${h.username}")
                         val a=h.profileImageUrl
                         Picasso.get().load(a).into(profileImage)
-                        Thread.sleep((3*1000).toLong())
+//                        Thread.sleep((3*1000).toLong())
                         tvUsername!!.text = "내 이름 : ${h.username}"
                         tvEmail!!.text = "내 계정 : ${email!!.email}"
-                        tvCoinCnt!!.text = "보유 코인 수 : $${Coin.toString()}개"
+                        tvCoinCnt!!.text = "보유 코인 수 : ${Coin.toString()}$"
                         tvMyPost!!.text = "<내 게시물>"
-
                     }
                 }
-                myacc_progress.visibility = View.INVISIBLE
+//                myacc_progress.visibility = View.INVISIBLE
+
+
 //                url =p0.value.toString()
             }
+
             override fun onCancelled(p0: DatabaseError) {
             }
         })
 
 
-
-//        val background = object : Thread() {
-//            override fun run() {
-//                try {
-//                    // Thread will sleep for 1 seconds
-//                    Thread.sleep((3*1000).toLong())
-//
-//                    // After 5 seconds redirect to another intent
-//                    //Remove activity
-//                } catch (e: Exception) {
-//                    e.printStackTrace()
-//                }
-//
-//            }
-//        }
-//        // start thread
-//        background.start()
-//
-//        myacc_progress.visibility = View.INVISIBLE
-
-
-//        Picasso.get().load(url).into(profileImage)
 
 
 
@@ -129,14 +116,20 @@ class MyAccuontFragment : Fragment() {
             val intent = Intent(view.context, PreferenceActivity::class.java)
             startActivity(intent)
         }
+
         return view
     }
     //프레그먼트는 여기서 받아온다. 여기 아래까지는 추가한 것이다.
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+
         recyclerView = view.findViewById(R.id.rv_myAccount)
         recyclerView?.adapter = adapter
+
         fetchPost()
+
     }
 
     fun adapterNotifyDataSetChanged(){

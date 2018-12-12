@@ -189,8 +189,6 @@ class MakePostActivity : AppCompatActivity() {
             return
         }
 
-        val year: Int?
-
         val test: Int?
         when (rgTest.checkedRadioButtonId) {
             R.id.rbtn_midterm -> {

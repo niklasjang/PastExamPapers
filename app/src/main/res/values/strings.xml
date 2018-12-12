@@ -3,8 +3,8 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="news_fragment">뉴스</string>
-    <string name="timeline_fragment">게시판</string>
+    <string name="news_fragment">메인</string>
+    <string name="timeline_fragment">타임라인</string>
     <string name="my_account_fragment">내 계정</string>
 
 

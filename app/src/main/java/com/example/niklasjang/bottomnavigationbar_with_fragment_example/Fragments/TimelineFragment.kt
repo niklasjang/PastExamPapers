@@ -374,6 +374,7 @@ class Post(
     var Id: Int,
     val major: String
 
+
 ) : Parcelable {
     constructor() : this(
         "postname",
@@ -392,5 +393,6 @@ class Post(
         0,
         0,
         ""
+
     )
 }
