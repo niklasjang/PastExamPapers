@@ -228,6 +228,7 @@ class MakePostActivity : AppCompatActivity() {
         val userUID = _uid
         val ref = FirebaseDatabase.getInstance().getReference("posts")
         val postname = ref.push().key ?: ""
+
         if(test == null || service == null){
             Toast.makeText(this, "버튼을 모두 선택하세요.", Toast.LENGTH_SHORT).show()
             return

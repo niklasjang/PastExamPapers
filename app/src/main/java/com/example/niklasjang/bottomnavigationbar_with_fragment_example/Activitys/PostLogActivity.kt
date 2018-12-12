@@ -53,6 +53,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ChildEventListener
 import kotlinx.android.synthetic.main.activity_make_post.*
 import kotlinx.android.synthetic.main.comment_row.view.*
+import kotlinx.android.synthetic.main.post_row.*
 
 class PostLogActivity : AppCompatActivity() {
     lateinit var btnVote: Button
@@ -71,7 +72,7 @@ class PostLogActivity : AppCompatActivity() {
             override fun run() {
                 try {
                     // Thread will sleep for 1 seconds
-                    Thread.sleep((3*1000).toLong())
+                    Thread.sleep((3 * 1000).toLong())
                     // After 5 seconds redirect to another intent
                     //Remove activity
                     plog_progress.visibility = View.INVISIBLE
@@ -140,7 +141,7 @@ class PostLogActivity : AppCompatActivity() {
             2 -> tvService_post_entry.text = "#지식공유"
             else -> tvService_post_entry.text = "#질문/답변"
         }
-        when(post.test) {
+        when (post.test) {
             1 -> tvTest_post_entry.text = "#중간고사"
             2 -> tvTest_post_entry.text = "#기말고사"
             else -> tvTest_post_entry.text = "#중간고사"
@@ -157,12 +158,11 @@ class PostLogActivity : AppCompatActivity() {
 
 
         btnVote.setOnClickListener {
-            Six_Check=1
+            Six_Check = 1
             firestProcess(ref) // vote 했을때 처리
             Toast.makeText(this, "코인 0.5 받았습니다", Toast.LENGTH_SHORT).show()
         }
     }
-
 
 
     private fun firestProcess(ref: DatabaseReference) {
@@ -182,7 +182,7 @@ class PostLogActivity : AppCompatActivity() {
 
                         } else {
                             //vote하고 이후 처리
-                            if(Six_Check==0){
+                            if (Six_Check == 0) {
                                 return
                             }
                             Vote_User_ref.child("${post.postname}")
@@ -201,16 +201,16 @@ class PostLogActivity : AppCompatActivity() {
 
                             com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.Voteting(post)
                             Process_Vote()
-                            Five_Check=1
+                            Five_Check = 1
                             Post_Vote(post)
-                            Six_Check=0
+                            Six_Check = 0
                         }
                     }
                 } else {
 
                     btnVote.setText("1")
 
-                    if(Six_Check==0){
+                    if (Six_Check == 0) {
                         return
                     }
                     Vote_User_ref.child("${post.postname}")
@@ -227,9 +227,9 @@ class PostLogActivity : AppCompatActivity() {
                     Vote_ref.child(Hash!!).setValue(Info)
                     com.example.niklasjang.bottomnavigationbar_with_fragment_example.Activitys.Voteting(post)
                     Process_Vote()
-                    Five_Check=1
+                    Five_Check = 1
                     Post_Vote(post)
-                    Six_Check=0
+                    Six_Check = 0
                 }
             }
         })
@@ -433,35 +433,35 @@ private fun Process_Vote() { //개발자에게 만 주어지는 소스, 즉시 �
 }
 
 private fun Post_Vote(post: Post) {
-            Key_Save_ref.addValueEventListener(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
-                }
-
-                override fun onDataChange(p0: DataSnapshot) {
-
-                    Key_List.clear()
-                    for (h in p0.children) {
-                        val hero = h.getValue(Key::class.java)
-                        Key_List.add(hero!!)
-                    }
-                    for (h2 in Key_List) {
-                        if (post.Id == h2.id.toInt()) {
-                            Log.d("post.Id", "${post.Id} and ${h2.id}")
-                            if (Five_Check == 0) {
-                                return
-                            } else {
-
-                                val hero1 =
-                                    Key(id = h2.id, uid = h2.uid, coin = h2.coin + 1, hashID = h2.hashID)
-                                Key_List.set(h2.id.toInt() - 1, hero1)
-                                Key_Save_ref.child(h2.hashID).setValue(hero1)
-                            }
-                        }
-                    }
-                    Five_Check = 0
-                }
-            })
+    Key_Save_ref.addValueEventListener(object : ValueEventListener {
+        override fun onCancelled(p0: DatabaseError) {
         }
+
+        override fun onDataChange(p0: DataSnapshot) {
+
+            Key_List.clear()
+            for (h in p0.children) {
+                val hero = h.getValue(Key::class.java)
+                Key_List.add(hero!!)
+            }
+            for (h2 in Key_List) {
+                if (post.Id == h2.id.toInt()) {
+                    Log.d("post.Id", "${post.Id} and ${h2.id}")
+                    if (Five_Check == 0) {
+                        return
+                    } else {
+
+                        val hero1 =
+                            Key(id = h2.id, uid = h2.uid, coin = h2.coin + 1, hashID = h2.hashID)
+                        Key_List.set(h2.id.toInt() - 1, hero1)
+                        Key_Save_ref.child(h2.hashID).setValue(hero1)
+                    }
+                }
+            }
+            Five_Check = 0
+        }
+    })
+}
 
 private fun Voteting(post: Post) { //vote 할 때 트랜젝션을 만들어 서버에 전송
     val name = post.postname

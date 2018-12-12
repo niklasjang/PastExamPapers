@@ -58,6 +58,8 @@ class TimelineFragment : Fragment() {
         fetchPost()
         Process_Show()
 
+
+
         val btnFilter = view.findViewById<Button>(R.id.btnFilter)
         btnFilter?.setOnClickListener {
             val intent = Intent(activity, FilterActivity::class.java)
@@ -72,7 +74,7 @@ class TimelineFragment : Fragment() {
         }
     }
 
-    private fun fetchPost() {
+    public fun fetchPost() {
         //If the addValueEventListener() method is used to add the listener,
         //the app will be notified every time the data changes in the specified subtree.
         ref.addChildEventListener(object : ChildEventListener {
@@ -90,7 +92,11 @@ class TimelineFragment : Fragment() {
                     Log.d("fetchPost", "${adapter.itemCount}")
                     adapter.add(0, UserItem(post))
                 }
-                adapter.notifyDataSetChanged()
+                adapter.setOnItemClickListener { item, view ->
+                    view.btnRemove_post_log.setOnClickListener {
+                    }
+                }
+
 
 //                //각 post들을 클릭했을 때 나오는 화면
 //                adapter.setOnItemClickListener { item, view ->
@@ -122,6 +128,7 @@ class TimelineFragment : Fragment() {
                         //각 post들을 클릭했을 때 나오는 화면
 
                         adapter.setOnItemClickListener { item, view ->
+
                             val userItem = item as UserItem
                             var pass = 1
                             val List: MutableList<Post>
