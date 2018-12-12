@@ -446,6 +446,7 @@ private fun Post_Vote(post: Post) {
                     }
                     for (h2 in Key_List) {
                         if (post.Id == h2.id.toInt()) {
+                            Log.d("post.Id", "${post.Id} and ${h2.id}")
                             if (Five_Check == 0) {
                                 return
                             } else {

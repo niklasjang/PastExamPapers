@@ -153,7 +153,6 @@ class MainActivity : AppCompatActivity() {
     //Navigation bar 전환
     private fun loadFragment(fragment: Fragment): Boolean {
         supportFragmentManager.beginTransaction()
-
             .replace(R.id.fragment_container, fragment)
 //            .addToBackStack(null) //Remember past fragment when press back button
             .commit()

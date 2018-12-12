@@ -20,13 +20,13 @@
 
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_image"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        app:civ_border_color="@color/black"
-        app:civ_border_width="2dp" android:layout_marginTop="8dp"
-        app:layout_constraintTop_toTopOf="parent" android:layout_marginStart="8dp"
-        app:layout_constraintStart_toStartOf="parent"/>
+            android:id="@+id/profile_image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:civ_border_color="@color/black"
+            app:civ_border_width="2dp" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:background="@drawable/icon_my_account"/>
 
 
     <TextView

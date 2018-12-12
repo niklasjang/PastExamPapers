@@ -248,7 +248,7 @@ class MakePostActivity : AppCompatActivity() {
                 userUID,
                 contents,
                 0,
-                1,
+                Id,
                 major
             )
         )
